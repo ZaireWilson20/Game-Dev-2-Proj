@@ -9,7 +9,12 @@ public class Player : MonoBehaviour
     public float speed = 5f;
 
     public float jumpHeight = 10f;
-    public float timeToJumpApex = .4f; 
+    public float timeToJumpApex = .4f;
+
+    public int health_max = 5;
+    private int health = 5;
+    public float attack = 1f;
+    public float knockback = 5f;
 
 
     float jumpVelocity;
@@ -17,7 +22,8 @@ public class Player : MonoBehaviour
 
     float accelTime_air = .4f;
     float accelTime_ground = .1f; 
-    Vector3 velocity; 
+    Vector3 velocity;
+
     // --------------------------------
 
 
@@ -31,7 +37,10 @@ public class Player : MonoBehaviour
         gravity = -1*(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);   
         
         //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
-        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex; 
+        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+
+        health = health_max;
+        gameObject.SetActive(true);
 
     }
 
@@ -57,6 +66,23 @@ public class Player : MonoBehaviour
 
         //  Call to move function in controller2D class
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    /**
+     * Could be adjusted to account for any shield effects 
+     */
+    public void takeDamage(int damage, float knockDir)
+    {
+        health -= damage;
+        if (health == 0)
+        {
+            //player has died
+            Debug.Log("Player died!");
+            gameObject.SetActive(false);
+        }
+        velocity.x += knockback * knockDir;
+        controller.Move(velocity * Time.deltaTime);
+        Debug.Log("Player health: " + health);
     }
 
 }

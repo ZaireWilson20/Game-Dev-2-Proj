@@ -6,7 +6,7 @@ public class Controller2D : MonoBehaviour
 {
 
     //collider attributes
-    const float cont_skin_width = .015f;
+    const float cont_skin_width = 0.015f;
     public int cont_H_raycount = 4;
     public int cont_V_raycount = 4;
     public float cont_max_climb_angle = 70f;   //  Max angle for slope that player is allowed to climb
@@ -18,6 +18,7 @@ public class Controller2D : MonoBehaviour
     public CollisionInfo cont_collision_info; 
 
     public LayerMask cont_collision_mask;
+    public float v_old = 0f;
 
     RaycOrigins cont_raycast_origins; 
 
@@ -50,7 +51,7 @@ public class Controller2D : MonoBehaviour
     }
 
 
-    /*  Updates the position of the raycast origins relatvie to this entity */
+    /*  Updates the position of the raycast origins relative to this entity */
     void UpdateRayO()
     {
         Bounds rayBounds = cont_collider.bounds;
@@ -97,7 +98,7 @@ public class Controller2D : MonoBehaviour
 
         if (velocity.y != 0)
         {
-            verticalCollsions(ref velocity); //Checks vertical collsions if moving up or down
+            verticalCollisions(ref velocity); //Checks vertical collsions if moving up or down
         }
 
         transform.Translate(velocity); //Moves object
@@ -105,7 +106,7 @@ public class Controller2D : MonoBehaviour
 
 
     /*  Function for shooting out vertical raycasts and stopping vertical movement if collisions are detected   */
-    void verticalCollsions(ref Vector3 velocity)  
+    void verticalCollisions(ref Vector3 velocity)  
     {
         float direction = Mathf.Sign(velocity.y);  //set raycast direction to sign of movement vector --- (0, -1, 0) is y facing down 
         float ray_length = Mathf.Abs(velocity.y) + cont_skin_width;    //set ray legnth to y velocity + skin width
@@ -119,16 +120,25 @@ public class Controller2D : MonoBehaviour
             
             RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, Vector2.up * direction, ray_length, cont_collision_mask);
             Debug.DrawRay(raycastOrigin, Vector2.up * direction * ray_length, Color.green);
-            Debug.Log(hit);
+            //Debug.Log(hit);
             if (hit)
             {
                 
                 //  Init vertical collision info based on direction player is moving
                 cont_collision_info.below = direction == -1;
-                cont_collision_info.above = direction == 1; 
+                cont_collision_info.above = direction == 1;
 
 
                 velocity.y = (hit.distance - cont_skin_width) * direction; // changes velocity.y to 0 if colliding
+                if (hit.distance == 0) {
+                    //Debug.Log("sunk");
+                    velocity.y = -.05f * direction;
+                }
+               /* if (velocity.y != v_old)
+                    Debug.Log(velocity.y);
+                v_old = velocity.y; */
+                //velocity.y = 0;
+                //Debug.Log("Vertical velocity: " + velocity.y);
                 ray_length = hit.distance; //  change ray length to first object collided with so that deeper collisions don't effect 
 
                 if (cont_collision_info.climbingSlope)
