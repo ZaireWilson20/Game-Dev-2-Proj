@@ -27,6 +27,10 @@ public class Player : MonoBehaviour
     Vector3 velocity;
     // --------------------------------
 
+    //  Player interactions with environment
+    public bool pa_inConvo = false; 
+
+
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
     {
@@ -81,7 +85,15 @@ public class Player : MonoBehaviour
             velocity.y = 0;
         }
 
-        Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 directionalInput;
+        if (!pa_inConvo)  // Can move while not in conversation
+        {
+            directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        }
+        else
+        {
+            directionalInput = new Vector2(0, 0);
+        }
 
         //On the ground, enable grounded only movement here
         if (controller.cont_collision_info.below)
@@ -106,7 +118,7 @@ public class Player : MonoBehaviour
             }
             else
             {
-                tf.localScale = new Vector3(5f, 5f, 5f);
+                //tf.localScale = new Vector3(5f, 5f, 5f);
                 speed = 5;
                 runSpeed = 10;
             }
