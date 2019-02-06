@@ -24,6 +24,7 @@ public class RopeSystem : MonoBehaviour
 
     public float climbSpeed = 3f;
     public float maxRopeDistance = 6f;
+    public float minRopeDistance = 1f;
     private bool isColliding;
 
     private void SetCrosshairPosition(float aimAngle)
@@ -190,13 +191,22 @@ public class RopeSystem : MonoBehaviour
     private void HandleRopeLength()
     {
         // 1
-        if (Input.GetAxis("Vertical") >= 1f && ropeAttached && !isColliding)
+        if (ropeJoint.distance <= maxRopeDistance && ropeJoint.distance >= minRopeDistance)
         {
-            ropeJoint.distance -= Time.deltaTime * climbSpeed;
-        }
-        else if (Input.GetAxis("Vertical") < 0f && ropeAttached)
-        {
-            ropeJoint.distance += Time.deltaTime * climbSpeed;
+            if (Input.GetAxis("Vertical") >= 1f && ropeAttached && !isColliding)
+            {
+                if (ropeJoint.distance-Time.deltaTime*climbSpeed < minRopeDistance)
+                    ropeJoint.distance = minRopeDistance;
+                else
+                    ropeJoint.distance -= Time.deltaTime * climbSpeed;
+            }
+            else if (Input.GetAxis("Vertical") < 0f && ropeAttached)
+            {
+                if (ropeJoint.distance+Time.deltaTime*climbSpeed > maxRopeDistance)
+                    ropeJoint.distance = maxRopeDistance;
+                else
+                    ropeJoint.distance += Time.deltaTime * climbSpeed;
+            }
         }
     }
 
