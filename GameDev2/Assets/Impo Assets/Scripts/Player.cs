@@ -7,13 +7,13 @@ public class Player : MonoBehaviour
     //Forces On Player ----------------
     public float gravity;
     public float fast_gravity;
+    private float cancel_grav;
     public float speed = 5f;
-    public float airdashSpeed = 0.25f;
+    public float airdashSpeed = 0.4f;
     public float runSpeed = 10f;
 
-
     public float jumpHeight = 8f;
-    public float timeToJumpApex = .55f;
+    public float timeToJumpApex = .7f;
 
     public float airdashTime = 0;
     private bool hasAirdash = false;
@@ -36,26 +36,26 @@ public class Player : MonoBehaviour
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
     {
-        Vector3 vec;
+        Vector2 vec;
         if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
         {
-            vec = new Vector3(airdashSpeed * .65f, airdashSpeed * .65f, 0);
+            vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .65f);
         }
         else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
         {
-            vec = new Vector3(-airdashSpeed * .65f, airdashSpeed * .65f, 0);
+            vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .65f);
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            vec = new Vector3(airdashSpeed, 0, 0);
+            vec = new Vector2(airdashSpeed, airdashSpeed*0f);
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            vec = new Vector3(-airdashSpeed, 0, 0);
+            vec = new Vector2(-airdashSpeed, airdashSpeed*0f);
         }
         else
         {
-            vec = new Vector3(0, airdashSpeed, 0);
+            vec = new Vector2(0, airdashSpeed*1f);
         }
         return vec;
     }
@@ -159,6 +159,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            GetComponent<DistanceJoint2D>().enabled = true;
             if (controller.cont_collision_info.below)
             {
                 hasAirdash = true;
@@ -234,9 +235,10 @@ public class Player : MonoBehaviour
 
             if (airdashTime > 0)
             {
-                this.GetComponent<Transform>().localPosition += this.airdashDirection;
+                GetComponent<Transform>().position += airdashDirection;
                 airdashTime -= Time.deltaTime;
                 velocity.y = 0;
+                //Debug.Log(velocity.y);
             }
             else
             {

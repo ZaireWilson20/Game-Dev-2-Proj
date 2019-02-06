@@ -19,7 +19,7 @@ public class RopeSystem : MonoBehaviour
     
     public LineRenderer ropeRenderer;
     public LayerMask ropeLayerMask;
-    private float ropeMaxCastDistance = 20f;
+    public float ropeMaxCastDistance = 20f;
     private List<Vector2> ropePositions = new List<Vector2>();
 
     public float climbSpeed = 3f;
@@ -55,7 +55,7 @@ public class RopeSystem : MonoBehaviour
         player.aimDirection();
         playerPosition = transform.position;
 
-        var aimDirection = Quaternion.Euler(0, 0, player.aimDirection() * Mathf.Rad2Deg) * Vector2.right;
+        var aimDirection = Quaternion.Euler(0, 0, player.aimDirection()) * Vector2.right;
 
         if (!ropeAttached)
         {
@@ -84,6 +84,7 @@ public class RopeSystem : MonoBehaviour
 
             var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
 
+            Debug.Log(hit.distance);
             // 3
             if (hit.collider != null)
             {
@@ -195,10 +196,7 @@ public class RopeSystem : MonoBehaviour
         {
             if (Input.GetAxis("Vertical") >= 1f && ropeAttached && !isColliding)
             {
-                if (ropeJoint.distance-Time.deltaTime*climbSpeed < minRopeDistance)
-                    ropeJoint.distance = minRopeDistance;
-                else
-                    ropeJoint.distance -= Time.deltaTime * climbSpeed;
+                ropeJoint.distance -= Time.deltaTime * climbSpeed;
             }
             else if (Input.GetAxis("Vertical") < 0f && ropeAttached)
             {

@@ -183,6 +183,10 @@ PrefabInstance:
       propertyPath: timeToJumpApex
       value: 0.7
       objectReference: {fileID: 0}
+    - target: {fileID: 756915521, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
+      propertyPath: airdashSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 756915522, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
       propertyPath: cont_collision_mask.m_Bits
       value: 4352
@@ -191,9 +195,25 @@ PrefabInstance:
       propertyPath: m_Mass
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 327172794, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 327172794, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 132142756, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
       propertyPath: orthographic size
       value: 11.75062
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493754282, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
+      propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493754282, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
+      propertyPath: m_Simulated
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07af0b64707b6304a973d0140f6e7a2c, type: 3}
@@ -210,7 +230,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 327172791}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b866d854ae0b91f4388fe4b71b2c5bba, type: 3}
   m_Name: 
@@ -224,6 +244,7 @@ MonoBehaviour:
   ropeLayerMask:
     serializedVersion: 2
     m_Bits: 5632
+  ropeMaxCastDistance: 5
   climbSpeed: 5
   maxRopeDistance: 5
   minRopeDistance: 2
