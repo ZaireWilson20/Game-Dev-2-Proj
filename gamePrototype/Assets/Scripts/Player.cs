@@ -15,7 +15,12 @@ public class Player : MonoBehaviour
     private int health = 5;
     public float attack = 1f;
     public float knockback = 5f;
+    public float fireDelta = 0.5f;
+    public float nextFire = 0.5f;
+    private float fireTime = 0.0f;
 
+    private GameObject newProjectile;
+    public GameObject projectile;
 
     float jumpVelocity;
     float velocX_smooth;
@@ -23,9 +28,9 @@ public class Player : MonoBehaviour
     float accelTime_air = .4f;
     float accelTime_ground = .1f; 
     Vector3 velocity;
+    private GameObject[] enemies;
 
     // --------------------------------
-
 
     Controller2D controller; 
     // Start is called before the first frame update
@@ -42,6 +47,25 @@ public class Player : MonoBehaviour
         health = health_max;
         gameObject.SetActive(true);
 
+        //create array containing all enemies in level
+        //enemies = FindGameObjectsWithLayer(9);
+    }
+
+
+    /**
+     * Helper function to find all GameObjects in a certain layer 
+     */
+    private GameObject[] FindGameObjectsWithLayer(int layer)
+    {
+        GameObject[] objArray = FindObjectsOfType(typeof(GameObject)) as GameObject[];
+        List<GameObject> objList = new List<GameObject>();
+        for (int i = 0; i < objArray.Length; i++)
+        {
+            if (objArray[i].layer == layer) {
+                objList.Add(objArray[i]);
+            }
+        }        
+        return objList.ToArray();
     }
 
     // Update is called once per frame
@@ -56,6 +80,23 @@ public class Player : MonoBehaviour
         if (controller.cont_collision_info.below && Input.GetKeyDown(KeyCode.Space)) //  If grounded and spacebar is pressed, jump
         {
             velocity.y = jumpVelocity;
+        }
+
+
+        //fire projectile if '1' key pressed and cooldown expired
+        fireTime = fireTime + Time.deltaTime;
+        if (Input.GetButton("Fire1") && fireTime > nextFire)
+        {
+            nextFire = fireTime + fireDelta;
+            newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+            newProjectile.SetActive(true);
+            //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
+            //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
+
+            // create code here that animates the newProjectile
+            //Debug.Log("Fire!");
+            nextFire = nextFire - fireTime;
+            fireTime = 0.0F;
         }
 
         velocity.y += gravity * Time.deltaTime; //  Gravity constant

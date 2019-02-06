@@ -27,6 +27,7 @@ public class SimpleHostile : MonoBehaviour
     private float lastDir;
 
     public float detectRadius = 3f;
+    public float knockback = 5f;
 
     public Vector3 startPos;
     private Vector3 destination;
@@ -90,7 +91,7 @@ public class SimpleHostile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject contact = collision.gameObject;
-   
+
         if (contact.tag.Equals("Player"))
         {
             //Debug.Log("attack!");
@@ -98,6 +99,27 @@ public class SimpleHostile : MonoBehaviour
             //Debug.Log(lastDir);
             pscript.takeDamage(attack, lastDir);
         }
+        /*else if (contact.layer.Equals("Bullet"))
+        {
+            Debug.Log("bullet hit!");
+
+
+        }*/
+    }
+
+    public void takeDamage(int damage, float knockDir)
+    {
+        health -= damage;
+        if (health == 0)
+        {
+            //player has died
+            Debug.Log("Enemy killed!");
+            gameObject.SetActive(false);
+        }
+        velocity.x += knockback * knockDir;
+        //controller.Move(velocity * Time.deltaTime);
+        transform.Translate(velocity * Time.deltaTime);
+        Debug.Log("Enemy health: " + health);
     }
 
     void Update()
