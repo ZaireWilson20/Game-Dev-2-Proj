@@ -24,10 +24,12 @@ public class NpcDialogue : MonoBehaviour
     GameObject pa_playerObj;
     Player pa_script; 
     bool npc_manager_done;
-    public bool npc_inConvo = false; 
+    public bool npc_inConvo = false;
+    DialogueController dialogueController;
     // Start is called before the first frame update
     void Start()
     {
+        dialogueController = GetComponent<DialogueController>();
         pa_dialogue = pa_game_manager.GetComponent<NPC_Dialogue_Loader>();
         npc_onTrigger = npc_triggerObj.GetComponent<Dialogue_Trigger>();
         //pa_playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -49,13 +51,16 @@ public class NpcDialogue : MonoBehaviour
             pa_script.pa_inConvo = true;
             npc_inConvo = true;
             npc_onTrigger.dia_inConvo = true;
+            dialogueController.DisplayText(npc_convos);
         }
         else if(npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && npc_inConvo)
         {
-            pa_script.pa_inConvo = false;
-            npc_inConvo = false;
-            npc_onTrigger.dia_inConvo = false;
-        }
+            Debug.Log("Gosh");
+            bool inC = dialogueController.nextLine();
+            pa_script.pa_inConvo = inC;
+            npc_inConvo = inC;
+            npc_onTrigger.dia_inConvo = inC;
+        }        
 
     }
 }
