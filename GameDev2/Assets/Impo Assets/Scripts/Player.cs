@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
     public float speed = 5f;
     public float airdashSpeed = 1.0f;
     public float runSpeed = 8f;
-
+    
 
     public float jumpHeight = 10f;
     public float timeToJumpApex = .4f;
@@ -28,8 +28,16 @@ public class Player : MonoBehaviour
     // --------------------------------
 
     //  Player interactions with environment
-    public bool pa_inConvo = false; 
+    public bool pa_inConvo = false;
+    // --------------------------------
 
+    // Animation
+    private Rigidbody2D rig2D; 
+    private Animator anim;
+    private bool idle;
+    private bool crouching;
+    private bool jumping; 
+    private SpriteRenderer sprite; 
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -67,7 +75,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<Controller2D>();
-
+        anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        rig2D = GetComponent<Rigidbody2D>();
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         fast_gravity = gravity * 2;
@@ -89,11 +99,24 @@ public class Player : MonoBehaviour
         if (!pa_inConvo)  // Can move while not in conversation
         {
             directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            
         }
         else
         {
             directionalInput = new Vector2(0, 0);
         }
+
+        //Flip Player Based on Direction
+        if (directionalInput.x > 0)
+        {
+            sprite.flipX = true;
+        }
+        else if(directionalInput.x < 0)
+        {
+            sprite.flipX = false;
+        }
+
+
 
         //On the ground, enable grounded only movement here
         if (controller.cont_collision_info.below)
@@ -112,13 +135,15 @@ public class Player : MonoBehaviour
             if (Input.GetKey(KeyCode.S))
             {
                 //Temp behavior
-                tf.localScale = new Vector3(5f, 2.5f, 5f);
+                //tf.localScale = new Vector3(5f, 2.5f, 5f);
+                crouching = true; 
                 speed = 0;
                 runSpeed = 0;
             }
             else
             {
                 //tf.localScale = new Vector3(5f, 5f, 5f);
+                crouching = false; 
                 speed = 5;
                 runSpeed = 10;
             }
@@ -144,6 +169,7 @@ public class Player : MonoBehaviour
             //Jump when space is pressed
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                jumping = true; 
                 velocity.y = jumpVelocity;
             }
         }
@@ -184,6 +210,61 @@ public class Player : MonoBehaviour
             //  Call to move function in controller2D class
             controller.Move(velocity * Time.deltaTime);
         }
+
+        //Animation Update; 
+        WalkAnim(directionalInput);
+        CrouchAnim();
+        JumpAnim();
     }
 
+
+    void WalkAnim(Vector2 input)
+    {
+        if(Mathf.Abs(velocity.x) > .005 && input.x != 0)
+        {
+            anim.SetBool("Walk", true);
+            idle = false; 
+        }
+        else
+        {
+            if (!idle)
+            {
+                anim.SetBool("Walk", false);
+                anim.SetBool("Idle", true);
+                idle = true; 
+            }
+        }
+    }
+
+    void CrouchAnim()
+    {
+        if (crouching)
+        {
+            anim.SetBool("Crouch", true);
+        }
+        else
+        {
+            anim.SetBool("Crouch", false);
+        }
+    }
+
+    void JumpAnim()
+    {
+        if (!controller.cont_collision_info.below)
+        {
+            if (jumping)
+            {
+                anim.SetBool("Grounded", false);
+                anim.SetBool("Jump_Ascend", true);
+                anim.SetBool("Walk", false);
+            }
+        }
+        else
+        {
+            jumping = false;
+            anim.SetBool("Grounded", true);
+            anim.SetBool("Jump_Ascend", false);
+        }
+
+    }
 }
