@@ -670,7 +670,7 @@ MonoBehaviour:
   attackSpeed: 2.5
   searchTimeout: 3
   detectRadius: 3
-  knockback: 5
+  knockback: 15
   startPos: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   hitbox: {fileID: 0}
@@ -768,6 +768,8 @@ GameObject:
   - component: {fileID: 928588544}
   - component: {fileID: 928588543}
   - component: {fileID: 928588542}
+  - component: {fileID: 928588547}
+  - component: {fileID: 928588546}
   m_Layer: 9
   m_Name: Enemy2
   m_TagString: Untagged
@@ -850,6 +852,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &928588546
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928588541}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!114 &928588547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 928588541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5cd83e54040b924d95145ee10acbb3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health_max: 2
+  attack: 1
+  seekSpeed: 0
+  attackSpeed: 0
+  searchTimeout: 3
+  detectRadius: 3
+  knockback: 0
+  startPos: {x: 0, y: 0, z: 0}
+  rb: {fileID: 0}
+  hitbox: {fileID: 0}
 --- !u!1 &1214728045
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,10 +1012,10 @@ GameObject:
   - component: {fileID: 1225375482}
   - component: {fileID: 1225375483}
   - component: {fileID: 1225375484}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Projectile
   m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
@@ -986,7 +1031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c3354200545b54c878fb7ad02f0cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 7
   damage: 1
 --- !u!4 &1225375481
 Transform:
@@ -1204,8 +1249,8 @@ GameObject:
   - component: {fileID: 1892474680}
   - component: {fileID: 1892474679}
   - component: {fileID: 1892474678}
-  m_Layer: 0
-  m_Name: Diamond
+  m_Layer: 11
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1269,14 +1314,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73885aa4062b4a4abd906034a456372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  speed: 4
   jumpHeight: 4
   timeToJumpApex: 0.55
   health_max: 5
   attack: 1
-  knockback: 20
+  knockback: 15
   fireDelta: 0.5
   nextFire: 0.5
+  invincibility: 2
+  invincible: 0
   projectile: {fileID: 1225375479}
 --- !u!212 &1892474681
 SpriteRenderer:

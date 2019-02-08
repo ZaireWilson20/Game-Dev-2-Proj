@@ -17,6 +17,10 @@ public class Player : MonoBehaviour
     public float knockback = 5f;
     public float fireDelta = 0.5f;
     public float nextFire = 0.5f;
+    public float invincibility = 0.5f;
+    //private bool timer_started = false;
+    public bool invincible = false;
+    private float timeLeft = 0.5f;
     private float fireTime = 0.0f;
 
     private GameObject newProjectile;
@@ -29,6 +33,7 @@ public class Player : MonoBehaviour
     float accelTime_ground = .1f; 
     Vector3 velocity;
     private GameObject[] enemies;
+    SpriteRenderer sprite;
 
     // --------------------------------
 
@@ -37,6 +42,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<Controller2D>();
+        sprite = GetComponent<SpriteRenderer>();
 
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1*(2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);   
@@ -82,6 +88,19 @@ public class Player : MonoBehaviour
             velocity.y = jumpVelocity;
         }
 
+        if (invincible)
+        {
+            //Debug.Log("ignore collision? " + Physics2D.GetIgnoreLayerCollision(9, 11));
+            //Debug.Log(invincible);
+            timeLeft -= Time.deltaTime;
+            //Debug.Log(timeLeft);
+            if (timeLeft <= 0.0)
+            {
+                invincible = false;
+                Physics2D.IgnoreLayerCollision(9, 11, false);
+                //timer_started = false;
+            }
+        }
 
         //fire projectile if '1' key pressed and cooldown expired
         fireTime = fireTime + Time.deltaTime;
@@ -89,9 +108,24 @@ public class Player : MonoBehaviour
         {
             nextFire = fireTime + fireDelta;
             newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-            newProjectile.SetActive(true);
             //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
             //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
+            newProjectile.SetActive(true);
+
+            //check facing of sprite
+            if (sprite.flipY)
+            {
+                //sprite facing left (backwards)
+                newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+            }
+            else
+            {
+                //sprite facing right (forwards)
+                newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+            }
+
+            
+            //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
 
             // create code here that animates the newProjectile
             //Debug.Log("Fire!");
@@ -114,16 +148,26 @@ public class Player : MonoBehaviour
      */
     public void takeDamage(int damage, float knockDir)
     {
-        health -= damage;
-        if (health == 0)
+        Debug.Log("invincible: " + invincible);
+        if (!invincible)
         {
-            //player has died
-            Debug.Log("Player died!");
-            gameObject.SetActive(false);
+            health -= damage;
+            if (health == 0)
+            {
+                //player has died
+                Debug.Log("Player died!");
+                gameObject.SetActive(false);
+            }
+            velocity.x += knockback * knockDir;
+            controller.Move(velocity * Time.deltaTime);
+            Debug.Log("Player health: " + health);
+            //timer_started = true;
+            timeLeft = invincibility;
+            //turn off collision with enemies for 0.5 seconds
+            invincible = true;
+            Debug.Log("invincible: true");
+            Physics2D.IgnoreLayerCollision(9, 11, true);
         }
-        velocity.x += knockback * knockDir;
-        controller.Move(velocity * Time.deltaTime);
-        Debug.Log("Player health: " + health);
     }
 
 }

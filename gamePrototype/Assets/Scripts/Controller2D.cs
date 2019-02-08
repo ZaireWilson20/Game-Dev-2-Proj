@@ -20,8 +20,9 @@ public class Controller2D : MonoBehaviour
     public LayerMask cont_collision_mask;
     public float v_old = 0f;
 
-    RaycOrigins cont_raycast_origins; 
+    RaycOrigins cont_raycast_origins;
 
+    SpriteRenderer sprite;
 
     BoxCollider2D cont_collider;
     
@@ -94,6 +95,12 @@ public class Controller2D : MonoBehaviour
         if (velocity.x != 0)
         {
             horizontalCollsions(ref velocity); //Checks horizontal collisions if moving right or left
+            //if moving right, don't flip sprite
+            if (velocity.x > 0)
+                sprite.flipY = false;
+            //if moving left, flip sprite
+            else
+                sprite.flipY = true;
         }
 
         if (velocity.y != 0)
@@ -279,6 +286,7 @@ public class Controller2D : MonoBehaviour
     {
         cont_collider = GetComponent < BoxCollider2D>();
         CalculateRaySpacing();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
 

@@ -97,7 +97,8 @@ public class SimpleHostile : MonoBehaviour
             //Debug.Log("attack!");
             Player pscript = contact.GetComponent<Player>();
             //Debug.Log(lastDir);
-            pscript.takeDamage(attack, lastDir);
+            if (!pscript.invincible)
+                pscript.takeDamage(attack, lastDir);
         }
         /*else if (contact.layer.Equals("Bullet"))
         {
