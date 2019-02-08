@@ -25,9 +25,12 @@ public class Player : MonoBehaviour
     public Vector2 ropeHook;
     public float swingForce = 4f;
 
+    public float tpDistance = 3f;
+    public float tpCooldown = 1f;
+    private float timeSinceLastTp;
+
     float jumpVelocity;
     float velocX_smooth;
-
     float accelTime_air = .4f;
     float accelTime_ground = .1f;
     Vector3 velocity;
@@ -60,6 +63,8 @@ public class Player : MonoBehaviour
         return vec;
     }
 
+    //Returns valid directions you can aim in, used for all aimed projectiles, grappling hook
+    //All but straight down
     public float aimDirection()
     {
         float aim = 0f;
@@ -105,6 +110,52 @@ public class Player : MonoBehaviour
         return aim;
     }
 
+    //Returns valid directions you can teleport in, includes downward
+    public float tpDirection()
+    {
+        float tp = 0f;
+        //Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) //Up Right
+        {
+            tp = 45f;
+        }
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) //Up Left
+        {
+            tp = 135f;
+        }
+        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) //Down Right
+        {
+            tp = -45f;
+        }
+        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S)) //Down Left
+        {
+            tp = -135f;
+        }
+        else if (Input.GetKey(KeyCode.A)) //Left
+        {
+            tp = 180f;
+        }
+        else if (Input.GetKey(KeyCode.D)) //Right
+        {
+            tp = 0f;
+        }
+        else if (Input.GetKey(KeyCode.W)) //Up
+        {
+            tp = 90f;
+        }
+        else if (Input.GetKey(KeyCode.S)) //Down
+        {
+            tp = -90f;
+        }
+        else //Neutral
+        {
+            if (facingRight)
+                tp = 0f;
+            else
+                tp = 180f;
+        }
+        return tp;
+    }
     Controller2D controller;
     // Start is called before the first frame update
     void Start()
@@ -117,7 +168,7 @@ public class Player : MonoBehaviour
 
         //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
-
+        timeSinceLastTp = tpCooldown;
     }
 
     // Update is called once per frame
@@ -249,7 +300,25 @@ public class Player : MonoBehaviour
                 //  Call to move function in controller2D class
                 controller.Move(velocity * Time.deltaTime);
             }
+
+            //TELEPORT LOGIC
+            if (timeSinceLastTp > tpCooldown)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    //Handle teleport
+                    float angle = tpDirection();
+                    Debug.Log(angle);
+                    Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
+                    dir.x *= tpDistance;
+                    dir.y *= tpDistance;
+                    transform.position = transform.position + (Vector3)dir;
+                    timeSinceLastTp = 0f;
+                }
+            }
+            timeSinceLastTp += Time.deltaTime;
         }
+
         if (velocity.x > 0)
         {
             facingRight = true;
