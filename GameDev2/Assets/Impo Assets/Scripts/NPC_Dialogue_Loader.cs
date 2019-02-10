@@ -17,7 +17,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
 
         foreach (GameObject ga in pa_all_npcs)
         {
-            path = Application.persistentDataPath + "/" + ga.name + fileName;
+            path = "Assets/Impo Assets/Level Data/" + ga.name + fileName;
             ReadData(path, ga.name);
         }
         pa_finished_reading = true;
@@ -26,23 +26,14 @@ public class NPC_Dialogue_Loader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            foreach (KeyValuePair<string, string[]> entry in pa_npc_to_dia)
-            {
-                Debug.Log("Name: " + entry.Key + " Dialogue: ");
-                foreach(string g in entry.Value)
-                {
-                    Debug.Log(g);
-                }
-            }
-        }
+
     }
 
     void ReadData(string file_path, string name)
     {
         if (System.IO.File.Exists(file_path))
         {
+            TextAsset targetFile = Resources.Load<TextAsset>(file_path);
             string content = System.IO.File.ReadAllText(file_path);
             diaData = JsonUtility.FromJson<DialogueObj>(content);
             pa_npc_to_dia.Add(name, diaData.allDialogue);
