@@ -63,6 +63,18 @@ public class Player : MonoBehaviour
     Vector3 velocity;
     // --------------------------------
 
+    //  Player interactions with environment
+    public bool pa_inConvo = false;
+    // --------------------------------
+
+    // Animation
+    private Rigidbody2D rig2D; 
+    private Animator anim;
+    private bool idle;
+    private bool crouching;
+    private bool jumping; 
+    private SpriteRenderer sprite; 
+
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
     {
@@ -188,7 +200,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         controller = GetComponent<Controller2D>();
-
+        anim = GetComponent<Animator>();
+        sprite = GetComponent<SpriteRenderer>();
+        rig2D = GetComponent<Rigidbody2D>();
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         fast_gravity = gravity * 2;
@@ -208,7 +222,28 @@ public class Player : MonoBehaviour
             velocity.y = 0;
         }
 
-        Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        Vector2 directionalInput;
+        if (!pa_inConvo)  // Can move while not in conversation
+        {
+            directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+            
+        }
+        else
+        {
+            directionalInput = new Vector2(0, 0);
+        }
+
+        //Flip Player Based on Direction
+        if (directionalInput.x > 0)
+        {
+            sprite.flipX = true;
+        }
+        else if(directionalInput.x < 0)
+        {
+            sprite.flipX = false;
+        }
+
+
 
         //On the ground, enable grounded only movement here
         if (isSwinging && powerset)
@@ -432,6 +467,61 @@ public class Player : MonoBehaviour
             Debug.Log("invincible: true");
             Physics2D.IgnoreLayerCollision(9, 11, true);
         }
+
+        //Animation Update; 
+        WalkAnim(directionalInput);
+        CrouchAnim();
+        JumpAnim();
     }
 
+
+    void WalkAnim(Vector2 input)
+    {
+        if(Mathf.Abs(velocity.x) > .005 && input.x != 0)
+        {
+            anim.SetBool("Walk", true);
+            idle = false; 
+        }
+        else
+        {
+            if (!idle)
+            {
+                anim.SetBool("Walk", false);
+                anim.SetBool("Idle", true);
+                idle = true; 
+            }
+        }
+    }
+
+    void CrouchAnim()
+    {
+        if (crouching)
+        {
+            anim.SetBool("Crouch", true);
+        }
+        else
+        {
+            anim.SetBool("Crouch", false);
+        }
+    }
+
+    void JumpAnim()
+    {
+        if (!controller.cont_collision_info.below)
+        {
+            if (jumping)
+            {
+                anim.SetBool("Grounded", false);
+                anim.SetBool("Jump_Ascend", true);
+                anim.SetBool("Walk", false);
+            }
+        }
+        else
+        {
+            jumping = false;
+            anim.SetBool("Grounded", true);
+            anim.SetBool("Jump_Ascend", false);
+        }
+
+    }
 }
