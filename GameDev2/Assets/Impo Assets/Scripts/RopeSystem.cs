@@ -76,7 +76,7 @@ public class RopeSystem : MonoBehaviour
     // 1
     private void HandleInput(Vector2 aimDirection)
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) && player.powerset)
         {
             if (!ropeAttached)
             {

@@ -240,7 +240,7 @@ DistanceJoint2D:
   m_GameObject: {fileID: 1361807031179339409}
   m_Enabled: 1
   serializedVersion: 4
-  m_EnableCollision: 0
+  m_EnableCollision: 1
   m_ConnectedRigidBody: {fileID: 1361807031867769243}
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -293,7 +293,7 @@ MonoBehaviour:
   cont_max_desc_angle: 75
   cont_collision_mask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 4352
   v_old: 0
 --- !u!114 &1361807031665622384
 MonoBehaviour:
@@ -310,7 +310,7 @@ MonoBehaviour:
   gravity: 0
   fast_gravity: 0
   speed: 5
-  airdashSpeed: 0.25
+  airdashSpeed: 18
   runSpeed: 10
   jumpHeight: 8
   timeToJumpApex: 0.6
@@ -328,6 +328,7 @@ MonoBehaviour:
   swingForce: 4
   tpDistance: 3
   tpCooldown: 1
+  powerset: 1
 --- !u!1 &1361807031244371603
 GameObject:
   m_ObjectHideFlags: 0

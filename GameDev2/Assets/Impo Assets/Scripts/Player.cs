@@ -77,11 +77,11 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            vec = new Vector2(airdashSpeed, airdashSpeed*0f);
+            vec = new Vector2(airdashSpeed, 0f);
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            vec = new Vector2(-airdashSpeed, airdashSpeed*0f);
+            vec = new Vector2(-airdashSpeed, 0f);
         }
         else
         {
@@ -313,12 +313,15 @@ public class Player : MonoBehaviour
 
             }
 
-            if (airdashTime > 0)
+            if (airdashTime-Time.deltaTime > 0)
             {
-                GetComponent<Transform>().position += airdashDirection;
                 airdashTime -= Time.deltaTime;
-                velocity.y = 0;
-                //Debug.Log(velocity.y);
+                velocity = airdashDirection;
+            }
+            else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
+            {
+                velocity = new Vector3(0, 0, 0);
+                airdashTime = 0;
             }
             else
             {
@@ -327,8 +330,9 @@ public class Player : MonoBehaviour
                                                                         //  Damping/acceleration applied throught damping.
                 velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
                 //  Call to move function in controller2D class
-                controller.Move(velocity * Time.deltaTime);
+                //controller.Move(velocity * Time.deltaTime);
             }
+            controller.Move(velocity * Time.deltaTime);
 
             //TELEPORT LOGIC
             if (timeSinceLastTp > tpCooldown && !powerset)
