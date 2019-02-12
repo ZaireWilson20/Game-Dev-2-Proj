@@ -2,6 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//CURRENT PLAYER CONTROL LAYOUT
+//Non-adjustable
+//WASD movement
+//Fire1 to shoot
+//E for utility
+//Left alt to run
+//Space to jump/airdash
+//R swaps powers
+
 public class Player : MonoBehaviour
 {
     //Forces On Player ----------------
@@ -43,6 +52,9 @@ public class Player : MonoBehaviour
     public float tpDistance = 3f;
     public float tpCooldown = 1f;
     private float timeSinceLastTp;
+
+    //This variable is super important, true means you're in tech mode, false means you're in psychic mode
+    public bool powerset = true;
 
     float jumpVelocity;
     float velocX_smooth;
@@ -199,7 +211,7 @@ public class Player : MonoBehaviour
         Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         //On the ground, enable grounded only movement here
-        if (isSwinging)
+        if (isSwinging && powerset)
         {
             if (directionalInput.x != 0)
             {
@@ -255,7 +267,7 @@ public class Player : MonoBehaviour
                     runSpeed = 10;
                 }
                 //Run when holding P
-                if (Input.GetKey(KeyCode.P))
+                if (Input.GetKey(KeyCode.LeftAlt))
                 {
                     if (speed < runSpeed)
                     {
@@ -319,7 +331,7 @@ public class Player : MonoBehaviour
             }
 
             //TELEPORT LOGIC
-            if (timeSinceLastTp > tpCooldown)
+            if (timeSinceLastTp > tpCooldown && !powerset)
             {
                 if (Input.GetKeyDown(KeyCode.E))
                 {
@@ -365,6 +377,9 @@ public class Player : MonoBehaviour
                 nextFire = nextFire - fireTime;
                 fireTime = 0.0F;
             }
+
+            if (Input.GetKeyDown(KeyCode.R))
+                powerset = !powerset;
         }
 
         if (invincible)

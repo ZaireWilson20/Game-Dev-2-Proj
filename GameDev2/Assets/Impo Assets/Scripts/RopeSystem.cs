@@ -76,42 +76,44 @@ public class RopeSystem : MonoBehaviour
     // 1
     private void HandleInput(Vector2 aimDirection)
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            // 2
-            if (ropeAttached) return;
-            ropeRenderer.enabled = true;
-
-            var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
-
-            Debug.Log(hit.distance);
-            // 3
-            if (hit.collider != null)
+            if (!ropeAttached)
             {
-                ropeAttached = true;
-                if (!ropePositions.Contains(hit.point))
+                // 2
+                //if (ropeAttached) return;
+                ropeRenderer.enabled = true;
+
+                var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
+
+                Debug.Log(hit.distance);
+                // 3
+                if (hit.collider != null)
                 {
-                    // 4
-                    // Jump slightly to distance the player a little from the ground after grappling to something.
-                    transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
-                    ropePositions.Add(hit.point);
-                    ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
-                    ropeJoint.enabled = true;
-                    ropeHingeAnchorSprite.enabled = true;
+                    ropeAttached = true;
+                    if (!ropePositions.Contains(hit.point))
+                    {
+                        // 4
+                        // Jump slightly to distance the player a little from the ground after grappling to something.
+                        transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
+                        ropePositions.Add(hit.point);
+                        ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
+                        ropeJoint.enabled = true;
+                        ropeHingeAnchorSprite.enabled = true;
+                    }
+                }
+                // 5
+                else
+                {
+                    ropeRenderer.enabled = false;
+                    ropeAttached = false;
+                    ropeJoint.enabled = false;
                 }
             }
-            // 5
-            else
+            else if (ropeAttached)
             {
-                ropeRenderer.enabled = false;
-                ropeAttached = false;
-                ropeJoint.enabled = false;
+                ResetRope();
             }
-        }
-
-        if (Input.GetMouseButton(1))
-        {
-            ResetRope();
         }
     }
 
