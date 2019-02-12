@@ -72,8 +72,8 @@ public class Player : MonoBehaviour
     private Animator anim;
     private bool idle;
     private bool crouching;
-    private bool jumping; 
-    private SpriteRenderer sprite; 
+    private bool jumping;
+    private Vector2 directionalInput;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -222,7 +222,6 @@ public class Player : MonoBehaviour
             velocity.y = 0;
         }
 
-        Vector2 directionalInput;
         if (!pa_inConvo)  // Can move while not in conversation
         {
             directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
