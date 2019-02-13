@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     public float jumpHeight = 8f;
     public float timeToJumpApex = .7f;
 
+    private int flashCt = 0;
+    public int flashRate = 5;
+
     public int health_max = 5;
     private int health = 5;
     public float attack = 1f;
@@ -37,7 +40,9 @@ public class Player : MonoBehaviour
 
     SpriteRenderer sprite;
     private GameObject newProjectile;
-    public GameObject projectile;
+    public GameObject boomerang;
+    public GameObject toxicShot;
+    private GameObject projectile;
 
     public float airdashTime = 0;
     private bool hasAirdash = false;
@@ -46,6 +51,7 @@ public class Player : MonoBehaviour
     private bool facingRight = true;
 
     public bool isSwinging = false;
+    private bool wasSwinging = false;
     public Vector2 ropeHook;
     public float swingForce = 4f;
 
@@ -217,6 +223,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //use boomerang if in tech powerset, toxicShot if magic
+        if (powerset)
+            projectile = boomerang;
+        else
+            projectile = toxicShot;
+
         if (controller.cont_collision_info.above || controller.cont_collision_info.below) //  Stops vertical movement if vertical collision detected
         {
             velocity.y = 0;
@@ -247,6 +259,7 @@ public class Player : MonoBehaviour
         //On the ground, enable grounded only movement here
         if (isSwinging && powerset)
         {
+            wasSwinging = true;
             if (directionalInput.x != 0)
             {
                 //1
@@ -273,8 +286,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (GetComponent<DistanceJoint2D>() != null)
-                GetComponent<DistanceJoint2D>().enabled = true;
+            //if (GetComponent<DistanceJoint2D>() != null)
+            //    GetComponent<DistanceJoint2D>().enabled = false;
             if (controller.cont_collision_info.below)
             {
                 hasAirdash = true;
@@ -342,31 +355,32 @@ public class Player : MonoBehaviour
                 {
                     //Used airdash
                     hasAirdash = false;
-                    airdashTime = .3f;
-                    this.airdashDirection = calculateAirdashVector();
+                    //airdashTime = .3f;
+                    //this.airdashDirection = calculateAirdashVector();
+                    velocity.y = jumpVelocity*1.2f;
                 }
 
             }
 
-            if (airdashTime-Time.deltaTime > 0)
-            {
-                airdashTime -= Time.deltaTime;
-                velocity = airdashDirection;
-            }
-            else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
-            {
-                velocity = new Vector3(0, 0, 0);
-                airdashTime = 0;
-            }
-            else
-            {
+            //if (airdashTime-Time.deltaTime > 0)
+            //{
+            //    airdashTime -= Time.deltaTime;
+            //    velocity = airdashDirection;
+            //}
+            //else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
+            //{
+            //    velocity = new Vector3(0, 0, 0);
+            //    airdashTime = 0;
+            //}
+            //else
+           // {
                 velocity.y += gravity * Time.deltaTime; //  Gravity constant
                 float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
                                                                         //  Damping/acceleration applied throught damping.
                 velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
                 //  Call to move function in controller2D class
                 //controller.Move(velocity * Time.deltaTime);
-            }
+           // }
             controller.Move(velocity * Time.deltaTime);
 
             //TELEPORT LOGIC
@@ -425,14 +439,23 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("ignore collision? " + Physics2D.GetIgnoreLayerCollision(9, 11));
             //Debug.Log(invincible);
+            if (flashCt % flashRate == 0)
+                sprite.enabled = !sprite.enabled;
+
+            flashCt++;
             timeLeft -= Time.deltaTime;
             //Debug.Log(timeLeft);
             if (timeLeft <= 0.0)
             {
                 invincible = false;
-                Physics2D.IgnoreLayerCollision(9, 11, false);
+                Physics2D.IgnoreLayerCollision(13, 14, false);
                 //timer_started = false;
             }
+        }
+        else
+        {
+            flashCt = 0;
+            sprite.enabled = true;
         }
 
         if (velocity.x > 0)
@@ -465,7 +488,7 @@ public class Player : MonoBehaviour
             //turn off collision with enemies for 0.5 seconds
             invincible = true;
             Debug.Log("invincible: true");
-            Physics2D.IgnoreLayerCollision(9, 11, true);
+            Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 
         //Animation Update; 
@@ -473,7 +496,6 @@ public class Player : MonoBehaviour
         CrouchAnim();
         JumpAnim();
     }
-
 
     void WalkAnim(Vector2 input)
     {
