@@ -439,7 +439,7 @@ public class Player : MonoBehaviour
         {
             facingRight = true;
         }
-        else
+        else if (velocity.x < 0)
         {
             facingRight = false;
         }
