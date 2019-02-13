@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
     private bool idle;
     private bool crouching;
     private bool jumping; 
-    private SpriteRenderer sprite;
+    //private SpriteRenderer sprite;
     // -----------------------------
     private Vector2 directionalInput;
 
