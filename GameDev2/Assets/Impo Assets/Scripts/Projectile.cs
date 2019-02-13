@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
         //if (!contact.tag.Equals("Player") && contact.layer != 15)
         //{
         //Debug.Log("hit something");
-        Debug.Log("i shouldn't be here");
+        //Debug.Log("i shouldn't be here");
         if (contact.layer == 14)
         {
             

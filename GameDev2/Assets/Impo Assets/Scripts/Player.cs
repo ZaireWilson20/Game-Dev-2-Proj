@@ -40,7 +40,9 @@ public class Player : MonoBehaviour
 
     SpriteRenderer sprite;
     private GameObject newProjectile;
-    public GameObject projectile;
+    public GameObject boomerang;
+    public GameObject toxicShot;
+    private GameObject projectile;
 
     public float airdashTime = 0;
     private bool hasAirdash = false;
@@ -220,6 +222,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //use boomerang if in tech powerset, toxicShot if magic
+        if (powerset)
+            projectile = boomerang;
+        else
+            projectile = toxicShot;
+
         if (controller.cont_collision_info.above || controller.cont_collision_info.below) //  Stops vertical movement if vertical collision detected
         {
             velocity.y = 0;
