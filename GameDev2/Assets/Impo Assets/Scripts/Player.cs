@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     private float timeLeft = 0.5f;
     private float fireTime = 0.0f;
 
-    SpriteRenderer sprite;
+    public SpriteRenderer sprite;
     private GameObject newProjectile;
     public GameObject projectile;
 
@@ -76,7 +76,6 @@ public class Player : MonoBehaviour
     private bool idle;
     private bool crouching;
     private bool jumping; 
-    private SpriteRenderer sprite;
     // -----------------------------
     private Vector2 directionalInput;
 
@@ -407,7 +406,7 @@ public class Player : MonoBehaviour
                 newProjectile.SetActive(true);
 
                 //check facing of sprite
-                if (sprite.flipY)
+                if (sprite.flipX == true)
                 {
                     //sprite facing left (backwards)
                     newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
