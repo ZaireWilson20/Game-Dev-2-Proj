@@ -43,7 +43,7 @@ public class SimpleHostile : MonoBehaviour
     private int flashCt = 0;
     public bool invincible = false;
 
-    private MeshRenderer sprite;
+    private SpriteRenderer sprite;
 
 
     // Start is called before the first frame update
@@ -55,7 +55,7 @@ public class SimpleHostile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //detectCollider = GetComponent<Collider2D>();
 
-        sprite = GetComponent<MeshRenderer>();
+        sprite = GetComponent<SpriteRenderer>();
         //get player object
         player = GameObject.FindGameObjectWithTag("Player");
 
