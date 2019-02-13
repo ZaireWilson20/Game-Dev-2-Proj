@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
     public float jumpHeight = 8f;
     public float timeToJumpApex = .7f;
 
+    private int flashCt = 0;
+    public int flashRate = 5;
+
     public int health_max = 5;
     private int health = 5;
     public float attack = 1f;
@@ -424,14 +427,23 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("ignore collision? " + Physics2D.GetIgnoreLayerCollision(9, 11));
             //Debug.Log(invincible);
+            if (flashCt % flashRate == 0)
+                sprite.enabled = !sprite.enabled;
+
+            flashCt++;
             timeLeft -= Time.deltaTime;
             //Debug.Log(timeLeft);
             if (timeLeft <= 0.0)
             {
                 invincible = false;
-                Physics2D.IgnoreLayerCollision(9, 11, false);
+                Physics2D.IgnoreLayerCollision(13, 14, false);
                 //timer_started = false;
             }
+        }
+        else
+        {
+            flashCt = 0;
+            sprite.enabled = true;
         }
 
         if (velocity.x > 0)
@@ -464,7 +476,7 @@ public class Player : MonoBehaviour
             //turn off collision with enemies for 0.5 seconds
             invincible = true;
             Debug.Log("invincible: true");
-            Physics2D.IgnoreLayerCollision(9, 11, true);
+            Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 
         //Animation Update; 
