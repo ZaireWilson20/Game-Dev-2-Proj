@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -276,7 +276,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            GetComponent<DistanceJoint2D>().enabled = true;
+            if (GetComponent<DistanceJoint2D>() != null)
+                GetComponent<DistanceJoint2D>().enabled = true;
             if (controller.cont_collision_info.below)
             {
                 hasAirdash = true;
@@ -450,7 +451,7 @@ public class Player : MonoBehaviour
         {
             facingRight = true;
         }
-        else
+        else if (velocity.x < 0)
         {
             facingRight = false;
         }
