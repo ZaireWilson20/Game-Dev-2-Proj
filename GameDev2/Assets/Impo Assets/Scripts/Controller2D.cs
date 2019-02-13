@@ -124,7 +124,7 @@ public class Controller2D : MonoBehaviour
                 
                 //  Init vertical collision info based on direction player is moving
                 cont_collision_info.below = direction == -1;
-                cont_collision_info.above = direction == 1; 
+                cont_collision_info.above = direction == 1;
 
 
                 velocity.y = (hit.distance - cont_skin_width) * direction; // changes velocity.y to 0 if colliding

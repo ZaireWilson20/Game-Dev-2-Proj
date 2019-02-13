@@ -37,7 +37,13 @@ public class Player : MonoBehaviour
     private bool idle;
     private bool crouching;
     private bool jumping; 
-    private SpriteRenderer sprite; 
+    private SpriteRenderer sprite;
+    // -----------------------------
+
+    //  States
+    public bool alive; 
+
+
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -81,7 +87,7 @@ public class Player : MonoBehaviour
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         fast_gravity = gravity * 2;
-
+        alive = true; 
         //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 
@@ -211,18 +217,26 @@ public class Player : MonoBehaviour
             controller.Move(velocity * Time.deltaTime);
         }
 
+
         //Animation Update; 
         WalkAnim(directionalInput);
         CrouchAnim();
         JumpAnim();
+        if (!alive)
+        {
+            anim.SetBool("Idle", true);
+            anim.SetBool("Jump_Ascend", false);
+        }
     }
 
 
     void WalkAnim(Vector2 input)
     {
-        if(Mathf.Abs(velocity.x) > .005 && input.x != 0)
+        Debug.Log(input.x);
+        if(input.x != 0)
         {
             anim.SetBool("Walk", true);
+            anim.SetBool("Idle", false);
             idle = false; 
         }
         else
@@ -250,20 +264,25 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-        if (!controller.cont_collision_info.below)
+        Debug.Log(jumping);
+        if (jumping && !controller.cont_collision_info.below)
         {
-            if (jumping)
-            {
+ 
                 anim.SetBool("Grounded", false);
                 anim.SetBool("Jump_Ascend", true);
                 anim.SetBool("Walk", false);
-            }
         }
-        else
+        else if (velocity.y < 0 && !controller.cont_collision_info.below) 
         {
             jumping = false;
-            anim.SetBool("Grounded", true);
+            //anim.SetBool("Grounded", true);
             anim.SetBool("Jump_Ascend", false);
+        }
+        else if(controller.cont_collision_info.below)
+        {
+            anim.SetBool("Jump_Ascend", false);
+
+            anim.SetBool("Grounded", true);
         }
 
     }
