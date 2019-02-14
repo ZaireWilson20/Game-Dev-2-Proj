@@ -75,7 +75,8 @@ public class Player : MonoBehaviour
     private Animator anim;
     private bool idle;
     private bool crouching;
-    private bool jumping; 
+    private bool jumping;
+    private bool airDashing;
     // -----------------------------
     private Vector2 directionalInput;
 
@@ -241,6 +242,8 @@ public class Player : MonoBehaviour
             directionalInput = new Vector2(0, 0);
         }
 
+        WalkAnim(directionalInput);
+
         //Flip Player Based on Direction
         if (directionalInput.x > 0)
         {
@@ -300,15 +303,18 @@ public class Player : MonoBehaviour
                 if (Input.GetKey(KeyCode.S))
                 {
                     //Temp behavior
-                    tf.localScale = new Vector3(5f, 2.5f, 5f);
+                    //tf.localScale = new Vector3(5f, 2.5f, 5f);
                     speed = 0;
                     runSpeed = 0;
+                    crouching = true;
+
                 }
                 else
                 {
-                    tf.localScale = new Vector3(5f, 5f, 5f);
+                    //tf.localScale = new Vector3(5f, 5f, 5f);
                     speed = 5;
                     runSpeed = 10;
+                    crouching = false; 
                 }
                 //Run when holding P
                 if (Input.GetKey(KeyCode.LeftAlt))
@@ -333,7 +339,9 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
                     velocity.y = jumpVelocity;
+                    jumping = true; 
                 }
+
             }
             //In the air, enable only air movement here
             else if (!controller.cont_collision_info.below)
@@ -351,6 +359,7 @@ public class Player : MonoBehaviour
                 {
                     //Used airdash
                     hasAirdash = false;
+                    airDashing = true; 
                     airdashTime = .3f;
                     this.airdashDirection = calculateAirdashVector();
                 }
@@ -385,7 +394,7 @@ public class Player : MonoBehaviour
                 {
                     //Handle teleport
                     float angle = tpDirection();
-                    Debug.Log(angle);
+                    //Debug.Log(angle);
                     Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
                     dir.x *= tpDistance;
                     dir.y *= tpDistance;
@@ -406,7 +415,7 @@ public class Player : MonoBehaviour
                 newProjectile.SetActive(true);
 
                 //check facing of sprite
-                if (sprite.flipX == true)
+                if (sprite.flipX == false)
                 {
                     //sprite facing left (backwards)
                     newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
@@ -453,19 +462,22 @@ public class Player : MonoBehaviour
             sprite.enabled = true;
         }
 
-        if (velocity.x > 0)
+        if (velocity.x < 0)
         {
             facingRight = true;
         }
-        else if (velocity.x < 0)
+        else if (velocity.x > 0)
         {
             facingRight = false;
         }
+        JumpAnim();
+        CrouchAnim();
+        AirDashAnim();
     }
 
     public void takeDamage(int damage, float knockDir)
     {
-        Debug.Log("invincible: " + invincible);
+        //Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
             health -= damage;
@@ -488,9 +500,7 @@ public class Player : MonoBehaviour
 
 
         //Animation Update; 
-        WalkAnim(directionalInput);
-        CrouchAnim();
-        JumpAnim();
+
         if (!alive)
         {
             anim.SetBool("Idle", true);
@@ -501,12 +511,11 @@ public class Player : MonoBehaviour
 
     void WalkAnim(Vector2 input)
     {
-        Debug.Log(input.x);
         if(input.x != 0)
         {
             anim.SetBool("Walk", true);
             anim.SetBool("Idle", false);
-            idle = false; 
+            idle = false;
         }
         else
         {
@@ -533,11 +542,11 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-        Debug.Log(jumping);
+        Debug.Log("Is Grounded: " + controller.cont_collision_info.below);
+
         if (jumping && !controller.cont_collision_info.below)
         {
- 
-                anim.SetBool("Grounded", false);
+            anim.SetBool("Grounded", false);
                 anim.SetBool("Jump_Ascend", true);
                 anim.SetBool("Walk", false);
         }
@@ -550,9 +559,15 @@ public class Player : MonoBehaviour
         else if(controller.cont_collision_info.below)
         {
             anim.SetBool("Jump_Ascend", false);
-
+            jumping = false; 
             anim.SetBool("Grounded", true);
         }
 
+    }
+
+    void AirDashAnim()
+    {
+        anim.SetBool("Air Dash", airDashing);
+        airDashing = false; 
     }
 }
