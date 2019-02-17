@@ -75,14 +75,12 @@ public class Player : MonoBehaviour
 
     // Animation
     private Rigidbody2D rig2D; 
-
-    [SerializeField]
     private Animator anim;
     private bool idle;
     private bool crouching;
     private bool jumping;
     private bool airDashing;
-    public GameObject playerSprite; 
+    //public GameObject playerSprite; 
     // -----------------------------
     private Vector2 directionalInput;
 
@@ -219,7 +217,6 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         fast_gravity = gravity * 2;
@@ -314,6 +311,7 @@ public class Player : MonoBehaviour
                 float temp;
                 //Crouch when down is pressed
                 Transform tf = this.GetComponent<Transform>();
+                /*
                 if (Input.GetKey(KeyCode.S))
                 {
                     //Temp behavior
@@ -330,8 +328,9 @@ public class Player : MonoBehaviour
                     runSpeed = 10;
                     crouching = false; 
                 }
+                */
                 //Run when holding P
-                if (Input.GetKey(KeyCode.LeftAlt))
+                if (Input.GetKey(KeyCode.O))
                 {
                     if (speed < runSpeed)
                     {
