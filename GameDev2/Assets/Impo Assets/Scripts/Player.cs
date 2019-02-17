@@ -72,11 +72,14 @@ public class Player : MonoBehaviour
 
     // Animation
     private Rigidbody2D rig2D; 
+
+    [SerializeField]
     private Animator anim;
     private bool idle;
     private bool crouching;
     private bool jumping;
     private bool airDashing;
+    public GameObject playerSprite; 
     // -----------------------------
     private Vector2 directionalInput;
 
@@ -213,6 +216,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
+        sprite = GetComponent<SpriteRenderer>();
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         fast_gravity = gravity * 2;
@@ -542,7 +546,6 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-        Debug.Log("Is Grounded: " + controller.cont_collision_info.below);
 
         if (jumping && !controller.cont_collision_info.below)
         {
@@ -567,7 +570,7 @@ public class Player : MonoBehaviour
 
     void AirDashAnim()
     {
-        anim.SetBool("Air Dash", airDashing);
-        airDashing = false; 
+        //anim.SetBool("Air Dash", airDashing);
+        //airDashing = false; 
     }
 }
