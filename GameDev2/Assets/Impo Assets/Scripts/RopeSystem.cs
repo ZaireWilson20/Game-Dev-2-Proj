@@ -76,7 +76,7 @@ public class RopeSystem : MonoBehaviour
     // 1
     private void HandleInput(Vector2 aimDirection)
     {
-        if (Input.GetKeyDown(KeyCode.E) && player.powerset)
+        if (Input.GetButton("Utility") && player.powerset)
         {
             if (!ropeAttached)
             {
@@ -114,6 +114,10 @@ public class RopeSystem : MonoBehaviour
             {
                 ResetRope();
             }
+        }
+        else if (Input.GetButton("Jump") && ropeAttached)
+        {
+            ResetRope();
         }
     }
 
