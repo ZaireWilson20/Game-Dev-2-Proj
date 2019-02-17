@@ -211,10 +211,11 @@ public class Player : MonoBehaviour
         rig2D = GetComponent<Rigidbody2D>();
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
+        //gravity = 0;
         fast_gravity = gravity * 2;
 
         //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
-        jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
+        jumpVelocity = (2 * jumpHeight) / timeToJumpApex;
         timeSinceLastTp = tpCooldown;
 
         health = health_max;
@@ -301,21 +302,21 @@ public class Player : MonoBehaviour
                 float temp;
                 //Crouch when down is pressed
                 Transform tf = this.GetComponent<Transform>();
-                if (Input.GetKey(KeyCode.S))
-                {
-                    //Temp behavior
-                    tf.localScale = new Vector3(5f, 2.5f, 5f);
-                    speed = 0;
-                    runSpeed = 0;
-                }
-                else
-                {
-                    tf.localScale = new Vector3(5f, 5f, 5f);
-                    speed = 5;
-                    runSpeed = 10;
-                }
+                //if (Input.GetKey(KeyCode.S))
+                //{
+                //    //Temp behavior
+                //    tf.localScale = new Vector3(5f, 2.5f, 5f);
+                //    speed = 0;
+                //    runSpeed = 0;
+                //}
+                //else
+                //{
+                //    tf.localScale = new Vector3(5f, 5f, 5f);
+                //    speed = 5;
+                //    runSpeed = 10;
+                //}
                 //Run when holding P
-                if (Input.GetKey(KeyCode.LeftAlt))
+                if (Input.GetKey(KeyCode.O))
                 {
                     if (speed < runSpeed)
                     {
@@ -390,7 +391,7 @@ public class Player : MonoBehaviour
                 {
                     //Handle teleport
                     float angle = tpDirection();
-                    Debug.Log(angle);
+                    //Debug.Log(angle);
                     Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
                     dir.x *= tpDistance;
                     dir.y *= tpDistance;
@@ -468,7 +469,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void takeDamage(int damage, float knockDir)
+    public void takeDamage(int damage, Vector2 knockDir)
     {
         Debug.Log("invincible: " + invincible);
         if (!invincible)
@@ -480,7 +481,8 @@ public class Player : MonoBehaviour
                 Debug.Log("Player died!");
                 gameObject.SetActive(false);
             }
-            velocity.x += knockback * knockDir;
+            velocity.x += knockback * knockDir.x;
+            velocity.y += knockback * knockDir.y;
             controller.Move(velocity * Time.deltaTime);
             Debug.Log("Player health: " + health);
             //timer_started = true;
