@@ -237,8 +237,7 @@ public class Player : MonoBehaviour
 
         if (!pa_inConvo)  // Can move while not in conversation
         {
-            directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            
+            directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));            
         }
         else
         {
