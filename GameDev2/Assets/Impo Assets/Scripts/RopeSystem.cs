@@ -27,6 +27,10 @@ public class RopeSystem : MonoBehaviour
     public float minRopeDistance = 1f;
     private bool isColliding;
 
+    public float buffer = 5f;
+    private float timeleft = 0f;
+    private bool input = false;
+
     private void SetCrosshairPosition(float aimAngle)
     {
         if (!crosshairSprite.enabled)
@@ -112,8 +116,52 @@ public class RopeSystem : MonoBehaviour
             }
             else if (ropeAttached)
             {
+                input = false;
                 ResetRope();
             }
+            if (!ropeAttached)
+            {
+                input = true;
+                timeleft = 0f;
+            }
+        }
+        else if (input)
+        {
+            if (!ropeAttached)
+            {
+                // 2
+                //if (ropeAttached) return;
+                ropeRenderer.enabled = true;
+
+                var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
+
+                Debug.Log(hit.distance);
+                // 3
+                if (hit.collider != null)
+                {
+                    ropeAttached = true;
+                    if (!ropePositions.Contains(hit.point))
+                    {
+                        // 4
+                        // Jump slightly to distance the player a little from the ground after grappling to something.
+                        transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 2f), ForceMode2D.Impulse);
+                        ropePositions.Add(hit.point);
+                        ropeJoint.distance = Vector2.Distance(playerPosition, hit.point);
+                        ropeJoint.enabled = true;
+                        ropeHingeAnchorSprite.enabled = true;
+                    }
+                }
+                // 5
+                else
+                {
+                    ropeRenderer.enabled = false;
+                    ropeAttached = false;
+                    ropeJoint.enabled = false;
+                }
+            }
+            if (timeleft > buffer)
+                input = false;
+            timeleft += Time.deltaTime;
         }
         else if (Input.GetButtonDown("Jump") && ropeAttached)
         {

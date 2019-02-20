@@ -289,19 +289,19 @@ public class Player : MonoBehaviour
                 float temp;
                 //Crouch when down is pressed
                 Transform tf = this.GetComponent<Transform>();
-                if (Input.GetAxisRaw("Vertical") < 0f)
-                {
-                    //Temp behavior
-                    tf.localScale = new Vector3(5f, 2.5f, 5f);
-                    speed = 0;
-                    runSpeed = 0;
-                }
-                else
-                {
-                    tf.localScale = new Vector3(5f, 5f, 5f);
-                    speed = 5;
-                    runSpeed = 10;
-                }
+                //if (Input.GetKey(KeyCode.S))
+                //{
+                //    //Temp behavior
+                //    tf.localScale = new Vector3(5f, 2.5f, 5f);
+                //    speed = 0;
+                //    runSpeed = 0;
+                //}
+                //else
+                //{
+                //    tf.localScale = new Vector3(5f, 5f, 5f);
+                //    speed = 5;
+                //    runSpeed = 10;
+                //}
                 //Run when holding P
                 if (Input.GetButton("Run"))
                 {
