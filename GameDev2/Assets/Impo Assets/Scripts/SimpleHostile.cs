@@ -132,7 +132,7 @@ public class SimpleHostile : MonoBehaviour
         if (!invincible)
         {
             health -= damage;
-            if (health == 0)
+            if (health <= 0)
             {
                 //player has died
                 Debug.Log("Enemy killed!");
@@ -163,6 +163,12 @@ public class SimpleHostile : MonoBehaviour
         Debug.DrawLine(new Vector2(transform.position.x, transform.position.y), hit.point);
 
         //check if player in line of sight
+        if (hit.collider == null)
+        {
+            Debug.Log("null");
+            return false;
+        }
+
         Debug.Log(hit.collider.gameObject);
         if (hit.collider.tag.Equals("Player"))
         {
@@ -268,6 +274,10 @@ public class SimpleHostile : MonoBehaviour
                     fireTime = 0;
                 }
             }
+            //else
+            //{
+            //    shots = 0;
+            //}
         }
 
         //travel towards destination if not within 0.1 of target

@@ -2419,8 +2419,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21db85fef177fd48a0e7d876839fa36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
-  damage: 1
+  speed: 4
+  damage: 3.5
+  damageReducFactor: 0.01
 --- !u!50 &1059399561
 Rigidbody2D:
   serializedVersion: 4
@@ -4784,9 +4785,9 @@ MonoBehaviour:
   shooter: 1
   fireCooldown: 2
   fireRate: 0.1
-  shootRadius: 4
+  shootRadius: 8
   projectile: {fileID: 824455089}
-  shotSpray: 3
+  shotSpray: 2
 --- !u!50 &1857067626
 Rigidbody2D:
   serializedVersion: 4

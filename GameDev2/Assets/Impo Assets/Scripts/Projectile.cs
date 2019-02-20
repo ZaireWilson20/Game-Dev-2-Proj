@@ -9,6 +9,8 @@ public class Projectile : MonoBehaviour
     protected float dir;
     protected Vector3 velocity = new Vector3(0,0,0);
     private Rigidbody2D rb;
+    protected Vector3 startPos;
+    protected SpriteRenderer sprite;
 
 
     // Start is called before the first frame update
@@ -24,6 +26,8 @@ public class Projectile : MonoBehaviour
         velocity.x = rb.velocity.x * speed;
         Physics2D.IgnoreLayerCollision(15, 13);
         Physics2D.IgnoreLayerCollision(15, 15);
+        startPos = transform.position;
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     protected virtual void collide(Collider2D collision)
