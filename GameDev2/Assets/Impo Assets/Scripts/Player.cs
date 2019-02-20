@@ -341,9 +341,8 @@ public class Player : MonoBehaviour
                 {
                     //Used airdash
                     hasAirdash = false;
-                    //airdashTime = .3f;
-                    //this.airdashDirection = calculateAirdashVector();
-                    velocity.y = jumpVelocity*1.2f;
+                    airdashTime = .3f;
+                    this.airdashDirection = calculateAirdashVector();
                 }
             }
 
