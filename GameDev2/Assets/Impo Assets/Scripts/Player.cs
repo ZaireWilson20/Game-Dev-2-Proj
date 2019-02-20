@@ -27,7 +27,6 @@ public class Player : MonoBehaviour
     private int flashCt = 0;
     public int flashRate = 5;
 
-    public bool alive = true;
     public int health_max = 5;
     private int health = 5;
     public float attack = 1f;
@@ -86,7 +85,7 @@ public class Player : MonoBehaviour
     private Vector2 directionalInput;
 
     //  States
-    public bool alive;
+    public bool alive = true;
     public bool inGame;
 
     //  Gmae Manager
