@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     public bool invincible = false;
     private float timeLeft = 0.5f;
     private float fireTime = 0.0f;
+    public float shootDelay = .02f; 
 
     SpriteRenderer sprite;
     private GameObject newProjectile;
@@ -80,6 +81,7 @@ public class Player : MonoBehaviour
     private bool crouching;
     private bool jumping;
     private bool airDashing;
+    public bool doneShooting; 
     //public GameObject playerSprite; 
     // -----------------------------
     private Vector2 directionalInput;
@@ -87,7 +89,7 @@ public class Player : MonoBehaviour
     //  States
     public bool alive = true;
     public bool inGame;
-
+    
     //  Gmae Manager
     public GameObject gameManagerObj;
     private GameState gameManager; 
@@ -428,13 +430,25 @@ public class Player : MonoBehaviour
                 fireTime = fireTime + Time.deltaTime;
                 if (Input.GetButton("Fire1") && fireTime > nextFire)
                 {
+                    if (!powerset)
+                    {
+                        ToxicShotAnim();
+                    }
+                    else
+                    {
+                        BoomerangShotAnim();
+                    }
+                    doneShooting = false;
+                    anim.SetBool("DoneShooting", doneShooting);
                     nextFire = fireTime + fireDelta;
-                    newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                    StartCoroutine(ShootAfterTime(shootDelay));
+                    //newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
                     //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
                     //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
-                    newProjectile.SetActive(true);
+                    //newProjectile.SetActive(true);
 
                     //check facing of sprite
+                    /*
                     if (sprite.flipX == false)
                     {
                         //sprite facing left (backwards)
@@ -444,7 +458,7 @@ public class Player : MonoBehaviour
                     {
                         //sprite facing right (forwards)
                         newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-                    }
+                    }*/
 
 
                     //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
@@ -580,5 +594,38 @@ public class Player : MonoBehaviour
     {
         //anim.SetBool("Air Dash", airDashing);
         //airDashing = false; 
+    }
+
+    void BoomerangShotAnim()
+    {
+        anim.SetTrigger("BoomShot");
+        anim.SetBool("Walk", false);
+    }
+    
+    void ToxicShotAnim()
+    {
+        anim.SetTrigger("ToxShot");
+        anim.SetBool("Walk", false);
+    }
+
+    IEnumerator ShootAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+        newProjectile.SetActive(true);
+        if (sprite.flipX == false)
+        {
+            //sprite facing left (backwards)
+            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+        }
+        else
+        {
+            //sprite facing right (forwards)
+            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+        }
+        doneShooting = true;
+        anim.SetBool("DoneShooting", doneShooting);
+        // Code to execute after the delay
     }
 }
