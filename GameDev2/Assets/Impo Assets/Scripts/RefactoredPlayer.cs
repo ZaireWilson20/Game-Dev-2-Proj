@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +11,7 @@ using UnityEngine;
 //Jump to jump/airdash
 //H swaps powers
 
-public class Player : MonoBehaviour
+public class RefactoredPlayer : MonoBehaviour
 {
     //Forces On Player ----------------
     public float speed = 5f;
@@ -259,7 +259,6 @@ public class Player : MonoBehaviour
         //On the ground, enable grounded only movement here
         if (isSwinging && powerset)
         {
-            rig2D.gravityScale = 1f;
             wasSwinging = true;
             if (directionalInput.x != 0)
             {
@@ -356,7 +355,7 @@ public class Player : MonoBehaviour
                 }
             }
 
-            if (airdashTime - Time.deltaTime > 0)
+            if (airdashTime-Time.deltaTime > 0)
             {
                 airdashTime -= Time.deltaTime;
                 rig2D.velocity = airdashDirection;
@@ -370,12 +369,12 @@ public class Player : MonoBehaviour
             }
             else
             {
-                //velocity.y += gravity * Time.deltaTime; //  Gravity constant
-                float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
-                                                                        //  Damping/acceleration applied throught damping.
-                velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
-                //  Call to move function in controller2D class
-                controller.Move(velocity * Time.deltaTime);
+            //velocity.y += gravity * Time.deltaTime; //  Gravity constant
+            float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
+                                                                    //  Damping/acceleration applied throught damping.
+            velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
+            //  Call to move function in controller2D class
+            controller.Move(velocity * Time.deltaTime);
             }
             //controller.Move(velocity * Time.deltaTime);
 
@@ -427,7 +426,7 @@ public class Player : MonoBehaviour
                 fireTime = 0.0F;
             }
 
-            if (Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.H))
                 powerset = !powerset;
         }
 
