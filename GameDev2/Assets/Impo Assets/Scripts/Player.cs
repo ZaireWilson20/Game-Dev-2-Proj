@@ -4,12 +4,12 @@ using UnityEngine;
 
 //CURRENT PLAYER CONTROL LAYOUT
 //Non-adjustable
-//WASD movement
-//Fire1 to shoot
-//E for utility
-//Left alt to run
-//Space to jump/airdash
-//R swaps powers
+//DirectionalInput movement
+//Fire to shoot
+//Utility for utility
+//Run to run
+//Jump to jump/airdash
+//H swaps powers
 
 public class Player : MonoBehaviour
 {
@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     private int flashCt = 0;
     public int flashRate = 5;
 
+    public bool alive = true;
     public int health_max = 5;
     private int health = 5;
     public float attack = 1f;
@@ -38,7 +39,7 @@ public class Player : MonoBehaviour
     private float timeLeft = 0.5f;
     private float fireTime = 0.0f;
 
-    public SpriteRenderer sprite;
+    SpriteRenderer sprite;
     private GameObject newProjectile;
     public GameObject boomerang;
     public GameObject toxicShot;
@@ -96,19 +97,19 @@ public class Player : MonoBehaviour
     Vector3 calculateAirdashVector()
     {
         Vector2 vec;
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .65f);
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .65f);
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetAxisRaw("Horizontal") > 0f)
         {
             vec = new Vector2(airdashSpeed, 0f);
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetAxisRaw("Horizontal") < 0f)
         {
             vec = new Vector2(-airdashSpeed, 0f);
         }
@@ -124,37 +125,37 @@ public class Player : MonoBehaviour
     public float aimDirection()
     {
         float aim = 0f;
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             aim = 45f;
             facingRight = true;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             aim = 135f;
             facingRight = false;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
+        else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f)
         {
             aim = -45f;
             facingRight = true;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f)
         {
             aim = -135f;
             facingRight = false;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetAxisRaw("Horizontal") > 0f)
         {
             aim = 0f;
             facingRight = true;
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetAxisRaw("Horizontal") < 0f)
         {
             aim = 180f;
             facingRight = false;
         }
-        else if (Input.GetKey(KeyCode.W))
+        else if (Input.GetAxisRaw("Vertical") > 0f)
         {
             aim = 90f;
         }
@@ -171,35 +172,35 @@ public class Player : MonoBehaviour
     {
         float tp = 0f;
         //Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) //Up Right
+        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Right
         {
             tp = 45f;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) //Up Left
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Left
         {
             tp = 135f;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) //Down Right
+        else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Right
         {
             tp = -45f;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S)) //Down Left
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Left
         {
             tp = -135f;
         }
-        else if (Input.GetKey(KeyCode.A)) //Left
+        else if (Input.GetAxisRaw("Horizontal") < 0f) //Left
         {
             tp = 180f;
         }
-        else if (Input.GetKey(KeyCode.D)) //Right
+        else if (Input.GetAxisRaw("Horizontal") > 0f) //Right
         {
             tp = 0f;
         }
-        else if (Input.GetKey(KeyCode.W)) //Up
+        else if (Input.GetAxisRaw("Vertical") > 0f) //Up
         {
             tp = 90f;
         }
-        else if (Input.GetKey(KeyCode.S)) //Down
+        else if (Input.GetAxisRaw("Vertical") < 0f) //Down
         {
             tp = -90f;
         }
@@ -224,7 +225,7 @@ public class Player : MonoBehaviour
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         fast_gravity = gravity * 2;
-        alive = true; 
+
         //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         timeSinceLastTp = tpCooldown;
@@ -498,7 +499,7 @@ public class Player : MonoBehaviour
 
     public void takeDamage(int damage, float knockDir)
     {
-        //Debug.Log("invincible: " + invincible);
+        Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
             health -= damage;
@@ -519,23 +520,18 @@ public class Player : MonoBehaviour
             Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 
-
         //Animation Update; 
-
-        if (!alive)
-        {
-            anim.SetBool("Idle", true);
-            anim.SetBool("Jump_Ascend", false);
-        }
+        WalkAnim(directionalInput);
+        CrouchAnim();
+        JumpAnim();
     }
 
     void WalkAnim(Vector2 input)
     {
-        if(input.x != 0)
+        if(Mathf.Abs(velocity.x) > .005 && input.x != 0)
         {
             anim.SetBool("Walk", true);
-            anim.SetBool("Idle", false);
-            idle = false;
+            idle = false; 
         }
         else
         {
@@ -565,21 +561,18 @@ public class Player : MonoBehaviour
 
         if (jumping && !controller.cont_collision_info.below)
         {
-            anim.SetBool("Grounded", false);
+            if (jumping)
+            {
+                anim.SetBool("Grounded", false);
                 anim.SetBool("Jump_Ascend", true);
                 anim.SetBool("Walk", false);
+            }
         }
-        else if (velocity.y < 0 && !controller.cont_collision_info.below) 
+        else
         {
             jumping = false;
-            //anim.SetBool("Grounded", true);
-            anim.SetBool("Jump_Ascend", false);
-        }
-        else if(controller.cont_collision_info.below)
-        {
-            anim.SetBool("Jump_Ascend", false);
-            jumping = false; 
             anim.SetBool("Grounded", true);
+            anim.SetBool("Jump_Ascend", false);
         }
 
     }
