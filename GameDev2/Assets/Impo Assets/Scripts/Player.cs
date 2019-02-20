@@ -85,9 +85,12 @@ public class Player : MonoBehaviour
     private Vector2 directionalInput;
 
     //  States
-    public bool alive; 
+    public bool alive;
+    public bool inGame;
 
-
+    //  Gmae Manager
+    public GameObject gameManagerObj;
+    private GameState gameManager; 
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -217,6 +220,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
+        gameManager = gameManagerObj.GetComponent<GameState>(); 
         //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
         gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
         fast_gravity = gravity * 2;
@@ -231,261 +235,265 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //use boomerang if in tech powerset, toxicShot if magic
-        if (powerset)
-            projectile = boomerang;
-        else
-            projectile = toxicShot;
 
-        if (controller.cont_collision_info.above || controller.cont_collision_info.below) //  Stops vertical movement if vertical collision detected
+        if (!gameManager.paused)
         {
-            velocity.y = 0;
-        }
+            //use boomerang if in tech powerset, toxicShot if magic
+            if (powerset)
+                projectile = boomerang;
+            else
+                projectile = toxicShot;
 
-        if (!pa_inConvo)  // Can move while not in conversation
-        {
-            directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            
-        }
-        else
-        {
-            directionalInput = new Vector2(0, 0);
-        }
-
-        WalkAnim(directionalInput);
-
-        //Flip Player Based on Direction
-        if (directionalInput.x > 0)
-        {
-            sprite.flipX = true;
-        }
-        else if(directionalInput.x < 0)
-        {
-            sprite.flipX = false;
-        }
-
-
-
-        //On the ground, enable grounded only movement here
-        if (isSwinging && powerset)
-        {
-            wasSwinging = true;
-            if (directionalInput.x != 0)
+            if (controller.cont_collision_info.above || controller.cont_collision_info.below) //  Stops vertical movement if vertical collision detected
             {
-                //1
-                var playerToHookDirection = (ropeHook - (Vector2)transform.position).normalized;
-
-                //2
-                Vector2 perpendicularDirection;
-                if (directionalInput.x < 0)
-                {
-                    perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
-                    var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
-                    Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
-                }
-                else
-                {
-                    perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
-                    var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
-                    Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
-                }
-
-                var force = perpendicularDirection * swingForce;
-                this.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Force);
+                velocity.y = 0;
             }
-        }
-        else
-        {
-            //if (GetComponent<DistanceJoint2D>() != null)
-            //    GetComponent<DistanceJoint2D>().enabled = false;
-            if (controller.cont_collision_info.below)
-            {
-                hasAirdash = true;
-                if (Mathf.Abs(fast_gravity) < Mathf.Abs(gravity))
-                {
-                    float f = fast_gravity;
-                    fast_gravity = gravity;
-                    gravity = f;
-                }
-                hasAirdash = true;
-                float temp;
-                //Crouch when down is pressed
-                Transform tf = this.GetComponent<Transform>();
-                /*
-                if (Input.GetKey(KeyCode.S))
-                {
-                    //Temp behavior
-                    //tf.localScale = new Vector3(5f, 2.5f, 5f);
-                    speed = 0;
-                    runSpeed = 0;
-                    crouching = true;
 
-                }
-                else
+            if (!pa_inConvo)  // Can move while not in conversation
+            {
+                directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+            }
+            else
+            {
+                directionalInput = new Vector2(0, 0);
+            }
+
+            WalkAnim(directionalInput);
+
+            //Flip Player Based on Direction
+            if (directionalInput.x > 0)
+            {
+                sprite.flipX = true;
+            }
+            else if (directionalInput.x < 0)
+            {
+                sprite.flipX = false;
+            }
+
+
+
+            //On the ground, enable grounded only movement here
+            if (isSwinging && powerset)
+            {
+                wasSwinging = true;
+                if (directionalInput.x != 0)
                 {
-                    //tf.localScale = new Vector3(5f, 5f, 5f);
-                    speed = 5;
-                    runSpeed = 10;
-                    crouching = false; 
-                }
-                */
-                //Run when holding P
-                if (Input.GetKey(KeyCode.O))
-                {
-                    if (speed < runSpeed)
+                    //1
+                    var playerToHookDirection = (ropeHook - (Vector2)transform.position).normalized;
+
+                    //2
+                    Vector2 perpendicularDirection;
+                    if (directionalInput.x < 0)
                     {
-                        temp = speed;
-                        speed = runSpeed;
-                        runSpeed = temp;
+                        perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
+                        var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
+                        Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
                     }
-                }
-                else
-                {
-                    if (speed > runSpeed)
+                    else
                     {
-                        temp = speed;
-                        speed = runSpeed;
-                        runSpeed = temp;
+                        perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
+                        var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
+                        Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
                     }
-                }
-                //Jump when space is pressed
-                if (Input.GetKeyDown(KeyCode.Space))
-                {
-                    velocity.y = jumpVelocity;
-                    jumping = true; 
-                }
 
+                    var force = perpendicularDirection * swingForce;
+                    this.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Force);
+                }
             }
-            //In the air, enable only air movement here
-            else if (!controller.cont_collision_info.below)
+            else
             {
-                //Fastfall when down is pressed in the air
-                float temp;
-                if (Input.GetKeyDown(KeyCode.S))
+                //if (GetComponent<DistanceJoint2D>() != null)
+                //    GetComponent<DistanceJoint2D>().enabled = false;
+                if (controller.cont_collision_info.below)
                 {
-                    temp = gravity;
-                    gravity = fast_gravity;
-                    fast_gravity = temp;
+                    hasAirdash = true;
+                    if (Mathf.Abs(fast_gravity) < Mathf.Abs(gravity))
+                    {
+                        float f = fast_gravity;
+                        fast_gravity = gravity;
+                        gravity = f;
+                    }
+                    hasAirdash = true;
+                    float temp;
+                    //Crouch when down is pressed
+                    Transform tf = this.GetComponent<Transform>();
+                    /*
+                    if (Input.GetKey(KeyCode.S))
+                    {
+                        //Temp behavior
+                        //tf.localScale = new Vector3(5f, 2.5f, 5f);
+                        speed = 0;
+                        runSpeed = 0;
+                        crouching = true;
+
+                    }
+                    else
+                    {
+                        //tf.localScale = new Vector3(5f, 5f, 5f);
+                        speed = 5;
+                        runSpeed = 10;
+                        crouching = false; 
+                    }
+                    */
+                    //Run when holding P
+                    if (Input.GetKey(KeyCode.O))
+                    {
+                        if (speed < runSpeed)
+                        {
+                            temp = speed;
+                            speed = runSpeed;
+                            runSpeed = temp;
+                        }
+                    }
+                    else
+                    {
+                        if (speed > runSpeed)
+                        {
+                            temp = speed;
+                            speed = runSpeed;
+                            runSpeed = temp;
+                        }
+                    }
+                    //Jump when space is pressed
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        velocity.y = jumpVelocity;
+                        jumping = true;
+                    }
+
                 }
-                //Airdash when space is pressed in the air
-                if (hasAirdash && Input.GetKeyDown(KeyCode.Space))
+                //In the air, enable only air movement here
+                else if (!controller.cont_collision_info.below)
                 {
-                    //Used airdash
-                    hasAirdash = false;
-                    //airdashTime = .3f;
-                    //this.airdashDirection = calculateAirdashVector();
-                    velocity.y = jumpVelocity*1.2f;
+                    //Fastfall when down is pressed in the air
+                    float temp;
+                    if (Input.GetKeyDown(KeyCode.S))
+                    {
+                        temp = gravity;
+                        gravity = fast_gravity;
+                        fast_gravity = temp;
+                    }
+                    //Airdash when space is pressed in the air
+                    if (hasAirdash && Input.GetKeyDown(KeyCode.Space))
+                    {
+                        //Used airdash
+                        hasAirdash = false;
+                        //airdashTime = .3f;
+                        //this.airdashDirection = calculateAirdashVector();
+                        velocity.y = jumpVelocity * 1.2f;
+                    }
+
                 }
 
-            }
-
-            //if (airdashTime-Time.deltaTime > 0)
-            //{
-            //    airdashTime -= Time.deltaTime;
-            //    velocity = airdashDirection;
-            //}
-            //else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
-            //{
-            //    velocity = new Vector3(0, 0, 0);
-            //    airdashTime = 0;
-            //}
-            //else
-           // {
+                //if (airdashTime-Time.deltaTime > 0)
+                //{
+                //    airdashTime -= Time.deltaTime;
+                //    velocity = airdashDirection;
+                //}
+                //else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
+                //{
+                //    velocity = new Vector3(0, 0, 0);
+                //    airdashTime = 0;
+                //}
+                //else
+                // {
                 velocity.y += gravity * Time.deltaTime; //  Gravity constant
                 float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
                                                                         //  Damping/acceleration applied throught damping.
                 velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
                 //  Call to move function in controller2D class
                 //controller.Move(velocity * Time.deltaTime);
-           // }
-            controller.Move(velocity * Time.deltaTime);
+                // }
+                controller.Move(velocity * Time.deltaTime);
 
-            //TELEPORT LOGIC
-            if (timeSinceLastTp > tpCooldown && !powerset)
-            {
-                if (Input.GetKeyDown(KeyCode.E))
+                //TELEPORT LOGIC
+                if (timeSinceLastTp > tpCooldown && !powerset)
                 {
-                    //Handle teleport
-                    float angle = tpDirection();
-                    //Debug.Log(angle);
-                    Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
-                    dir.x *= tpDistance;
-                    dir.y *= tpDistance;
-                    transform.position = transform.position + (Vector3)dir;
-                    timeSinceLastTp = 0f;
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        //Handle teleport
+                        float angle = tpDirection();
+                        //Debug.Log(angle);
+                        Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
+                        dir.x *= tpDistance;
+                        dir.y *= tpDistance;
+                        transform.position = transform.position + (Vector3)dir;
+                        timeSinceLastTp = 0f;
+                    }
+                }
+                timeSinceLastTp += Time.deltaTime;
+
+                //fire projectile if '1' key pressed and cooldown expired
+                fireTime = fireTime + Time.deltaTime;
+                if (Input.GetButton("Fire1") && fireTime > nextFire)
+                {
+                    nextFire = fireTime + fireDelta;
+                    newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                    //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
+                    //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
+                    newProjectile.SetActive(true);
+
+                    //check facing of sprite
+                    if (sprite.flipX == false)
+                    {
+                        //sprite facing left (backwards)
+                        newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+                    }
+                    else
+                    {
+                        //sprite facing right (forwards)
+                        newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+                    }
+
+
+                    //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
+
+                    // create code here that animates the newProjectile
+                    //Debug.Log("Fire!");
+                    nextFire = nextFire - fireTime;
+                    fireTime = 0.0F;
+                }
+
+                if (Input.GetKeyDown(KeyCode.R))
+                    powerset = !powerset;
+            }
+
+            if (invincible)
+            {
+                //Debug.Log("ignore collision? " + Physics2D.GetIgnoreLayerCollision(9, 11));
+                //Debug.Log(invincible);
+                if (flashCt % flashRate == 0)
+                    sprite.enabled = !sprite.enabled;
+
+                flashCt++;
+                timeLeft -= Time.deltaTime;
+                //Debug.Log(timeLeft);
+                if (timeLeft <= 0.0)
+                {
+                    invincible = false;
+                    Physics2D.IgnoreLayerCollision(13, 14, false);
+                    //timer_started = false;
                 }
             }
-            timeSinceLastTp += Time.deltaTime;
-
-            //fire projectile if '1' key pressed and cooldown expired
-            fireTime = fireTime + Time.deltaTime;
-            if (Input.GetButton("Fire1") && fireTime > nextFire)
+            else
             {
-                nextFire = fireTime + fireDelta;
-                newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-                //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
-                //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
-                newProjectile.SetActive(true);
-
-                //check facing of sprite
-                if (sprite.flipX == false)
-                {
-                    //sprite facing left (backwards)
-                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
-                }
-                else
-                {
-                    //sprite facing right (forwards)
-                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-                }
-
-
-                //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
-
-                // create code here that animates the newProjectile
-                //Debug.Log("Fire!");
-                nextFire = nextFire - fireTime;
-                fireTime = 0.0F;
+                flashCt = 0;
+                sprite.enabled = true;
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
-                powerset = !powerset;
-        }
-
-        if (invincible)
-        {
-            //Debug.Log("ignore collision? " + Physics2D.GetIgnoreLayerCollision(9, 11));
-            //Debug.Log(invincible);
-            if (flashCt % flashRate == 0)
-                sprite.enabled = !sprite.enabled;
-
-            flashCt++;
-            timeLeft -= Time.deltaTime;
-            //Debug.Log(timeLeft);
-            if (timeLeft <= 0.0)
+            if (velocity.x < 0)
             {
-                invincible = false;
-                Physics2D.IgnoreLayerCollision(13, 14, false);
-                //timer_started = false;
+                facingRight = true;
             }
+            else if (velocity.x > 0)
+            {
+                facingRight = false;
+            }
+            JumpAnim();
+            CrouchAnim();
+            AirDashAnim();
         }
-        else
-        {
-            flashCt = 0;
-            sprite.enabled = true;
-        }
-
-        if (velocity.x < 0)
-        {
-            facingRight = true;
-        }
-        else if (velocity.x > 0)
-        {
-            facingRight = false;
-        }
-        JumpAnim();
-        CrouchAnim();
-        AirDashAnim();
     }
 
     public void takeDamage(int damage, float knockDir)
