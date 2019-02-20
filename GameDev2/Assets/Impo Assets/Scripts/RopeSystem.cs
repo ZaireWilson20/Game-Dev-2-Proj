@@ -76,7 +76,7 @@ public class RopeSystem : MonoBehaviour
     // 1
     private void HandleInput(Vector2 aimDirection)
     {
-        if (Input.GetButton("Utility") && player.powerset)
+        if (Input.GetButtonDown("Utility") && player.powerset)
         {
             if (!ropeAttached)
             {
@@ -115,7 +115,7 @@ public class RopeSystem : MonoBehaviour
                 ResetRope();
             }
         }
-        else if (Input.GetButton("Jump") && ropeAttached)
+        else if (Input.GetButtonDown("Jump") && ropeAttached)
         {
             ResetRope();
         }

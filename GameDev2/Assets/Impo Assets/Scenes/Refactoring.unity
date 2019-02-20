@@ -580,7 +580,7 @@ PrefabInstance:
     - target: {fileID: 1361807031665622387, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
       propertyPath: cont_collision_mask.m_Bits
-      value: 1280
+      value: 256
       objectReference: {fileID: 0}
     - target: {fileID: 1361807031867769240, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
@@ -612,5 +612,6 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3981147849461129342, guid: b8c1d5492cfce4146a45ab46c0fa4920, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: b8c1d5492cfce4146a45ab46c0fa4920, type: 3}

@@ -15,9 +15,9 @@ public class Player : MonoBehaviour
 {
     //Forces On Player ----------------
     public float speed = 5f;
-    public float airdashSpeed = 0.4f;
+    public float airdashSpeed = 20f;
     public float runSpeed = 10f;
-    public float jumpHeight = 8f;
+    public float jumpHeight = 20f;
     public bool grounded = true;
     private bool fastFall = false;
     public float fastFallSpeed = 6f;
@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
     //This variable is super important, true means you're in tech mode, false means you're in psychic mode
     public bool powerset = true;
 
-    float jumpVelocity;
     float velocX_smooth;
     float accelTime_air = .4f;
     float accelTime_ground = .1f;
@@ -161,23 +160,23 @@ public class Player : MonoBehaviour
     {
         float tp = 0f;
         //Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Right
-        {
-            tp = 45f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Left
-        {
-            tp = 135f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Right
-        {
-            tp = -45f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Left
-        {
-            tp = -135f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f) //Left
+        //if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Right
+        //{
+        //    tp = 45f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Left
+        //{
+        //    tp = 135f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Right
+        //{
+        //    tp = -45f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Left
+        //{
+        //    tp = -135f;
+        //}
+        if (Input.GetAxisRaw("Horizontal") < 0f) //Left
         {
             tp = 180f;
         }
@@ -210,12 +209,6 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
-        //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
-        //gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-        //fast_gravity = gravity * 2;
-
-        //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
-        jumpVelocity = 2 * jumpHeight;
         timeSinceLastTp = tpCooldown;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         health = health_max;
@@ -287,8 +280,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            //if (GetComponent<DistanceJoint2D>() != null)
-            //    GetComponent<DistanceJoint2D>().enabled = false;
             if (grounded)
             {
                 hasAirdash = true;
@@ -312,7 +303,7 @@ public class Player : MonoBehaviour
                     runSpeed = 10;
                 }
                 //Run when holding P
-                if (Input.GetKey(KeyCode.LeftAlt))
+                if (Input.GetButton("Run"))
                 {
                     if (speed < runSpeed)
                     {
@@ -346,13 +337,12 @@ public class Player : MonoBehaviour
                     fastFall = true;
                 }
                 //Airdash when space is pressed in the air
-                if (hasAirdash && Input.GetButtonDown("Jump"))
+                if (hasAirdash && Input.GetButtonDown("Jump") && !wasSwinging)
                 {
                     //Used airdash
                     hasAirdash = false;
                     airdashTime = .3f;
                     this.airdashDirection = calculateAirdashVector();
-                    //velocity.y = jumpVelocity * 1.2f;
                 }
             }
 
@@ -370,15 +360,13 @@ public class Player : MonoBehaviour
             }
             else
             {
-                //velocity.y += gravity * Time.deltaTime; //  Gravity constant
                 float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
                                                                         //  Damping/acceleration applied throught damping.
                 velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
                 //  Call to move function in controller2D class
                 controller.Move(velocity * Time.deltaTime);
             }
-            //controller.Move(velocity * Time.deltaTime);
-
+            
             //TELEPORT LOGIC
             if (timeSinceLastTp > tpCooldown && !powerset)
             {
@@ -402,8 +390,6 @@ public class Player : MonoBehaviour
             {
                 nextFire = fireTime + fireDelta;
                 newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-                //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
-                //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
                 newProjectile.SetActive(true);
 
                 //check facing of sprite
@@ -429,6 +415,7 @@ public class Player : MonoBehaviour
 
             if (Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.Q))
                 powerset = !powerset;
+            wasSwinging = false;
         }
 
         if (invincible)
@@ -445,7 +432,6 @@ public class Player : MonoBehaviour
             {
                 invincible = false;
                 Physics2D.IgnoreLayerCollision(13, 14, false);
-                //timer_started = false;
             }
         }
         else
@@ -481,7 +467,6 @@ public class Player : MonoBehaviour
             velocity.x += knockback * knockDir;
             controller.Move(velocity * Time.deltaTime);
             Debug.Log("Player health: " + health);
-            //timer_started = true;
             timeLeft = invincibility;
             //turn off collision with enemies for 0.5 seconds
             invincible = true;
