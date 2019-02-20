@@ -47,7 +47,6 @@ public class NpcDialogue : MonoBehaviour
 
         if (npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && !npc_inConvo)    // If player presses talk button while in range of npc
         {
-            Debug.Log("hi");
             pa_script.pa_inConvo = true;
             npc_inConvo = true;
             npc_onTrigger.dia_inConvo = true;
@@ -55,7 +54,6 @@ public class NpcDialogue : MonoBehaviour
         }
         else if(npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && npc_inConvo)
         {
-            Debug.Log("Gosh");
             bool inC = dialogueController.nextLine();
             pa_script.pa_inConvo = inC;
             npc_inConvo = inC;

@@ -96,11 +96,11 @@ public class Controller2D : MonoBehaviour
         {
             horizontalCollsions(ref velocity); //Checks horizontal collisions if moving right or left
             //if moving right, don't flip sprite
-            if (velocity.x > 0)
-                sprite.flipY = false;
+            //if (velocity.x > 0)
+                //sprite.flipY = false;
             //if moving left, flip sprite
-            else
-                sprite.flipY = true;
+            //else
+                //sprite.flipY = true;
         }
 
         if (velocity.y != 0)

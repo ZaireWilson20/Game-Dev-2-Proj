@@ -4,29 +4,29 @@ using UnityEngine;
 
 //CURRENT PLAYER CONTROL LAYOUT
 //Non-adjustable
-//WASD movement
-//Fire1 to shoot
-//E for utility
-//Left alt to run
-//Space to jump/airdash
-//R swaps powers
+//DirectionalInput movement
+//Fire to shoot
+//Utility for utility
+//Run to run
+//Jump to jump/airdash
+//H swaps powers
 
 public class Player : MonoBehaviour
 {
     //Forces On Player ----------------
-    public float gravity;
-    public float fast_gravity;
-    private float cancel_grav;
     public float speed = 5f;
-    public float airdashSpeed = 0.4f;
+    public float airdashSpeed = 20f;
     public float runSpeed = 10f;
-
-    public float jumpHeight = 8f;
-    public float timeToJumpApex = .7f;
+    public float jumpHeight = 20f;
+    public bool grounded = true;
+    private bool fastFall = false;
+    public float fastFallSpeed = 6f;
+    public float fallSpeed = 3f;
 
     private int flashCt = 0;
     public int flashRate = 5;
 
+    public bool alive = true;
     public int health_max = 5;
     private int health = 5;
     public float attack = 1f;
@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
     //This variable is super important, true means you're in tech mode, false means you're in psychic mode
     public bool powerset = true;
 
-    float jumpVelocity;
     float velocX_smooth;
     float accelTime_air = .4f;
     float accelTime_ground = .1f;
@@ -74,36 +73,37 @@ public class Player : MonoBehaviour
     // --------------------------------
 
     // Animation
-    private Rigidbody2D rig2D; 
+    private Rigidbody2D rig2D;
     private Animator anim;
     private bool idle;
     private bool crouching;
     private bool jumping;
     private Vector2 directionalInput;
+    private float halfHeight;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
     {
         Vector2 vec;
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .65f);
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .65f);
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetAxisRaw("Horizontal") > 0f)
         {
             vec = new Vector2(airdashSpeed, 0f);
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetAxisRaw("Horizontal") < 0f)
         {
             vec = new Vector2(-airdashSpeed, 0f);
         }
         else
         {
-            vec = new Vector2(0, airdashSpeed*1f);
+            vec = new Vector2(0, airdashSpeed * 1f);
         }
         return vec;
     }
@@ -113,37 +113,37 @@ public class Player : MonoBehaviour
     public float aimDirection()
     {
         float aim = 0f;
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W))
+        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             aim = 45f;
             facingRight = true;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W))
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f)
         {
             aim = 135f;
             facingRight = false;
         }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S))
+        else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f)
         {
             aim = -45f;
             facingRight = true;
         }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S))
+        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f)
         {
             aim = -135f;
             facingRight = false;
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (Input.GetAxisRaw("Horizontal") > 0f)
         {
             aim = 0f;
             facingRight = true;
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (Input.GetAxisRaw("Horizontal") < 0f)
         {
             aim = 180f;
             facingRight = false;
         }
-        else if (Input.GetKey(KeyCode.W))
+        else if (Input.GetAxisRaw("Vertical") > 0f)
         {
             aim = 90f;
         }
@@ -160,35 +160,35 @@ public class Player : MonoBehaviour
     {
         float tp = 0f;
         //Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.W)) //Up Right
-        {
-            tp = 45f;
-        }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.W)) //Up Left
-        {
-            tp = 135f;
-        }
-        else if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.S)) //Down Right
-        {
-            tp = -45f;
-        }
-        else if (Input.GetKey(KeyCode.A) && Input.GetKey(KeyCode.S)) //Down Left
-        {
-            tp = -135f;
-        }
-        else if (Input.GetKey(KeyCode.A)) //Left
+        //if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Right
+        //{
+        //    tp = 45f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Left
+        //{
+        //    tp = 135f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Right
+        //{
+        //    tp = -45f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Left
+        //{
+        //    tp = -135f;
+        //}
+        if (Input.GetAxisRaw("Horizontal") < 0f) //Left
         {
             tp = 180f;
         }
-        else if (Input.GetKey(KeyCode.D)) //Right
+        else if (Input.GetAxisRaw("Horizontal") > 0f) //Right
         {
             tp = 0f;
         }
-        else if (Input.GetKey(KeyCode.W)) //Up
+        else if (Input.GetAxisRaw("Vertical") > 0f) //Up
         {
             tp = 90f;
         }
-        else if (Input.GetKey(KeyCode.S)) //Down
+        else if (Input.GetAxisRaw("Vertical") < 0f) //Down
         {
             tp = -90f;
         }
@@ -209,15 +209,8 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
-        //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
-        gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-        //gravity = 0;
-        fast_gravity = gravity * 2;
-
-        //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
-        jumpVelocity = (2 * jumpHeight) / timeToJumpApex;
         timeSinceLastTp = tpCooldown;
-
+        halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         health = health_max;
     }
 
@@ -230,7 +223,7 @@ public class Player : MonoBehaviour
         else
             projectile = toxicShot;
 
-        if (controller.cont_collision_info.above || controller.cont_collision_info.below) //  Stops vertical movement if vertical collision detected
+        if (controller.cont_collision_info.above || grounded) //  Stops vertical movement if vertical collision detected
         {
             velocity.y = 0;
         }
@@ -238,7 +231,6 @@ public class Player : MonoBehaviour
         if (!pa_inConvo)  // Can move while not in conversation
         {
             directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            
         }
         else
         {
@@ -250,7 +242,7 @@ public class Player : MonoBehaviour
         {
             sprite.flipX = true;
         }
-        else if(directionalInput.x < 0)
+        else if (directionalInput.x < 0)
         {
             sprite.flipX = false;
         }
@@ -260,6 +252,7 @@ public class Player : MonoBehaviour
         //On the ground, enable grounded only movement here
         if (isSwinging && powerset)
         {
+            rig2D.gravityScale = 1f;
             wasSwinging = true;
             if (directionalInput.x != 0)
             {
@@ -287,36 +280,30 @@ public class Player : MonoBehaviour
         }
         else
         {
-            //if (GetComponent<DistanceJoint2D>() != null)
-            //    GetComponent<DistanceJoint2D>().enabled = false;
-            if (controller.cont_collision_info.below)
+            if (grounded)
             {
                 hasAirdash = true;
-                if (Mathf.Abs(fast_gravity) < Mathf.Abs(gravity))
-                {
-                    float f = fast_gravity;
-                    fast_gravity = gravity;
-                    gravity = f;
-                }
+                fastFall = false;
+                GetComponent<Rigidbody2D>().gravityScale = fallSpeed;
                 hasAirdash = true;
                 float temp;
                 //Crouch when down is pressed
                 Transform tf = this.GetComponent<Transform>();
-                //if (Input.GetKey(KeyCode.S))
-                //{
-                //    //Temp behavior
-                //    tf.localScale = new Vector3(5f, 2.5f, 5f);
-                //    speed = 0;
-                //    runSpeed = 0;
-                //}
-                //else
-                //{
-                //    tf.localScale = new Vector3(5f, 5f, 5f);
-                //    speed = 5;
-                //    runSpeed = 10;
-                //}
+                if (Input.GetAxisRaw("Vertical") < 0f)
+                {
+                    //Temp behavior
+                    tf.localScale = new Vector3(5f, 2.5f, 5f);
+                    speed = 0;
+                    runSpeed = 0;
+                }
+                else
+                {
+                    tf.localScale = new Vector3(5f, 5f, 5f);
+                    speed = 5;
+                    runSpeed = 10;
+                }
                 //Run when holding P
-                if (Input.GetKey(KeyCode.O))
+                if (Input.GetButton("Run"))
                 {
                     if (speed < runSpeed)
                     {
@@ -335,24 +322,22 @@ public class Player : MonoBehaviour
                     }
                 }
                 //Jump when space is pressed
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetButtonDown("Jump"))
                 {
-                    velocity.y = jumpVelocity;
+                    rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
                 }
             }
             //In the air, enable only air movement here
-            else if (!controller.cont_collision_info.below)
+            else if (!grounded)
             {
                 //Fastfall when down is pressed in the air
-                float temp;
-                if (Input.GetKeyDown(KeyCode.S))
+                if (Input.GetAxisRaw("Vertical") < 0f)
                 {
-                    temp = gravity;
-                    gravity = fast_gravity;
-                    fast_gravity = temp;
+                    GetComponent<Rigidbody2D>().gravityScale = fastFallSpeed;
+                    fastFall = true;
                 }
                 //Airdash when space is pressed in the air
-                if (hasAirdash && Input.GetKeyDown(KeyCode.Space))
+                if (hasAirdash && Input.GetButtonDown("Jump") && !wasSwinging)
                 {
                     //Used airdash
                     hasAirdash = false;
@@ -360,34 +345,33 @@ public class Player : MonoBehaviour
                     //this.airdashDirection = calculateAirdashVector();
                     velocity.y = jumpVelocity*1.2f;
                 }
-
             }
 
-            //if (airdashTime-Time.deltaTime > 0)
-            //{
-            //    airdashTime -= Time.deltaTime;
-            //    velocity = airdashDirection;
-            //}
-            //else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
-            //{
-            //    velocity = new Vector3(0, 0, 0);
-            //    airdashTime = 0;
-            //}
-            //else
-           // {
-                velocity.y += gravity * Time.deltaTime; //  Gravity constant
+            if (airdashTime - Time.deltaTime > 0)
+            {
+                airdashTime -= Time.deltaTime;
+                rig2D.velocity = airdashDirection;
+            }
+            else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
+            {
+                rig2D.velocity = new Vector2(0, 0);
+                velocity.y = 0;
+                velocity.x = 0;
+                airdashTime = 0;
+            }
+            else
+            {
                 float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
                                                                         //  Damping/acceleration applied throught damping.
-                velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
+                velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
                 //  Call to move function in controller2D class
-                //controller.Move(velocity * Time.deltaTime);
-           // }
-            controller.Move(velocity * Time.deltaTime);
-
+                controller.Move(velocity * Time.deltaTime);
+            }
+            
             //TELEPORT LOGIC
             if (timeSinceLastTp > tpCooldown && !powerset)
             {
-                if (Input.GetKeyDown(KeyCode.E))
+                if (Input.GetButton("Utility"))
                 {
                     //Handle teleport
                     float angle = tpDirection();
@@ -403,12 +387,10 @@ public class Player : MonoBehaviour
 
             //fire projectile if '1' key pressed and cooldown expired
             fireTime = fireTime + Time.deltaTime;
-            if (Input.GetButton("Fire1") && fireTime > nextFire)
+            if (Input.GetButton("Fire") && fireTime > nextFire)
             {
                 nextFire = fireTime + fireDelta;
                 newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-                //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
-                //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
                 newProjectile.SetActive(true);
 
                 //check facing of sprite
@@ -432,8 +414,9 @@ public class Player : MonoBehaviour
                 fireTime = 0.0F;
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.Q))
                 powerset = !powerset;
+            wasSwinging = false;
         }
 
         if (invincible)
@@ -450,7 +433,6 @@ public class Player : MonoBehaviour
             {
                 invincible = false;
                 Physics2D.IgnoreLayerCollision(13, 14, false);
-                //timer_started = false;
             }
         }
         else
@@ -467,6 +449,8 @@ public class Player : MonoBehaviour
         {
             facingRight = false;
         }
+        Debug.Log(grounded);
+        grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
     }
 
     public void takeDamage(int damage, Vector2 knockDir)
@@ -485,7 +469,6 @@ public class Player : MonoBehaviour
             velocity.y += knockback * knockDir.y;
             controller.Move(velocity * Time.deltaTime);
             Debug.Log("Player health: " + health);
-            //timer_started = true;
             timeLeft = invincibility;
             //turn off collision with enemies for 0.5 seconds
             invincible = true;
@@ -501,10 +484,10 @@ public class Player : MonoBehaviour
 
     void WalkAnim(Vector2 input)
     {
-        if(Mathf.Abs(velocity.x) > .005 && input.x != 0)
+        if (Mathf.Abs(velocity.x) > .005 && input.x != 0)
         {
             anim.SetBool("Walk", true);
-            idle = false; 
+            idle = false;
         }
         else
         {
@@ -512,7 +495,7 @@ public class Player : MonoBehaviour
             {
                 anim.SetBool("Walk", false);
                 anim.SetBool("Idle", true);
-                idle = true; 
+                idle = true;
             }
         }
     }
@@ -531,7 +514,7 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-        if (!controller.cont_collision_info.below)
+        if (!grounded)
         {
             if (jumping)
             {
