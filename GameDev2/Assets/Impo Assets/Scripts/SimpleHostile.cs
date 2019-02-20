@@ -127,7 +127,7 @@ public class SimpleHostile : MonoBehaviour
         }*/
     }
 
-    public void takeDamage(float damage, float knockDir)
+    public void takeDamage(float damage, Vector2 knockDir)
     {
         if (!invincible)
         {
@@ -144,7 +144,8 @@ public class SimpleHostile : MonoBehaviour
             sprite.enabled = false;
             invincible = true;
             flashCt = 0;
-            velocity.x += knockback * knockDir;
+            velocity.x += knockback * knockDir.x;
+            velocity.y += knockback * knockDir.y;
             //controller.Move(velocity * Time.deltaTime);
             transform.Translate(velocity * Time.deltaTime);
             Debug.Log("Enemy health: " + health);

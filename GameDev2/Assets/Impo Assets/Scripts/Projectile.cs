@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
 {
     public float speed = 7f;
     public float damage = 1f;
-    protected float dir;
+    protected Vector2 dir;
     protected Vector3 velocity = new Vector3(0,0,0);
     private Rigidbody2D rb;
     protected Vector3 startPos;
@@ -22,8 +22,10 @@ public class Projectile : MonoBehaviour
         //velocity.x *= speed;
         //transform.Translate(velocity * Time.deltaTime);
         rb = GetComponent<Rigidbody2D>();
+        dir = rb.velocity;
         //Debug.Log(rb.velocity);
         velocity.x = rb.velocity.x * speed;
+        velocity.y = rb.velocity.y * speed;
         Physics2D.IgnoreLayerCollision(15, 13);
         Physics2D.IgnoreLayerCollision(15, 15);
         startPos = transform.position;
@@ -67,7 +69,6 @@ public class Projectile : MonoBehaviour
     protected virtual void Update()
     {
         //Debug.Log(velocity);
-        dir = Mathf.Sign(rb.velocity.x);
         transform.Translate(velocity * Time.deltaTime);
     }
 }
