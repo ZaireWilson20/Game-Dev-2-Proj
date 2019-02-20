@@ -392,17 +392,11 @@ public class Player : MonoBehaviour
                 newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
                 newProjectile.SetActive(true);
 
-                //check facing of sprite
-                if (sprite.flipY)
-                {
-                    //sprite facing left (backwards)
-                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
-                }
-                else
-                {
-                    //sprite facing right (forwards)
-                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-                }
+                float aim = Mathf.Deg2Rad * aimDirection();
+                Vector2 fire_direction = new Vector2(Mathf.Cos(aim), Mathf.Sin(aim));
+                Debug.Log(fire_direction);
+                newProjectile.GetComponent<Rigidbody2D>().velocity = fire_direction;
+                
 
 
                 //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);

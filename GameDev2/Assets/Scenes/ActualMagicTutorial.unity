@@ -168,7 +168,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -950,7 +950,7 @@ PrefabInstance:
     - target: {fileID: 1361807031665622384, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
       propertyPath: jumpHeight
-      value: 25
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1361807031665622384, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
@@ -966,6 +966,16 @@ PrefabInstance:
         type: 3}
       propertyPath: powerset
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361807031665622384, guid: b8c1d5492cfce4146a45ab46c0fa4920,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361807031665622384, guid: b8c1d5492cfce4146a45ab46c0fa4920,
+        type: 3}
+      propertyPath: airdashSpeed
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1361807031867769240, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
@@ -990,7 +1000,7 @@ PrefabInstance:
     - target: {fileID: 1361807030902530699, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
       propertyPath: m_GravityScale
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4247307101341147324, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
@@ -1006,6 +1016,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3981147849461129342, guid: b8c1d5492cfce4146a45ab46c0fa4920,
+        type: 3}
+      propertyPath: toxicShot
+      value: 
+      objectReference: {fileID: 1059399559}
+    - target: {fileID: 3981147849461129342, guid: b8c1d5492cfce4146a45ab46c0fa4920,
+        type: 3}
+      propertyPath: boomerang
+      value: 
+      objectReference: {fileID: 2131900575}
+    - target: {fileID: 3981147849461129342, guid: b8c1d5492cfce4146a45ab46c0fa4920,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b8c1d5492cfce4146a45ab46c0fa4920, type: 3}
@@ -2594,8 +2619,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21db85fef177fd48a0e7d876839fa36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
-  damage: 1
+  speed: 4
+  damage: 3.5
+  damageReducFactor: 0.01
 --- !u!50 &1059399561
 Rigidbody2D:
   serializedVersion: 4
@@ -4447,6 +4473,88 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1631620746}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1702943779
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1702943780}
+  - component: {fileID: 1702943782}
+  - component: {fileID: 1702943781}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1702943780
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702943779}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1709692803}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!81 &1702943781
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702943779}
+  m_Enabled: 1
+--- !u!20 &1702943782
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1702943779}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_GateFitMode: 2
+  m_FocalLength: 50
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
 --- !u!4 &1709692803 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1361807031179508401, guid: b8c1d5492cfce4146a45ab46c0fa4920,
@@ -5255,12 +5363,12 @@ MonoBehaviour:
   rb: {fileID: 1857067626}
   flashRate: 3
   invincible: 0
-  shooter: 0
+  shooter: 1
   fireCooldown: 2
   fireRate: 0.1
-  shootRadius: 4
+  shootRadius: 8
   projectile: {fileID: 824455089}
-  shotSpray: 3
+  shotSpray: 2
 --- !u!50 &1857067626
 Rigidbody2D:
   serializedVersion: 4
@@ -5276,7 +5384,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -6044,7 +6152,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

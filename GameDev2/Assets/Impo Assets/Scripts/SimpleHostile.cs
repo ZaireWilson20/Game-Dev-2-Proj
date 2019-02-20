@@ -127,12 +127,12 @@ public class SimpleHostile : MonoBehaviour
         }*/
     }
 
-    public void takeDamage(float damage, float knockDir)
+    public void takeDamage(float damage, Vector2 knockDir)
     {
         if (!invincible)
         {
             health -= damage;
-            if (health == 0)
+            if (health <= 0)
             {
                 //player has died
                 Debug.Log("Enemy killed!");
@@ -144,7 +144,8 @@ public class SimpleHostile : MonoBehaviour
             sprite.enabled = false;
             invincible = true;
             flashCt = 0;
-            velocity.x += knockback * knockDir;
+            velocity.x += knockback * knockDir.x;
+            velocity.y += knockback * knockDir.y;
             //controller.Move(velocity * Time.deltaTime);
             transform.Translate(velocity * Time.deltaTime);
             Debug.Log("Enemy health: " + health);
@@ -163,6 +164,12 @@ public class SimpleHostile : MonoBehaviour
         Debug.DrawLine(new Vector2(transform.position.x, transform.position.y), hit.point);
 
         //check if player in line of sight
+        if (hit.collider == null)
+        {
+            Debug.Log("null");
+            return false;
+        }
+
         Debug.Log(hit.collider.gameObject);
         if (hit.collider.tag.Equals("Player"))
         {
@@ -268,6 +275,10 @@ public class SimpleHostile : MonoBehaviour
                     fireTime = 0;
                 }
             }
+            //else
+            //{
+            //    shots = 0;
+            //}
         }
 
         //travel towards destination if not within 0.1 of target
