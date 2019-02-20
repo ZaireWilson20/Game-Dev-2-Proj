@@ -34,6 +34,7 @@ public class Dialogue_Trigger : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.transform.name);
         if(collision.transform.tag == "Player")
         {
             dia_player_in = true;
@@ -42,11 +43,13 @@ public class Dialogue_Trigger : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        Debug.Log("i'm no longer touching the player! :)");
         if(collision.transform.tag == "Player")
         {
             dia_player_in = false;
         }
     }
+
 
     public void Deactivate()
     {
