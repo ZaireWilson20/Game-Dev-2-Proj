@@ -28,6 +28,7 @@ public class SimpleHostile : MonoBehaviour
 
     public float detectRadius = 3f;
     public float knockback = 5f;
+    private bool facingRight;
 
     public Vector3 startPos;
     private Vector3 destination;
@@ -42,8 +43,19 @@ public class SimpleHostile : MonoBehaviour
     public int flashRate = 3;
     private int flashCt = 0;
     public bool invincible = false;
+    public bool shooter = false;
+    public float fireCooldown = 2f;
+    public float fireRate = 0.1f;
+    private float fireTime = 0f;
+    private float nextFire = 0f;
+    public float shootRadius = 10f;
 
-    private MeshRenderer sprite;
+    private GameObject newProjectile;
+    public GameObject projectile;
+    private int shots = 0;
+    public int shotSpray = 3;
+
+    private SpriteRenderer sprite;
 
 
     // Start is called before the first frame update
@@ -55,7 +67,7 @@ public class SimpleHostile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         //detectCollider = GetComponent<Collider2D>();
 
-        sprite = GetComponent<MeshRenderer>();
+        sprite = GetComponent<SpriteRenderer>();
         //get player object
         player = GameObject.FindGameObjectWithTag("Player");
 
@@ -105,7 +117,7 @@ public class SimpleHostile : MonoBehaviour
             Player pscript = contact.GetComponent<Player>();
             //Debug.Log(lastDir);
             if (!pscript.invincible)
-                pscript.takeDamage(attack, lastDir);
+                pscript.takeDamage(attack, rb.velocity);
         }
         /*else if (contact.layer.Equals("Bullet"))
         {
@@ -139,6 +151,27 @@ public class SimpleHostile : MonoBehaviour
         }
     }
 
+    //checks if enemy has line of sight to player within shoot radius distance
+    public bool LineOfSight()
+    {
+        Vector2 origin = transform.position;
+        Vector2 dest = player.transform.position;
+        Vector2 angle = dest - origin;
+        angle.Normalize();
+        int layerMask = ~(LayerMask.GetMask("Hostile"));
+        RaycastHit2D hit = Physics2D.Raycast(origin, angle, shootRadius, layerMask);
+        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y), hit.point);
+
+        //check if player in line of sight
+        Debug.Log(hit.collider.gameObject);
+        if (hit.collider.tag.Equals("Player"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     void Update()
     {
         //check if player within detection radius
@@ -169,6 +202,7 @@ public class SimpleHostile : MonoBehaviour
             }
         }
 
+        //enemy blinks once when hit
         if (flash)
         {
             if (flashCt < flashRate)
@@ -208,6 +242,34 @@ public class SimpleHostile : MonoBehaviour
         }
 
 
+        //check if enemy is a shooter and can detect player
+        fireTime += Time.deltaTime;
+        //Debug.Log(fireTime);
+        //Debug.Log(nextFire);
+        if (shooter && fireTime > nextFire)
+        {
+            if (LineOfSight())
+            {
+                //check if shoot timer is approved
+                //fire away!
+                if (shots < shotSpray)
+                {
+                    nextFire = fireTime + fireRate;
+                    newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                    //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
+                    //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
+                    newProjectile.SetActive(true);
+                    shots++;
+                }
+                else
+                {
+                    shots = 0;
+                    nextFire = fireCooldown;
+                    fireTime = 0;
+                }
+            }
+        }
+
         //travel towards destination if not within 0.1 of target
         if (Mathf.Abs(transform.position.x - destination.x) > 0.1f)
         {
@@ -226,6 +288,7 @@ public class SimpleHostile : MonoBehaviour
         {
             rb.velocity = new Vector2(0, 0);
         }
+
 
 
 

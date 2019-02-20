@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
+public class EnemyProjectile : MonoBehaviour
 {
     public float speed = 7f;
-    public float damage = 1f;
-    protected float dir;
-    protected Vector3 velocity = new Vector3(0,0,0);
+    public int damage = 1;
+    protected Vector2 direction;
+    //protected float dir;
+    protected Vector3 velocity = new Vector3(0, 0, 0);
     private Rigidbody2D rb;
+    private GameObject player;
 
 
     // Start is called before the first frame update
@@ -20,10 +22,13 @@ public class Projectile : MonoBehaviour
         //velocity.x *= speed;
         //transform.Translate(velocity * Time.deltaTime);
         rb = GetComponent<Rigidbody2D>();
+        player = GameObject.FindGameObjectWithTag("Player");
         //Debug.Log(rb.velocity);
-        velocity.x = rb.velocity.x * speed;
-        Physics2D.IgnoreLayerCollision(15, 13);
-        Physics2D.IgnoreLayerCollision(15, 15);
+        direction = Vector3.Normalize(player.transform.position - transform.position);
+        velocity = direction * speed;
+        Physics2D.IgnoreLayerCollision(16, 14);
+        Physics2D.IgnoreLayerCollision(16, 16);
+        Physics2D.IgnoreLayerCollision(16, 15);
     }
 
     protected virtual void collide(Collider2D collision)
@@ -35,35 +40,34 @@ public class Projectile : MonoBehaviour
         //{
         //Debug.Log("hit something");
         //Debug.Log("i shouldn't be here");
-        if (contact.layer == 14)
+        if (contact.tag.Equals("Player"))
         {
-            
+
             Debug.Log("hit!");
-            SimpleHostile pscript = contact.GetComponent<SimpleHostile>();
+            Player pscript = contact.GetComponent<Player>();
             //Debug.Log(lastDir);
 
-            pscript.takeDamage(damage, dir);
-            
+            pscript.takeDamage(damage, direction);
+
         }
 
         if (contact.layer == 8)
             gameObject.SetActive(false);
-//        }
+        //        }
 
 
-            /*else if (contact.layer.Equals("Bullet"))
-        {
-            Debug.Log("bullet hit!");
+        /*else if (contact.layer.Equals("Bullet"))
+    {
+        Debug.Log("bullet hit!");
 
 
-        }*/
+    }*/
     }
 
     // Update is called once per frame
     protected virtual void Update()
     {
         //Debug.Log(velocity);
-        dir = Mathf.Sign(rb.velocity.x);
         transform.Translate(velocity * Time.deltaTime);
     }
 }
