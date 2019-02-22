@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 //CURRENT PLAYER CONTROL LAYOUT
 //Non-adjustable
@@ -15,9 +16,9 @@ public class RefactoredPlayer : MonoBehaviour
 {
     //Forces On Player ----------------
     public float speed = 5f;
-    public float airdashSpeed = 0.4f;
+    public float airdashSpeed = 20f;
     public float runSpeed = 10f;
-    public float jumpHeight = 8f;
+    public float jumpHeight = 20f;
     public bool grounded = true;
     private bool fastFall = false;
     public float fastFallSpeed = 6f;
@@ -40,7 +41,7 @@ public class RefactoredPlayer : MonoBehaviour
 
     SpriteRenderer sprite;
     private GameObject newProjectile;
-    public GameObject boomerang;
+    public GameObject boomerangObj;
     public GameObject toxicShot;
     private GameObject projectile;
 
@@ -61,8 +62,23 @@ public class RefactoredPlayer : MonoBehaviour
 
     //This variable is super important, true means you're in tech mode, false means you're in psychic mode
     public bool powerset = true;
+    public Dictionary<string, Power> tPowerDict = new Dictionary<string, Power>();
+    public Dictionary<string, Power> tWeaponDict = new Dictionary<string, Power>();
+    public Dictionary<string, Power> mPowerDict = new Dictionary<string, Power>();
+    public Dictionary<string, Power> mWeaponDict = new Dictionary<string, Power>();
+    public Power tWeapon;
+    public Power tUtility;
+    public Power mWeapon;
+    public Power mUtility;
+    private Power boomerang;
+    private Power poisonShot;
+    private Power grapple;
+    private Power teleport;
+    private Power antiGrav;
+    private Power reflector;
+    private Power drill;
+    private Power freeze;
 
-    float jumpVelocity;
     float velocX_smooth;
     float accelTime_air = .4f;
     float accelTime_ground = .1f;
@@ -161,23 +177,23 @@ public class RefactoredPlayer : MonoBehaviour
     {
         float tp = 0f;
         //Vector2 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Right
-        {
-            tp = 45f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Left
-        {
-            tp = 135f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Right
-        {
-            tp = -45f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Left
-        {
-            tp = -135f;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f) //Left
+        //if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Right
+        //{
+        //    tp = 45f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f) //Up Left
+        //{
+        //    tp = 135f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Right
+        //{
+        //    tp = -45f;
+        //}
+        //else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f) //Down Left
+        //{
+        //    tp = -135f;
+        //}
+        if (Input.GetAxisRaw("Horizontal") < 0f) //Left
         {
             tp = 180f;
         }
@@ -210,15 +226,27 @@ public class RefactoredPlayer : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
-        //Gravity is directly proportional to given jump height, and disproportional to time it takes to reach maximum jump height
-        //gravity = -1 * (2 * jumpHeight) / Mathf.Pow(timeToJumpApex, 2);
-        //fast_gravity = gravity * 2;
-
-        //How high you jump is directly proportional to gravity and the time it takes to reach max jump height
-        jumpVelocity = 2 * jumpHeight;
         timeSinceLastTp = tpCooldown;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         health = health_max;
+
+        //Initialize powers
+        boomerang = new Power("boomerang", true, true);
+        grapple = new Power("grapple", true, true);
+        poisonShot = new Power("poison", true, false);
+        teleport = new Power("teleport", true, false);
+        antiGrav = new Power("anti-grav", false, true);
+        drill = new Power("drill", false, true);
+        freeze = new Power("freeze", false, false);
+        reflector = new Power("reflect", false, false);
+        tPowerDict.Add("a", grapple); tPowerDict.Add("b", antiGrav);
+        tWeaponDict.Add("a", boomerang); tWeaponDict.Add("b", drill);
+        mPowerDict.Add("a", teleport); mPowerDict.Add("b", reflector);
+        mWeaponDict.Add("a", poisonShot); mWeaponDict.Add("b", freeze);
+        tUtility = grapple;
+        tWeapon = boomerang;
+        mUtility = teleport;
+        mWeapon = poisonShot;
     }
 
     // Update is called once per frame
@@ -226,7 +254,7 @@ public class RefactoredPlayer : MonoBehaviour
     {
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
-            projectile = boomerang;
+            projectile = boomerangObj;
         else
             projectile = toxicShot;
 
@@ -259,6 +287,7 @@ public class RefactoredPlayer : MonoBehaviour
         //On the ground, enable grounded only movement here
         if (isSwinging && powerset)
         {
+            rig2D.gravityScale = 1f;
             wasSwinging = true;
             if (directionalInput.x != 0)
             {
@@ -286,8 +315,6 @@ public class RefactoredPlayer : MonoBehaviour
         }
         else
         {
-            //if (GetComponent<DistanceJoint2D>() != null)
-            //    GetComponent<DistanceJoint2D>().enabled = false;
             if (grounded)
             {
                 hasAirdash = true;
@@ -297,21 +324,21 @@ public class RefactoredPlayer : MonoBehaviour
                 float temp;
                 //Crouch when down is pressed
                 Transform tf = this.GetComponent<Transform>();
-                if (Input.GetAxisRaw("Vertical") < 0f)
-                {
-                    //Temp behavior
-                    tf.localScale = new Vector3(5f, 2.5f, 5f);
-                    speed = 0;
-                    runSpeed = 0;
-                }
-                else
-                {
-                    tf.localScale = new Vector3(5f, 5f, 5f);
-                    speed = 5;
-                    runSpeed = 10;
-                }
+                //if (Input.GetKey(KeyCode.S))
+                //{
+                //    //Temp behavior
+                //    tf.localScale = new Vector3(5f, 2.5f, 5f);
+                //    speed = 0;
+                //    runSpeed = 0;
+                //}
+                //else
+                //{
+                //    tf.localScale = new Vector3(5f, 5f, 5f);
+                //    speed = 5;
+                //    runSpeed = 10;
+                //}
                 //Run when holding P
-                if (Input.GetKey(KeyCode.LeftAlt))
+                if (Input.GetButton("Run"))
                 {
                     if (speed < runSpeed)
                     {
@@ -345,17 +372,16 @@ public class RefactoredPlayer : MonoBehaviour
                     fastFall = true;
                 }
                 //Airdash when space is pressed in the air
-                if (hasAirdash && Input.GetButtonDown("Jump"))
+                if (hasAirdash && Input.GetButtonDown("Jump") && !wasSwinging)
                 {
                     //Used airdash
                     hasAirdash = false;
                     airdashTime = .3f;
                     this.airdashDirection = calculateAirdashVector();
-                    //velocity.y = jumpVelocity * 1.2f;
                 }
             }
 
-            if (airdashTime-Time.deltaTime > 0)
+            if (airdashTime - Time.deltaTime > 0)
             {
                 airdashTime -= Time.deltaTime;
                 rig2D.velocity = airdashDirection;
@@ -369,14 +395,12 @@ public class RefactoredPlayer : MonoBehaviour
             }
             else
             {
-            //velocity.y += gravity * Time.deltaTime; //  Gravity constant
-            float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
-                                                                    //  Damping/acceleration applied throught damping.
-            velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
-            //  Call to move function in controller2D class
-            controller.Move(velocity * Time.deltaTime);
+                float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
+                                                                        //  Damping/acceleration applied throught damping.
+                velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
+                //  Call to move function in controller2D class
+                controller.Move(velocity * Time.deltaTime);
             }
-            //controller.Move(velocity * Time.deltaTime);
 
             //TELEPORT LOGIC
             if (timeSinceLastTp > tpCooldown && !powerset)
@@ -385,7 +409,7 @@ public class RefactoredPlayer : MonoBehaviour
                 {
                     //Handle teleport
                     float angle = tpDirection();
-                    Debug.Log(angle);
+                    //Debug.Log(angle);
                     Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
                     dir.x *= tpDistance;
                     dir.y *= tpDistance;
@@ -401,8 +425,6 @@ public class RefactoredPlayer : MonoBehaviour
             {
                 nextFire = fireTime + fireDelta;
                 newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-                //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
-                //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
                 newProjectile.SetActive(true);
 
                 //check facing of sprite
@@ -426,8 +448,9 @@ public class RefactoredPlayer : MonoBehaviour
                 fireTime = 0.0F;
             }
 
-            if (Input.GetKeyDown(KeyCode.H))
+            if (Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.Q))
                 powerset = !powerset;
+            wasSwinging = false;
         }
 
         if (invincible)
@@ -444,7 +467,6 @@ public class RefactoredPlayer : MonoBehaviour
             {
                 invincible = false;
                 Physics2D.IgnoreLayerCollision(13, 14, false);
-                //timer_started = false;
             }
         }
         else
@@ -465,7 +487,7 @@ public class RefactoredPlayer : MonoBehaviour
         grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
     }
 
-    public void takeDamage(int damage, float knockDir)
+    public void takeDamage(int damage, Vector2 knockDir)
     {
         Debug.Log("invincible: " + invincible);
         if (!invincible)
@@ -477,10 +499,10 @@ public class RefactoredPlayer : MonoBehaviour
                 Debug.Log("Player died!");
                 gameObject.SetActive(false);
             }
-            velocity.x += knockback * knockDir;
+            velocity.x += knockback * knockDir.x;
+            velocity.y += knockback * knockDir.y;
             controller.Move(velocity * Time.deltaTime);
             Debug.Log("Player health: " + health);
-            //timer_started = true;
             timeLeft = invincibility;
             //turn off collision with enemies for 0.5 seconds
             invincible = true;
