@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 //CURRENT PLAYER CONTROL LAYOUT
 //Non-adjustable
@@ -10,6 +11,27 @@ using UnityEngine;
 //Run to run
 //Jump to jump/airdash
 //H swaps powers
+
+//name = name of the power
+//active = if you have access to the power
+//side = which powerset it belongs to
+public class Power : IComparable<Power>
+{
+    public string name;
+    public bool active;
+    public bool side;
+    public Power(string n, bool a, bool s)
+    {
+        name = n;
+        active = a;
+        side = s;
+    }
+
+    public int CompareTo(Power other)
+    {
+        return name.CompareTo(other.name);
+    }
+}
 
 public class Player : MonoBehaviour
 {
@@ -40,7 +62,7 @@ public class Player : MonoBehaviour
 
     SpriteRenderer sprite;
     private GameObject newProjectile;
-    public GameObject boomerang;
+    public GameObject boomerangObj;
     public GameObject toxicShot;
     private GameObject projectile;
 
@@ -61,6 +83,22 @@ public class Player : MonoBehaviour
 
     //This variable is super important, true means you're in tech mode, false means you're in psychic mode
     public bool powerset = true;
+    public Dictionary<string, Power> tPowerDict = new Dictionary<string, Power>();
+    public Dictionary<string, Power> tWeaponDict = new Dictionary<string, Power>();
+    public Dictionary<string, Power> mPowerDict = new Dictionary<string, Power>();
+    public Dictionary<string, Power> mWeaponDict = new Dictionary<string, Power>();
+    public Power tWeapon;
+    public Power tUtility;
+    public Power mWeapon;
+    public Power mUtility;
+    private Power boomerang;
+    private Power poisonShot;
+    private Power grapple;
+    private Power teleport;
+    private Power antiGrav;
+    private Power reflector;
+    private Power drill;
+    private Power freeze;
 
     float velocX_smooth;
     float accelTime_air = .4f;
@@ -212,6 +250,24 @@ public class Player : MonoBehaviour
         timeSinceLastTp = tpCooldown;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         health = health_max;
+
+        //Initialize powers
+        boomerang = new Power("boomerang", true, true);
+        grapple = new Power("grapple", true, true);
+        poisonShot = new Power("poison", true, false);
+        teleport = new Power("teleport", true, false);
+        antiGrav = new Power("anti-grav", false, true);
+        drill = new Power("drill", false, true);
+        freeze = new Power("freeze", false, false);
+        reflector = new Power("reflect", false, false);
+        tPowerDict.Add("a", grapple); tPowerDict.Add("b", antiGrav);
+        tWeaponDict.Add("a", boomerang); tWeaponDict.Add("b", drill);
+        mPowerDict.Add("a", teleport); mPowerDict.Add("b", reflector);
+        mWeaponDict.Add("a", poisonShot); mWeaponDict.Add("b", freeze);
+        tUtility = grapple;
+        tWeapon = boomerang;
+        mUtility = teleport;
+        mWeapon = poisonShot;
     }
 
     // Update is called once per frame
@@ -219,7 +275,7 @@ public class Player : MonoBehaviour
     {
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
-            projectile = boomerang;
+            projectile = boomerangObj;
         else
             projectile = toxicShot;
 
@@ -392,11 +448,17 @@ public class Player : MonoBehaviour
                 newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
                 newProjectile.SetActive(true);
 
-                float aim = Mathf.Deg2Rad * aimDirection();
-                Vector2 fire_direction = new Vector2(Mathf.Cos(aim), Mathf.Sin(aim));
-                Debug.Log(fire_direction);
-                newProjectile.GetComponent<Rigidbody2D>().velocity = fire_direction;
-                
+                //check facing of sprite
+                if (sprite.flipY)
+                {
+                    //sprite facing left (backwards)
+                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+                }
+                else
+                {
+                    //sprite facing right (forwards)
+                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+                }
 
 
                 //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);

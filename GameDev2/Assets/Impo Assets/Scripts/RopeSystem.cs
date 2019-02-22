@@ -175,6 +175,7 @@ public class RopeSystem : MonoBehaviour
         ropeJoint.enabled = false;
         ropeAttached = false;
         player.isSwinging = false;
+        player.GetComponent<Rigidbody2D>().gravityScale = player.fallSpeed;
         ropeRenderer.positionCount = 2;
         ropeRenderer.SetPosition(0, transform.position);
         ropeRenderer.SetPosition(1, transform.position);
