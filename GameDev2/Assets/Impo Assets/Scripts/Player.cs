@@ -48,6 +48,7 @@ public class Player : MonoBehaviour
     private int flashCt = 0;
     public int flashRate = 5;
 
+    public bool alive = true;
     public int health_max = 5;
     private int health = 5;
     public float attack = 1f;
@@ -58,7 +59,7 @@ public class Player : MonoBehaviour
     public bool invincible = false;
     private float timeLeft = 0.5f;
     private float fireTime = 0.0f;
-    public float shootDelay = .02f; 
+    public float shootDelay = .02f;
 
     SpriteRenderer sprite;
     private GameObject newProjectile;
@@ -111,22 +112,16 @@ public class Player : MonoBehaviour
     // --------------------------------
 
     // Animation
-    private Rigidbody2D rig2D; 
+    private Rigidbody2D rig2D;
     public Animator anim;
     private bool idle;
     private bool crouching;
     private bool jumping;
     private bool airDashing;
-    public bool doneShooting; 
-    //public GameObject playerSprite; 
-    // -----------------------------
+    public bool doneShooting;
     private Vector2 directionalInput;
     private float halfHeight;
 
-    //  States
-    public bool alive = true;
-    public bool inGame;
-    
     //  Gmae Manager
     public GameObject gameManagerObj;
     private GameState gameManager;
@@ -135,7 +130,7 @@ public class Player : MonoBehaviour
     public GameObject healthObj;
     private HealthUI hiScript;
     public GameObject pSetObj;
-    private PowerSetController pSetCont; 
+    private PowerSetController pSetCont;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -265,9 +260,15 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
+        gameManager = gameManagerObj.GetComponent<GameState>();
+
         timeSinceLastTp = tpCooldown;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         health = health_max;
+
+        hiScript = healthObj.GetComponent<HealthUI>();
+        health = health_max;
+        pSetCont = pSetObj.GetComponent<PowerSetController>();
 
         //Initialize powers
         boomerang = new Power("boomerang", true, true);
@@ -291,29 +292,23 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim.SetBool("Tele", false);
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
+        {
             projectile = boomerangObj;
+            pSetCont.showPowerSet("SCIENCE");
+        }
         else
+        {
             projectile = toxicShot;
+            pSetCont.showPowerSet("MAGIC");
+        }
 
         if (controller.cont_collision_info.above || grounded) //  Stops vertical movement if vertical collision detected
         {
-            //use boomerang if in tech powerset, toxicShot if magic
-            if (powerset)
-            {
-                projectile = boomerang;
-                pSetCont.showPowerSet("SCIENCE");
-            }
-            else
-            {
-                projectile = toxicShot;
-                pSetCont.showPowerSet("MAGIC");
-            }
-            if (controller.cont_collision_info.above || controller.cont_collision_info.below) //  Stops vertical movement if vertical collision detected
-            {
-                velocity.y = 0;
-            }
+            velocity.y = 0;
+        }
 
         if (!pa_inConvo)  // Can move while not in conversation
         {
@@ -323,6 +318,8 @@ public class Player : MonoBehaviour
         {
             directionalInput = new Vector2(0, 0);
         }
+        WalkAnim(directionalInput);
+
 
         //Flip Player Based on Direction
         if (directionalInput.x > 0)
@@ -341,13 +338,23 @@ public class Player : MonoBehaviour
             wasSwinging = true;
             if (directionalInput.x != 0)
             {
-                sprite.flipX = true;
-            }
-            else if (directionalInput.x < 0)
-            {
-                sprite.flipX = false;
-            }
+                //1
+                var playerToHookDirection = (ropeHook - (Vector2)transform.position).normalized;
 
+                //2
+                Vector2 perpendicularDirection;
+                if (directionalInput.x < 0)
+                {
+                    perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
+                    var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
+                    Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
+                }
+                else
+                {
+                    perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
+                    var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
+                    Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
+                }
 
                 var force = perpendicularDirection * swingForce;
                 this.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Force);
@@ -383,19 +390,19 @@ public class Player : MonoBehaviour
                 {
                     if (speed < runSpeed)
                     {
-                        perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
-                        var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
-                        Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
+                        temp = speed;
+                        speed = runSpeed;
+                        runSpeed = temp;
                     }
-                    else
+                }
+                else
+                {
+                    if (speed > runSpeed)
                     {
-                        perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
-                        var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
-                        Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
+                        temp = speed;
+                        speed = runSpeed;
+                        runSpeed = temp;
                     }
-
-                    var force = perpendicularDirection * swingForce;
-                    this.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Force);
                 }
                 //Jump when space is pressed
                 if (Input.GetButtonDown("Jump"))
@@ -442,7 +449,7 @@ public class Player : MonoBehaviour
                 //  Call to move function in controller2D class
                 controller.Move(velocity * Time.deltaTime);
             }
-            
+
             //TELEPORT LOGIC
             if (timeSinceLastTp > tpCooldown && !powerset)
             {
@@ -456,32 +463,49 @@ public class Player : MonoBehaviour
                     dir.y *= tpDistance;
                     transform.position = transform.position + (Vector3)dir;
                     timeSinceLastTp = 0f;
+                    anim.SetBool("Tele", true);
                 }
-
-                if (Input.GetKeyDown(KeyCode.R))
-                    powerset = !powerset;
             }
+            timeSinceLastTp += Time.deltaTime;
 
-            if (invincible)
+            //fire projectile if '1' key pressed and cooldown expired
+            fireTime = fireTime + Time.deltaTime;
+            if (Input.GetButton("Fire") && fireTime > nextFire)
             {
                 nextFire = fireTime + fireDelta;
                 newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
                 newProjectile.SetActive(true);
 
-                flashCt++;
-                timeLeft -= Time.deltaTime;
-                //Debug.Log(timeLeft);
-                if (timeLeft <= 0.0)
+                //check facing of sprite
+                if (sprite.flipY)
                 {
-                    invincible = false;
-                    Physics2D.IgnoreLayerCollision(13, 14, false);
-                    //timer_started = false;
+                    //sprite facing left (backwards)
+                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
                 }
-            }
-            else
-            {
-                flashCt = 0;
-                sprite.enabled = true;
+                else
+                {
+                    //sprite facing right (forwards)
+                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+                }
+
+
+                //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
+
+                // create code here that animates the newProjectile
+                //Debug.Log("Fire!");
+                if (!powerset)
+                {
+                    ToxicShotAnim();
+                }
+                else
+                {
+                    BoomerangShotAnim();
+                }
+                doneShooting = false;
+                anim.SetBool("DoneShooting", doneShooting);
+                nextFire = nextFire - fireTime;
+                fireTime = 0.0F;
+                StartCoroutine(ShootAfterTime(shootDelay));
             }
 
             if (Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.Q))
@@ -504,13 +528,6 @@ public class Player : MonoBehaviour
                 invincible = false;
                 Physics2D.IgnoreLayerCollision(13, 14, false);
             }
-            else if (velocity.x > 0)
-            {
-                facingRight = false;
-            }
-            JumpAnim();
-            CrouchAnim();
-            AirDashAnim();
         }
         else
         {
@@ -526,8 +543,9 @@ public class Player : MonoBehaviour
         {
             facingRight = false;
         }
-        Debug.Log(grounded);
         grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
+        Debug.Log("Player is grounded: " + grounded);
+
     }
 
     public void takeDamage(int damage, Vector2 knockDir)
@@ -558,17 +576,17 @@ public class Player : MonoBehaviour
 
     void WalkAnim(Vector2 input)
     {
-        if (Mathf.Abs(velocity.x) > .005 && input.x != 0)
+        if (input.x != 0)
         {
             anim.SetBool("Walk", true);
+            anim.SetBool("Idle", false);
             idle = false;
         }
         else
         {
-                anim.SetBool("Walk", false);
-                anim.SetBool("Idle", true);
-                idle = true;
-            }
+            anim.SetBool("Walk", false);
+            anim.SetBool("Idle", true);
+            idle = true;
         }
     }
 
@@ -586,12 +604,13 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-        if (!grounded)
+        //Debug.Log(controller.cont_collision_info.below);
+        if (jumping && !controller.cont_collision_info.below)
         {
 
-                anim.SetBool("Grounded", false);
-                anim.SetBool("Jump_Ascend", true);
-                anim.SetBool("Walk", false);
+            anim.SetBool("Grounded", false);
+            anim.SetBool("Jump_Ascend", true);
+            anim.SetBool("Walk", false);
         }
         else
         {
@@ -599,13 +618,6 @@ public class Player : MonoBehaviour
             anim.SetBool("Grounded", true);
             anim.SetBool("Jump_Ascend", false);
         }
-
-    }
-
-    void AirDashAnim()
-    {
-        //anim.SetBool("Air Dash", airDashing);
-        //airDashing = false; 
     }
 
     void BoomerangShotAnim()
@@ -613,7 +625,7 @@ public class Player : MonoBehaviour
         anim.SetBool("BoomShot", true);
         anim.SetBool("Walk", false);
     }
-    
+
     void ToxicShotAnim()
     {
         anim.SetTrigger("ToxShot");
