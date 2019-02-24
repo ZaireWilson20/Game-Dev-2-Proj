@@ -303,9 +303,7 @@ public class Player : MonoBehaviour
             sprite.flipX = false;
         }
 
-
-
-        //On the ground, enable grounded only movement here
+        //While the player is swinging, limit their abilities to just grapple control
         if (isSwinging && powerset)
         {
             rig2D.gravityScale = 1f;
@@ -336,6 +334,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            //While on the ground, enable all grounded options
             if (grounded)
             {
                 hasAirdash = true;
