@@ -59,6 +59,7 @@ public class Player : MonoBehaviour
     public bool invincible = false;
     private float timeLeft = 0.5f;
     private float fireTime = 0.0f;
+    public float shootDelay = .02f;
 
     SpriteRenderer sprite;
     private GameObject newProjectile;
@@ -112,12 +113,24 @@ public class Player : MonoBehaviour
 
     // Animation
     private Rigidbody2D rig2D;
-    private Animator anim;
+    public Animator anim;
     private bool idle;
     private bool crouching;
     private bool jumping;
+    private bool airDashing;
+    public bool doneShooting;
     private Vector2 directionalInput;
     private float halfHeight;
+
+    //  Gmae Manager
+    public GameObject gameManagerObj;
+    private GameState gameManager;
+
+    //  UI
+    public GameObject healthObj;
+    private HealthUI hiScript;
+    public GameObject pSetObj;
+    private PowerSetController pSetCont;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -247,9 +260,15 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
+        gameManager = gameManagerObj.GetComponent<GameState>();
+
         timeSinceLastTp = tpCooldown;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         health = health_max;
+
+        hiScript = healthObj.GetComponent<HealthUI>();
+        health = health_max;
+        pSetCont = pSetObj.GetComponent<PowerSetController>();
 
         //Initialize powers
         boomerang = new Power("boomerang", true, true);
@@ -273,11 +292,18 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        anim.SetBool("Tele", false);
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
+        {
             projectile = boomerangObj;
+            pSetCont.showPowerSet("SCIENCE");
+        }
         else
+        {
             projectile = toxicShot;
+            pSetCont.showPowerSet("MAGIC");
+        }
 
         if (controller.cont_collision_info.above || grounded) //  Stops vertical movement if vertical collision detected
         {
@@ -292,6 +318,8 @@ public class Player : MonoBehaviour
         {
             directionalInput = new Vector2(0, 0);
         }
+        WalkAnim(directionalInput);
+
 
         //Flip Player Based on Direction
         if (directionalInput.x > 0)
@@ -421,7 +449,7 @@ public class Player : MonoBehaviour
                 //  Call to move function in controller2D class
                 controller.Move(velocity * Time.deltaTime);
             }
-            
+
             //TELEPORT LOGIC
             if (timeSinceLastTp > tpCooldown && !powerset)
             {
@@ -435,6 +463,7 @@ public class Player : MonoBehaviour
                     dir.y *= tpDistance;
                     transform.position = transform.position + (Vector3)dir;
                     timeSinceLastTp = 0f;
+                    anim.SetBool("Tele", true);
                 }
             }
             timeSinceLastTp += Time.deltaTime;
@@ -464,8 +493,19 @@ public class Player : MonoBehaviour
 
                 // create code here that animates the newProjectile
                 //Debug.Log("Fire!");
+                if (!powerset)
+                {
+                    ToxicShotAnim();
+                }
+                else
+                {
+                    BoomerangShotAnim();
+                }
+                doneShooting = false;
+                anim.SetBool("DoneShooting", doneShooting);
                 nextFire = nextFire - fireTime;
                 fireTime = 0.0F;
+                StartCoroutine(ShootAfterTime(shootDelay));
             }
 
             if (Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.Q))
@@ -503,12 +543,14 @@ public class Player : MonoBehaviour
         {
             facingRight = false;
         }
-        Debug.Log(grounded);
         grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
+        Debug.Log("Player is grounded: " + grounded);
+
     }
 
     public void takeDamage(int damage, Vector2 knockDir)
     {
+        hiScript.loseHealth();
         Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
@@ -530,27 +572,21 @@ public class Player : MonoBehaviour
             Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 
-        //Animation Update; 
-        WalkAnim(directionalInput);
-        CrouchAnim();
-        JumpAnim();
     }
 
     void WalkAnim(Vector2 input)
     {
-        if (Mathf.Abs(velocity.x) > .005 && input.x != 0)
+        if (input.x != 0)
         {
             anim.SetBool("Walk", true);
+            anim.SetBool("Idle", false);
             idle = false;
         }
         else
         {
-            if (!idle)
-            {
-                anim.SetBool("Walk", false);
-                anim.SetBool("Idle", true);
-                idle = true;
-            }
+            anim.SetBool("Walk", false);
+            anim.SetBool("Idle", true);
+            idle = true;
         }
     }
 
@@ -568,14 +604,13 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-        if (!grounded)
+        //Debug.Log(controller.cont_collision_info.below);
+        if (jumping && !controller.cont_collision_info.below)
         {
-            if (jumping)
-            {
-                anim.SetBool("Grounded", false);
-                anim.SetBool("Jump_Ascend", true);
-                anim.SetBool("Walk", false);
-            }
+
+            anim.SetBool("Grounded", false);
+            anim.SetBool("Jump_Ascend", true);
+            anim.SetBool("Walk", false);
         }
         else
         {
@@ -583,6 +618,38 @@ public class Player : MonoBehaviour
             anim.SetBool("Grounded", true);
             anim.SetBool("Jump_Ascend", false);
         }
+    }
 
+    void BoomerangShotAnim()
+    {
+        anim.SetBool("BoomShot", true);
+        anim.SetBool("Walk", false);
+    }
+
+    void ToxicShotAnim()
+    {
+        anim.SetTrigger("ToxShot");
+        anim.SetBool("Walk", false);
+    }
+
+    IEnumerator ShootAfterTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+
+        newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+        newProjectile.SetActive(true);
+        if (sprite.flipX == false)
+        {
+            //sprite facing left (backwards)
+            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+        }
+        else
+        {
+            //sprite facing right (forwards)
+            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+        }
+        doneShooting = true;
+        anim.SetBool("BoomShot", false);
+        // Code to execute after the delay
     }
 }

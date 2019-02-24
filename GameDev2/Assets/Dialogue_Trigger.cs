@@ -48,6 +48,7 @@ public class Dialogue_Trigger : MonoBehaviour
         }
     }
 
+
     public void Deactivate()
     {
         dia_icon.SetActive(false);
