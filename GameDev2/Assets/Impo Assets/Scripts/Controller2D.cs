@@ -6,7 +6,7 @@ public class Controller2D : MonoBehaviour
 {
 
     //collider attributes
-    const float cont_skin_width = 0.015f;
+    const float cont_skin_width = 0.5f;
     public int cont_H_raycount = 4;
     public int cont_V_raycount = 4;
     public float cont_max_climb_angle = 70f;   //  Max angle for slope that player is allowed to climb

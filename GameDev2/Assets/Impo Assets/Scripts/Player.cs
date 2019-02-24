@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
 
     // Animation
     private Rigidbody2D rig2D; 
-    private Animator anim;
+    public Animator anim;
     private bool idle;
     private bool crouching;
     private bool jumping;
@@ -237,7 +237,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        anim.SetBool("Tele", false);
         if (!gameManager.paused)
         {
             //use boomerang if in tech powerset, toxicShot if magic
@@ -408,7 +408,6 @@ public class Player : MonoBehaviour
                 //controller.Move(velocity * Time.deltaTime);
                 // }
                 controller.Move(velocity * Time.deltaTime);
-
                 //TELEPORT LOGIC
                 if (timeSinceLastTp > tpCooldown && !powerset)
                 {
@@ -422,6 +421,8 @@ public class Player : MonoBehaviour
                         dir.y *= tpDistance;
                         transform.position = transform.position + (Vector3)dir;
                         timeSinceLastTp = 0f;
+                        Debug.Log("Tele");
+                        anim.SetBool("Tele", true);
                     }
                 }
                 timeSinceLastTp += Time.deltaTime;
@@ -512,7 +513,8 @@ public class Player : MonoBehaviour
 
     public void takeDamage(int damage, float knockDir)
     {
-        Debug.Log("invincible: " + invincible);
+        Debug.Log("hi");
+        //Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
             health -= damage;
@@ -533,27 +535,21 @@ public class Player : MonoBehaviour
             Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 
-        //Animation Update; 
-        WalkAnim(directionalInput);
-        CrouchAnim();
-        JumpAnim();
     }
 
     void WalkAnim(Vector2 input)
     {
-        if(Mathf.Abs(velocity.x) > .005 && input.x != 0)
+        if(input.x != 0)
         {
             anim.SetBool("Walk", true);
+            anim.SetBool("Idle", false);
             idle = false; 
         }
         else
         {
-            if (!idle)
-            {
                 anim.SetBool("Walk", false);
                 anim.SetBool("Idle", true);
                 idle = true; 
-            }
         }
     }
 
@@ -571,15 +567,13 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-
+        //Debug.Log(controller.cont_collision_info.below);
         if (jumping && !controller.cont_collision_info.below)
         {
-            if (jumping)
-            {
+
                 anim.SetBool("Grounded", false);
                 anim.SetBool("Jump_Ascend", true);
                 anim.SetBool("Walk", false);
-            }
         }
         else
         {
@@ -598,7 +592,7 @@ public class Player : MonoBehaviour
 
     void BoomerangShotAnim()
     {
-        anim.SetTrigger("BoomShot");
+        anim.SetBool("BoomShot", true);
         anim.SetBool("Walk", false);
     }
     
@@ -625,7 +619,7 @@ public class Player : MonoBehaviour
             newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
         }
         doneShooting = true;
-        anim.SetBool("DoneShooting", doneShooting);
+        anim.SetBool("BoomShot", false);
         // Code to execute after the delay
     }
 }

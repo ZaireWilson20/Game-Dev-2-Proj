@@ -105,7 +105,10 @@ public class SimpleHostile : MonoBehaviour
             Player pscript = contact.GetComponent<Player>();
             //Debug.Log(lastDir);
             if (!pscript.invincible)
+            {
                 pscript.takeDamage(attack, lastDir);
+                pscript.anim.SetTrigger("Hurt");
+            }
         }
         /*else if (contact.layer.Equals("Bullet"))
         {
