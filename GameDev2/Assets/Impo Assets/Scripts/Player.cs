@@ -92,7 +92,13 @@ public class Player : MonoBehaviour
     
     //  Gmae Manager
     public GameObject gameManagerObj;
-    private GameState gameManager; 
+    private GameState gameManager;
+
+    //  UI
+    public GameObject healthObj;
+    private HealthUI hiScript;
+    public GameObject pSetObj;
+    private PowerSetController pSetCont; 
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -231,7 +237,9 @@ public class Player : MonoBehaviour
         jumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
         timeSinceLastTp = tpCooldown;
 
+        hiScript = healthObj.GetComponent<HealthUI>();
         health = health_max;
+        pSetCont = pSetObj.GetComponent<PowerSetController>();
     }
 
     // Update is called once per frame
@@ -242,10 +250,15 @@ public class Player : MonoBehaviour
         {
             //use boomerang if in tech powerset, toxicShot if magic
             if (powerset)
+            {
                 projectile = boomerang;
+                pSetCont.showPowerSet("SCIENCE");
+            }
             else
+            {
                 projectile = toxicShot;
-
+                pSetCont.showPowerSet("MAGIC");
+            }
             if (controller.cont_collision_info.above || controller.cont_collision_info.below) //  Stops vertical movement if vertical collision detected
             {
                 velocity.y = 0;
@@ -513,8 +526,8 @@ public class Player : MonoBehaviour
 
     public void takeDamage(int damage, float knockDir)
     {
-        Debug.Log("hi");
-        //Debug.Log("invincible: " + invincible);
+        hiScript.loseHealth();
+        Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
             health -= damage;
