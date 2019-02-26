@@ -82,6 +82,8 @@ public class Player : MonoBehaviour
     public float tpCooldown = 1f;
     private float timeSinceLastTp;
 
+    public LayerMask floorMask;
+
     //This variable is super important, true means you're in tech mode, false means you're in psychic mode
     public bool powerset = true;
     public Dictionary<string, Power> tPowerDict = new Dictionary<string, Power>();
@@ -164,46 +166,9 @@ public class Player : MonoBehaviour
     public float aimDirection()
     {
         float aim = 0f;
-        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f)
-        {
-            aim = 45f;
-            facingRight = true;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f)
-        {
-            aim = 135f;
-            facingRight = false;
-        }
-        else if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") < 0f)
-        {
-            aim = -45f;
-            facingRight = true;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") < 0f)
-        {
-            aim = -135f;
-            facingRight = false;
-        }
-        else if (Input.GetAxisRaw("Horizontal") > 0f)
-        {
-            aim = 0f;
-            facingRight = true;
-        }
-        else if (Input.GetAxisRaw("Horizontal") < 0f)
-        {
-            aim = 180f;
-            facingRight = false;
-        }
-        else if (Input.GetAxisRaw("Vertical") > 0f)
-        {
-            aim = 90f;
-        }
-        if (aim == 0f)
-        {
-            if (!facingRight)
-                aim += 180f;
-        }
-        return aim;
+        var inputDir = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0f);
+        aim = Mathf.Atan2(inputDir.y, inputDir.x);
+        return aim*Mathf.Rad2Deg;
     }
 
     //Returns valid directions you can teleport in, includes downward
@@ -336,6 +301,7 @@ public class Player : MonoBehaviour
         {
             rig2D.gravityScale = 1f;
             wasSwinging = true;
+            airdashTime = 0f;
             if (directionalInput.x != 0)
             {
                 //1
@@ -543,9 +509,16 @@ public class Player : MonoBehaviour
         {
             facingRight = false;
         }
-        grounded = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - halfHeight - 0.04f), Vector2.down, 0.025f);
-        Debug.Log("Player is grounded: " + grounded);
+        Debug.Log(grounded);
+        //Ray blah = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight - .2f), Vector2.down, 0.025f, floorMask);
+        grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight/2), Vector2.down, 1f, floorMask);
+        Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight/2), Vector2.down, Color.magenta);
+        //grounded = controller.cont_collision_info.below;
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        Debug.Log(collision.gameObject.name);
     }
 
     public void takeDamage(int damage, Vector2 knockDir)
