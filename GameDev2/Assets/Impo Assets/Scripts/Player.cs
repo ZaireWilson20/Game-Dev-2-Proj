@@ -257,7 +257,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        anim.SetBool("Tele", false);
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
         {
@@ -394,6 +393,7 @@ public class Player : MonoBehaviour
                     hasAirdash = false;
                     airdashTime = .3f;
                     this.airdashDirection = calculateAirdashVector();
+                    anim.SetTrigger("AirDash");
                 }
             }
 
@@ -421,7 +421,7 @@ public class Player : MonoBehaviour
             //TELEPORT LOGIC
             if (timeSinceLastTp > tpCooldown && !powerset)
             {
-                if (Input.GetButton("Utility"))
+                if (Input.GetButton("Utility") || Input.GetKeyDown(KeyCode.E))
                 {
                     //Handle teleport
                     float angle = tpDirection();
@@ -431,7 +431,7 @@ public class Player : MonoBehaviour
                     dir.y *= tpDistance;
                     transform.position = transform.position + (Vector3)dir;
                     timeSinceLastTp = 0f;
-                    anim.SetBool("Tele", true);
+                    anim.SetTrigger("Tele");
                 }
             }
             timeSinceLastTp += Time.deltaTime;
@@ -476,7 +476,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(ShootAfterTime(shootDelay));
             }
 
-            if (Input.GetKey(KeyCode.H) && Input.GetKey(KeyCode.Q))
+            if (Input.GetKey(KeyCode.H))
                 powerset = !powerset;
             wasSwinging = false;
         }
