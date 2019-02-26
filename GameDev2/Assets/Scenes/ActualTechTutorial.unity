@@ -8810,56 +8810,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player Variant 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1361807031179508401, guid: b8c1d5492cfce4146a45ab46c0fa4920,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1361807031179508401, guid: b8c1d5492cfce4146a45ab46c0fa4920,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1094268810439978874, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: cont_H_raycount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 1094268810439978874, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: cont_V_raycount
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: boomerang
-      value: 
-      objectReference: {fileID: 1262549819}
-    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: toxicShot
-      value: 
-      objectReference: {fileID: 1283423244}
-    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: gameManagerObj
-      value: 
-      objectReference: {fileID: 1755432297}
-    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: healthObj
-      value: 
-      objectReference: {fileID: 149469953}
-    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: pSetObj
-      value: 
-      objectReference: {fileID: 1841537401}
-    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
-        type: 3}
-      propertyPath: boomerangObj
-      value: 
-      objectReference: {fileID: 1262549819}
     - target: {fileID: 6832907070620288596, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8914,6 +8864,76 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361807031179508401, guid: b8c1d5492cfce4146a45ab46c0fa4920,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1361807031179508401, guid: b8c1d5492cfce4146a45ab46c0fa4920,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1094268810439978874, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: cont_H_raycount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1094268810439978874, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: cont_V_raycount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: boomerang
+      value: 
+      objectReference: {fileID: 1262549819}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: toxicShot
+      value: 
+      objectReference: {fileID: 1283423244}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: gameManagerObj
+      value: 
+      objectReference: {fileID: 1755432297}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: healthObj
+      value: 
+      objectReference: {fileID: 149469953}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: pSetObj
+      value: 
+      objectReference: {fileID: 1841537401}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: boomerangObj
+      value: 
+      objectReference: {fileID: 1262549819}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: floorMask.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: jumpHeight
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: nextFire
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444935796124018035, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: fireDelta
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1361807031665622385, guid: b8c1d5492cfce4146a45ab46c0fa4920,
         type: 3}
@@ -9080,6 +9100,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayer
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722488375065116329, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: -0.08795297
+      objectReference: {fileID: 0}
+    - target: {fileID: 6722488375065116329, guid: 01bf44d45fd8d8f4d98b347ddb277d39,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1.1881125
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01bf44d45fd8d8f4d98b347ddb277d39, type: 3}

@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
     public float invincibility = 0.5f;
     public bool invincible = false;
     private float timeLeft = 0.5f;
-    private float fireTime = 0.0f;
+    private float fireTime = 1f;
     public float shootDelay = .02f;
 
     SpriteRenderer sprite;
@@ -374,6 +374,8 @@ public class Player : MonoBehaviour
                 if (Input.GetButtonDown("Jump"))
                 {
                     rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
+                    jumping = true;
+                    Debug.Log("this jumpin: " + jumping);
                 }
             }
             //In the air, enable only air movement here
@@ -509,16 +511,21 @@ public class Player : MonoBehaviour
         {
             facingRight = false;
         }
-        Debug.Log(grounded);
         //Ray blah = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight - .2f), Vector2.down, 0.025f, floorMask);
         grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight/2), Vector2.down, 1f, floorMask);
         Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight/2), Vector2.down, Color.magenta);
+        
+        anim.SetFloat("Falling", rig2D.velocity.y);
+        anim.SetBool("Grounded", grounded);
+        if (jumping)
+        {
+            JumpAnim();
+        }
         //grounded = controller.cont_collision_info.below;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject.name);
     }
 
     public void takeDamage(int damage, Vector2 knockDir)
@@ -577,32 +584,36 @@ public class Player : MonoBehaviour
 
     void JumpAnim()
     {
-        //Debug.Log(controller.cont_collision_info.below);
-        if (jumping && !controller.cont_collision_info.below)
+        //Debug.Log("Jumping: " + jumping + " Grounded: " + grounded);
+        /*if (jumping)
         {
-
+            jumping = false;
             anim.SetBool("Grounded", false);
             anim.SetBool("Jump_Ascend", true);
             anim.SetBool("Walk", false);
+            anim.SetBool("Idle", false);
         }
-        else
+        else if(grounded)
         {
-            jumping = false;
-            anim.SetBool("Grounded", true);
             anim.SetBool("Jump_Ascend", false);
-        }
+            anim.SetBool("Grounded", true);
+            //anim.SetBool("Jump_Ascend", false);
+        }*/
+        anim.SetTrigger("Jump");
+        jumping = false;
     }
 
     void BoomerangShotAnim()
     {
-        anim.SetBool("BoomShot", true);
-        anim.SetBool("Walk", false);
+        anim.SetTrigger("BoomShot");
+      
     }
 
     void ToxicShotAnim()
     {
         anim.SetTrigger("ToxShot");
         anim.SetBool("Walk", false);
+        anim.SetBool("Idle", false);
     }
 
     IEnumerator ShootAfterTime(float time)
