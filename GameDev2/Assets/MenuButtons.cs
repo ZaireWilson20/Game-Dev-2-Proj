@@ -15,7 +15,7 @@ public class MenuButtons : MonoBehaviour
     public void LoadNextScene()
     {
         Debug.Log("start game");
-        SceneManager.LoadScene("ActualTechTutorial", LoadSceneMode.Single);
+        SceneManager.LoadScene("Hub", LoadSceneMode.Single);
     }
 
     public void QuitGame()

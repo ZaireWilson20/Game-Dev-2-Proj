@@ -12,7 +12,8 @@ public class SceneManagement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Application.LoadLevel(levelName);
+            SceneManager.LoadScene(levelName, LoadSceneMode.Single);
+
         }
     }
     // Start is called before the first frame update
