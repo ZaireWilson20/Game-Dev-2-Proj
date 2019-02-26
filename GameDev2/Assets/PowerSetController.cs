@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class PowerSetController : MonoBehaviour
 {
-    public Text powerSetDisplay; 
+    public TMP_Text powerSetDisplay; 
 
     public void showPowerSet(string power)
     {
