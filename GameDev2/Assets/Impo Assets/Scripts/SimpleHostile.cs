@@ -57,6 +57,7 @@ public class SimpleHostile : MonoBehaviour
 
     private SpriteRenderer sprite;
 
+    private Animator anim; 
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +67,7 @@ public class SimpleHostile : MonoBehaviour
         //get rigidbody and colliders
         rb = GetComponent<Rigidbody2D>();
         //detectCollider = GetComponent<Collider2D>();
-
+        anim = GetComponent<Animator>(); 
         sprite = GetComponent<SpriteRenderer>();
         //get player object
         player = GameObject.FindGameObjectWithTag("Player");
@@ -292,8 +293,8 @@ public class SimpleHostile : MonoBehaviour
             direction = Mathf.Sign(destination.x - transform.position.x);
             velocity.x = direction * moveSpeed;    //  Speed force added to horizontal velocity, no acceleration
             rb.velocity = velocity;
-
-            //  Damping/acceleration applied throught damping.
+            anim.SetBool("Walking", true);
+                //  Damping/acceleration applied throught damping.
             //velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
 
         }
@@ -301,6 +302,7 @@ public class SimpleHostile : MonoBehaviour
         else
         {
             rb.velocity = new Vector2(0, 0);
+            anim.SetBool("Walking", false);
         }
 
 
