@@ -384,7 +384,6 @@ public class Player : MonoBehaviour
                 {
                     rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
                     jumping = true;
-                    Debug.Log("this jumpin: " + jumping);
                 }
             }
             //In the air, enable only air movement here
