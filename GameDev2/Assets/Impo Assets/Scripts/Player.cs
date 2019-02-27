@@ -589,16 +589,17 @@ public class Player : MonoBehaviour
 
     public void takeDamage(int damage, Vector2 knockDir)
     {
-        hiScript.loseHealth();
+        
         Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
+            hiScript.loseHealth();
             health -= damage;
             if (health == 0)
             {
                 //player has died
                 Debug.Log("Player died!");
-                health = 5;
+                //health = 5;
                 SceneManager.LoadScene("Hub", LoadSceneMode.Single);
                 //gameObject.SetActive(false);
             }
