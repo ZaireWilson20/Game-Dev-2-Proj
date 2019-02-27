@@ -9,5 +9,6 @@ public class DialogueObj
     public string firstSpeaker;
     public string secondSpeaker;
     public string fsSprite;
-    public string ssSprite; 
+    public string ssSprite;
+    public string chatType;
 }

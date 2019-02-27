@@ -28,7 +28,8 @@ public class NpcDialogue : MonoBehaviour
     DialogueController dialogueController;
     public bool automatedConvo;
     public bool loading = true;
-    private bool finishAuto = false; 
+    private bool finishAuto = false;
+    public bool popUpConvo; 
     // Start is called before the first frame update
     void Start()
     {
@@ -65,7 +66,7 @@ public class NpcDialogue : MonoBehaviour
                 npc_onTrigger.dia_inConvo = inC;
             }
         }
-        else if(!finishAuto)
+        else if(automatedConvo && !finishAuto)
         {
             if (!npc_inConvo)
             {
@@ -83,6 +84,18 @@ public class NpcDialogue : MonoBehaviour
                 {
                     finishAuto = true; 
                 }
+            }
+        }
+        else if (popUpConvo) 
+        {
+            if (npc_onTrigger.dia_player_in)
+            {
+                Debug.Log("in here");
+                dialogueController.DisplayPopUP(npc_convos);
+            }
+            else
+            {
+                dialogueController.HidePopUp();
             }
         }
     }

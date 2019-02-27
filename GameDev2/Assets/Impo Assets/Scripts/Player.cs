@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 using System;
 
 //CURRENT PLAYER CONTROL LAYOUT
@@ -143,6 +144,8 @@ public class Player : MonoBehaviour
     private HealthUI hiScript;
     public GameObject pSetObj;
     private PowerSetController pSetCont;
+    
+
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -286,11 +289,13 @@ public class Player : MonoBehaviour
         {
             projectile = boomerangObj;
             pSetCont.showPowerSet("SCIENCE");
+            anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/GameObject.controller", typeof(RuntimeAnimatorController));
         }
         else
         {
             projectile = toxicShot;
             pSetCont.showPowerSet("MAGIC");
+            anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/updatedFullController.controller", typeof(RuntimeAnimatorController));
         }
 
         if (controller.cont_collision_info.above || grounded) //  Stops vertical movement if vertical collision detected
@@ -548,6 +553,15 @@ public class Player : MonoBehaviour
             JumpAnim();
         }
         //grounded = controller.cont_collision_info.below;
+        if (isSwinging)
+        {
+            anim.SetTrigger("Grapple");
+            anim.SetBool("Swinging", true);
+        }
+        else
+        {
+            anim.SetBool("Swinging", false);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -683,4 +697,6 @@ public class Player : MonoBehaviour
         anim.SetBool("BoomShot", false);
         // Code to execute after the delay
     }
+
+
 }

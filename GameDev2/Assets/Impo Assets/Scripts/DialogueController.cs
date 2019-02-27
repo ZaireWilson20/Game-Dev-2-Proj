@@ -13,9 +13,11 @@ public class DialogueController : MonoBehaviour
     public GameObject textBox;
     public GameObject nameBox;
     public GameObject bigBox;
+    public GameObject popUpBox; 
     public GameObject continueBox; 
     private TMP_Text dialogue;
     private TMP_Text nameText;
+    private TMP_Text popText;
     private DialogueObj diaObj; 
     string[] allLines;
     public Image char1;
@@ -30,6 +32,7 @@ public class DialogueController : MonoBehaviour
     {
         dialogue = textBox.GetComponentInChildren<TMP_Text>();
         nameText = nameBox.GetComponentInChildren<TMP_Text>();
+        popText = popUpBox.GetComponentInChildren<TMP_Text>();
     }
 
     // Update is called once per frame
@@ -59,6 +62,17 @@ public class DialogueController : MonoBehaviour
         StartCoroutine(TypeSentence(allLines[currentLine]));
         setSpeaker(lines.speakerSeq[currentLine]);
         currentLine++;
+    }
+
+    public void DisplayPopUP(DialogueObj lines)
+    {
+        popUpBox.SetActive(true);
+        popText.text = lines.allDialogue[0];
+    }
+
+    public void HidePopUp()
+    {
+        popUpBox.SetActive(false);
     }
 
     public bool nextLine()
