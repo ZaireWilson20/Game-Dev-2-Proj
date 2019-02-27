@@ -451,20 +451,20 @@ public class Player : MonoBehaviour
             if (Input.GetButton("Fire") && fireTime > nextFire)
             {
                 nextFire = fireTime + fireDelta;
-                newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-                newProjectile.SetActive(true);
+                //newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                //newProjectile.SetActive(true);
 
-                //check facing of sprite
-                if (sprite.flipY)
-                {
-                    //sprite facing left (backwards)
-                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
-                }
-                else
-                {
-                    //sprite facing right (forwards)
-                    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-                }
+                ////check facing of sprite
+                //if (sprite.flipY)
+                //{
+                //    //sprite facing left (backwards)
+                //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+                //}
+                //else
+                //{
+                //    //sprite facing right (forwards)
+                //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+                //}
 
 
                 //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
