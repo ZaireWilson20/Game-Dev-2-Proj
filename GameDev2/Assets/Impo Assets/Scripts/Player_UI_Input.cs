@@ -38,7 +38,7 @@ public class Player_UI_Input : MonoBehaviour
             map.SetActive(true);
             gameManager.paused = true; 
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && currentState == ui_state.game)
+        else if (Input.GetButtonDown("Pause") && currentState == ui_state.game)
         {
             currentState = ui_state.menu;
             menu.SetActive(true);
@@ -51,7 +51,7 @@ public class Player_UI_Input : MonoBehaviour
             currentState = ui_state.game;
             gameManager.paused = false;
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && currentState == ui_state.menu)
+        else if (Input.GetButtonDown("Pause") && currentState == ui_state.menu)
         {
             menu.SetActive(false);
             currentState = ui_state.game;
