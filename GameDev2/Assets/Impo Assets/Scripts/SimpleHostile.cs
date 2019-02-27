@@ -117,7 +117,7 @@ public class SimpleHostile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject contact = collision.gameObject;
-        
+        Debug.Log(collision.gameObject);
         if (contact.tag.Equals("Player"))
         {
             Debug.Log("I HIT THE PLAYER");

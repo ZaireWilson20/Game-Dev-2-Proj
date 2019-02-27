@@ -563,6 +563,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject);
     }
 
     //Param 1 - The dictionary of available powers to switch to
@@ -597,6 +598,7 @@ public class Player : MonoBehaviour
             {
                 //player has died
                 Debug.Log("Player died!");
+                health = 5;
                 SceneManager.LoadScene("Hub", LoadSceneMode.Single);
                 //gameObject.SetActive(false);
             }
