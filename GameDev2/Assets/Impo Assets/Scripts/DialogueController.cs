@@ -110,11 +110,18 @@ public class DialogueController : MonoBehaviour
     {
         doneSentence = false;
         dialogue.text = "";
+        int countBeforeSkip = 0; 
         foreach(char letter in sent)
         {
+            if (Input.GetButton("Jump") && countBeforeSkip == 5)
+            {
+                break; 
+            }
             dialogue.text += letter;
-            yield return null; 
+            yield return new WaitForSeconds(0f);
+            countBeforeSkip++; 
         }
+        dialogue.text = sent; 
         doneSentence = true;
         continueBox.SetActive(true);
     }

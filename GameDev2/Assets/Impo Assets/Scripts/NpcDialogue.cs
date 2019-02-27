@@ -52,7 +52,6 @@ public class NpcDialogue : MonoBehaviour
 
         if (!popUpConvo && !automatedConvo && !loading)
         {
-            Debug.Log("1");
             if (npc_onTrigger.dia_player_in && Input.GetButton("Jump") && !npc_inConvo)    // If player presses talk button while in range of npc
             {
                 pa_script.pa_inConvo = true;
@@ -70,8 +69,6 @@ public class NpcDialogue : MonoBehaviour
         }
         else if(automatedConvo && !finishAuto && !loading)
         {
-            Debug.Log("2");
-
             if (!npc_inConvo)
             {
                 pa_script.pa_inConvo = true;
