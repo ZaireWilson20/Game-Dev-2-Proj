@@ -9,10 +9,14 @@ public class Dialogue_Trigger : MonoBehaviour
 
     [SerializeField]
     private GameObject dia_icon;
-    public bool dia_inConvo = false; 
+    public bool dia_inConvo;
+
+    public GameObject diaObj;
+    private NpcDialogue diaScript; 
     void Start()
     {
         dia_icon.SetActive(false);
+        diaScript = diaObj.GetComponent<NpcDialogue>();
     }
 
     // Update is called once per frame
@@ -37,6 +41,7 @@ public class Dialogue_Trigger : MonoBehaviour
         if(collision.transform.tag == "Player")
         {
             dia_player_in = true;
+            diaScript.byeGuy = false; 
         }
     }
 
@@ -44,6 +49,8 @@ public class Dialogue_Trigger : MonoBehaviour
     {
         if(collision.transform.tag == "Player")
         {
+            Debug.Log("COME ON");
+            diaScript.byeGuy = true; 
             dia_player_in = false;
         }
     }

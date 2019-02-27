@@ -5217,6 +5217,26 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 7.290987
       objectReference: {fileID: 0}
+    - target: {fileID: 9051743091449933018, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: diaObj
+      value: 
+      objectReference: {fileID: 1419589058}
+    - target: {fileID: 9051743091326370693, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.1981132
+      objectReference: {fileID: 0}
+    - target: {fileID: 9051743091326370693, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.1981132
+      objectReference: {fileID: 0}
+    - target: {fileID: 9051743091326370693, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.1981132
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9051743090948632340, guid: 67d7f3d0343f8394dbe1098a0d8cef4e, type: 3}
     - {fileID: 9051743090948632342, guid: 67d7f3d0343f8394dbe1098a0d8cef4e, type: 3}
@@ -5956,6 +5976,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6239382792151427676, guid: 3337aafca6b15eb469f0ac4ba8c8a814,
     type: 3}
   m_PrefabInstance: {fileID: 1417942342}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1419589058 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9051743090948632341, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1267190209}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1432405584
 PrefabInstance:
@@ -8189,7 +8215,7 @@ PrefabInstance:
     - target: {fileID: 9051743090948632341, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9051743090948632345, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
@@ -8276,6 +8302,11 @@ PrefabInstance:
       propertyPath: char2
       value: 
       objectReference: {fileID: 569271311}
+    - target: {fileID: 9051743090948632347, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: popUpBox
+      value: 
+      objectReference: {fileID: 313544306}
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: automatedConvo
