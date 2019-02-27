@@ -166,7 +166,16 @@ public class Player : MonoBehaviour
     public float aimDirection()
     {
         float aim = 0f;
-        var inputDir = new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0f);
+        var inputDir = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0f);
+        if (inputDir.x == 0f && inputDir.y == 0f)
+        {
+            if (facingRight)
+                inputDir.x = 1f;
+            else
+                inputDir.x = -1f;
+        }
+        if (Mathf.Abs(Input.GetAxis("RStickV")) > .05f)
+            inputDir.y = Input.GetAxis("RStickV");
         aim = Mathf.Atan2(inputDir.y, inputDir.x);
         return aim*Mathf.Rad2Deg;
     }
@@ -476,7 +485,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(ShootAfterTime(shootDelay));
             }
 
-            if (Input.GetKey(KeyCode.H))
+            if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q))
                 powerset = !powerset;
             wasSwinging = false;
         }
