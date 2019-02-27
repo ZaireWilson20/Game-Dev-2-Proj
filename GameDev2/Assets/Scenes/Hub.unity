@@ -774,6 +774,11 @@ PrefabInstance:
       propertyPath: char2
       value: 
       objectReference: {fileID: 1107563504}
+    - target: {fileID: 9051743090948632347, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: popUpBox
+      value: 
+      objectReference: {fileID: 1219716455}
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: pa_game_manager
@@ -804,6 +809,12 @@ PrefabInstance:
     - {fileID: 9051743090948632343, guid: 67d7f3d0343f8394dbe1098a0d8cef4e, type: 3}
     - {fileID: 9051743090948632340, guid: 67d7f3d0343f8394dbe1098a0d8cef4e, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 67d7f3d0343f8394dbe1098a0d8cef4e, type: 3}
+--- !u!224 &534500268 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4532766231668939395, guid: 7824ae51d77f4ca41bf3fbab1800a482,
+    type: 3}
+  m_PrefabInstance: {fileID: 848934997}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &537732261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1410,6 +1421,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelName: ActualTechTutorial
+--- !u!1 &1219716455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1219716456}
+  m_Layer: 5
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1219716456
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1219716455}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 534500268}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1266181867
 GameObject:
   m_ObjectHideFlags: 0
