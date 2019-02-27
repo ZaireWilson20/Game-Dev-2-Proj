@@ -153,11 +153,11 @@ public class Player : MonoBehaviour
         Vector2 vec;
         if (Input.GetAxis("Horizontal") > 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
         {
-            vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .65f);
+            vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .85f);
         }
         else if (Input.GetAxis("Horizontal") < 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
         {
-            vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .65f);
+            vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .85f);
         }
         else if (Input.GetAxisRaw("Horizontal") > 0f)
         {
@@ -683,16 +683,18 @@ public class Player : MonoBehaviour
 
         newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
         newProjectile.SetActive(true);
-        if (sprite.flipX == false)
-        {
-            //sprite facing left (backwards)
-            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
-        }
-        else
-        {
-            //sprite facing right (forwards)
-            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-        }
+        //if (sprite.flipX == false)
+        //{
+        //    //sprite facing left (backwards)
+        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+        //}
+        //else
+        //{
+        //    //sprite facing right (forwards)
+        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+        //}
+        Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
+        newProjectile.GetComponent<Rigidbody2D>().velocity = shootDir;
         doneShooting = true;
         anim.SetBool("BoomShot", false);
         // Code to execute after the delay

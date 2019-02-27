@@ -27,7 +27,7 @@ public class RopeSystem : MonoBehaviour
     public float minRopeDistance = 1f;
     private bool isColliding;
 
-    public float buffer = 5f;
+    public float buffer = .5f;
     private float timeleft = 0f;
     private bool input = false;
 
