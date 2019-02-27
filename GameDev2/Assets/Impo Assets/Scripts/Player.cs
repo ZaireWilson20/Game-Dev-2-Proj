@@ -645,16 +645,19 @@ public class Player : MonoBehaviour
 
         newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
         newProjectile.SetActive(true);
-        if (sprite.flipX == false)
-        {
-            //sprite facing left (backwards)
-            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
-        }
-        else
-        {
-            //sprite facing right (forwards)
-            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-        }
+        //if (sprite.flipX == false)
+        //{
+        //    //sprite facing left (backwards)
+        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+        //}
+        //else
+        //{
+        //    //sprite facing right (forwards)
+        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+        //}
+        Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
+        newProjectile.GetComponent<Rigidbody2D>().velocity = shootDir;
+
         doneShooting = true;
         anim.SetBool("BoomShot", false);
         // Code to execute after the delay

@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     public float damage = 1f;
     protected Vector2 dir;
     protected Vector3 velocity = new Vector3(0,0,0);
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
     protected Vector3 startPos;
     protected SpriteRenderer sprite;
 
@@ -24,8 +24,7 @@ public class Projectile : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         dir = rb.velocity;
         //Debug.Log(rb.velocity);
-        velocity.x = rb.velocity.x * speed;
-        velocity.y = rb.velocity.y * speed;
+        velocity = rb.velocity * speed;
         Physics2D.IgnoreLayerCollision(15, 13);
         Physics2D.IgnoreLayerCollision(15, 15);
         startPos = transform.position;

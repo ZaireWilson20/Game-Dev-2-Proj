@@ -5,16 +5,26 @@ using UnityEngine;
 public class Boomerang : Projectile
 {
     private Vector2 accel;
-    public float x_div = -100f;
+    public float div = -100f;
     public float y_vel = 0.075f;
     public int hits = 4;
 
 
+    float startDir;
+    float backDir;
+    //Vector2 target_velocity;
+
     protected override void Start()
     {
         base.Start();
-        velocity.y = y_vel;
-        accel = new Vector2(velocity.x / x_div, 0f);
+        startDir = Mathf.Atan2(rb.velocity.y, rb.velocity.x);
+        backDir = startDir + Mathf.PI;
+        if (backDir >= 2 * Mathf.PI)
+            backDir -= 2 * Mathf.PI;
+        //target_velocity = -velocity;
+        //velocity.y += y_vel;
+        accel = velocity / div;
+        //accel.y += y_vel;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
