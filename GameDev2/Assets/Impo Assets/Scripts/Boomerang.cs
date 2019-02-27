@@ -8,13 +8,14 @@ public class Boomerang : Projectile
     public float x_div = -100f;
     public float y_vel = 0.075f;
     public int hits = 4;
-
+    private Rigidbody2D rb;
 
     protected override void Start()
     {
         base.Start();
         velocity.y = y_vel;
         accel = new Vector2(velocity.x / x_div, 0f);
+        rb = this.GetComponent<Rigidbody2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -11,7 +11,7 @@ using System;
 //Utility for utility
 //Run to run
 //Jump to jump/airdash
-//H swaps powers
+//H+Q swaps powers
 
 //name = name of the power
 //active = if you have access to the power
@@ -31,6 +31,16 @@ public class Power : IComparable<Power>
     public int CompareTo(Power other)
     {
         return name.CompareTo(other.name);
+    }
+
+    public void toString()
+    {
+        Debug.Log(name + ", " + active + ", " + side);
+    }
+
+    public void setActive()
+    {
+        active = true;
     }
 }
 
@@ -143,11 +153,11 @@ public class Player : MonoBehaviour
         Vector2 vec;
         if (Input.GetAxis("Horizontal") > 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
         {
-            vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .65f);
+            vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .85f);
         }
         else if (Input.GetAxis("Horizontal") < 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
         {
-            vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .65f);
+            vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .85f);
         }
         else if (Input.GetAxisRaw("Horizontal") > 0f)
         {
@@ -257,14 +267,18 @@ public class Player : MonoBehaviour
         drill = new Power("drill", false, true);
         freeze = new Power("freeze", false, false);
         reflector = new Power("reflect", false, false);
-        tPowerDict.Add("a", grapple); tPowerDict.Add("b", antiGrav);
-        tWeaponDict.Add("a", boomerang); tWeaponDict.Add("b", drill);
-        mPowerDict.Add("a", teleport); mPowerDict.Add("b", reflector);
-        mWeaponDict.Add("a", poisonShot); mWeaponDict.Add("b", freeze);
+        tPowerDict.Add("grapple", grapple); tPowerDict.Add("anti-grav", antiGrav);
+        tWeaponDict.Add("boomerang", boomerang); tWeaponDict.Add("drill", drill);
+        mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflector", reflector);
+        mWeaponDict.Add("poison", poisonShot); mWeaponDict.Add("freeze", freeze);
         tUtility = grapple;
         tWeapon = boomerang;
         mUtility = teleport;
         mWeapon = poisonShot;
+        tPowerDict[grapple.name].toString();
+        Debug.Log(tWeaponDict.ToString());
+        Debug.Log(mPowerDict.ToString());
+        Debug.Log(mWeaponDict.ToString());
     }
 
     // Update is called once per frame
@@ -548,6 +562,27 @@ public class Player : MonoBehaviour
     {
     }
 
+    //Param 1 - The dictionary of available powers to switch to
+    //Param 2 - The current power
+    public Power CyclePower(Dictionary<string, Power> dict, Power curr)
+    {
+        bool takeNext = false;
+        foreach(Power p in dict.Values)
+        {
+            if (takeNext && p.active)
+            {
+                p.ToString();
+                return dict[p.name];
+            }
+            if (p.name == curr.name)
+            {
+                takeNext = true;
+            }
+        }
+        curr.ToString();
+        return curr;
+    }
+
     public void takeDamage(int damage, Vector2 knockDir)
     {
         hiScript.loseHealth();
@@ -642,16 +677,18 @@ public class Player : MonoBehaviour
 
         newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
         newProjectile.SetActive(true);
-        if (sprite.flipX == false)
-        {
-            //sprite facing left (backwards)
-            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
-        }
-        else
-        {
-            //sprite facing right (forwards)
-            newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-        }
+        //if (sprite.flipX == false)
+        //{
+        //    //sprite facing left (backwards)
+        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+        //}
+        //else
+        //{
+        //    //sprite facing right (forwards)
+        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+        //}
+        Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
+        newProjectile.GetComponent<Rigidbody2D>().velocity = shootDir;
         doneShooting = true;
         anim.SetBool("BoomShot", false);
         // Code to execute after the delay

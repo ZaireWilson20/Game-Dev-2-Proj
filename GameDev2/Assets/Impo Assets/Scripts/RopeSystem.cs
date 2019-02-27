@@ -27,7 +27,7 @@ public class RopeSystem : MonoBehaviour
     public float minRopeDistance = 1f;
     private bool isColliding;
 
-    public float buffer = 5f;
+    public float buffer = .5f;
     private float timeleft = 0f;
     private bool input = false;
 
@@ -239,11 +239,11 @@ public class RopeSystem : MonoBehaviour
         // 1
         if (ropeJoint.distance <= maxRopeDistance && ropeJoint.distance >= minRopeDistance)
         {
-            if (Input.GetAxis("Vertical") >= 1f && ropeAttached && !isColliding)
+            if (Input.GetAxis("Vertical") >= 0.5f && ropeAttached && !isColliding)
             {
                 ropeJoint.distance -= Time.deltaTime * climbSpeed;
             }
-            else if (Input.GetAxis("Vertical") < 0f && ropeAttached)
+            else if (Input.GetAxis("Vertical") < -0.5f && ropeAttached)
             {
                 if (ropeJoint.distance + Time.deltaTime * climbSpeed > maxRopeDistance)
                     ropeJoint.distance = maxRopeDistance;
