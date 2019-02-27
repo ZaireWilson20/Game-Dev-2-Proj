@@ -29,7 +29,8 @@ public class NpcDialogue : MonoBehaviour
     public bool automatedConvo;
     public bool loading = true;
     private bool finishAuto = false;
-    public bool popUpConvo; 
+    public bool popUpConvo;
+    public bool byeGuy; 
     // Start is called before the first frame update
     void Start()
     {
@@ -49,16 +50,17 @@ public class NpcDialogue : MonoBehaviour
             loading = false; 
         }
 
-        if (!automatedConvo && !loading)
+        if (!popUpConvo && !automatedConvo && !loading)
         {
-            if (npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && !npc_inConvo)    // If player presses talk button while in range of npc
+            Debug.Log("1");
+            if (npc_onTrigger.dia_player_in && Input.GetButton("Jump") && !npc_inConvo)    // If player presses talk button while in range of npc
             {
                 pa_script.pa_inConvo = true;
                 npc_inConvo = true;
                 npc_onTrigger.dia_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
             }
-            else if (npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && npc_inConvo)
+            else if (npc_onTrigger.dia_player_in && Input.GetButton("Jump") && npc_inConvo)
             {
                 bool inC = dialogueController.nextLine();
                 pa_script.pa_inConvo = inC;
@@ -66,16 +68,19 @@ public class NpcDialogue : MonoBehaviour
                 npc_onTrigger.dia_inConvo = inC;
             }
         }
-        else if(automatedConvo && !finishAuto)
+        else if(automatedConvo && !finishAuto && !loading)
         {
+            Debug.Log("2");
+
             if (!npc_inConvo)
             {
                 pa_script.pa_inConvo = true;
                 npc_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
             }
-            else if(Input.GetKeyDown(KeyCode.RightShift) && npc_inConvo && dialogueController.doneSentence)
+            else if(Input.GetButton("Jump") && npc_inConvo && dialogueController.doneSentence)
             {
+
                 bool inC = dialogueController.nextLine();
                 pa_script.pa_inConvo = inC;
                 npc_inConvo = inC;
@@ -86,16 +91,20 @@ public class NpcDialogue : MonoBehaviour
                 }
             }
         }
-        else if (popUpConvo) 
+        else if (popUpConvo && !loading) 
         {
+            //Debug.Log(npc_onTrigger.dia_player_in);
+
             if (npc_onTrigger.dia_player_in)
             {
-                Debug.Log("in here");
+                //Debug.Log("in here");
                 dialogueController.DisplayPopUP(npc_convos);
             }
-            else
+            else if(byeGuy)
             {
+                //Debug.Log("I'm out");
                 dialogueController.HidePopUp();
+
             }
         }
     }

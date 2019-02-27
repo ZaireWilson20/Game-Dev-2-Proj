@@ -8,6 +8,7 @@ public class Boomerang : Projectile
     public float div = -100f;
     public float y_vel = 0.075f;
     public int hits = 4;
+    private Rigidbody2D rb;
 
 
     float startDir;

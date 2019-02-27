@@ -59,7 +59,11 @@ public class SimpleHostile : MonoBehaviour
     private SpriteRenderer sprite;
 
     private Animator anim;
-    private bool dead = false; 
+    private bool dead = false;
+
+    [SerializeField]
+    //GameObject pa_playerObj;
+    Player pa_script;
     // Start is called before the first frame update
     void Start()
     {
@@ -72,7 +76,7 @@ public class SimpleHostile : MonoBehaviour
         sprite = GetComponent<SpriteRenderer>();
         //get player object
         player = GameObject.FindGameObjectWithTag("Player");
-
+        pa_script = player.GetComponent<Player>();
         //enemSprite = GetComponent<Sprite>();
         health = health_max;
     }
@@ -293,7 +297,7 @@ public class SimpleHostile : MonoBehaviour
         }
 
         //travel towards destination if not within 0.1 of target
-        if (Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead)
+        if (Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead && !pa_script.pa_inConvo)
         {
             //Debug.Log("moving");
             lastDir = direction;
