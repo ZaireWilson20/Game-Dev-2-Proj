@@ -2407,8 +2407,28 @@ PrefabInstance:
       propertyPath: pa_DeadZone
       value: 
       objectReference: {fileID: 1201363399}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1290081200, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
+--- !u!1 &517684959 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1290081198, guid: a70acd571dd1df041b67114c4fefd097,
+    type: 3}
+  m_PrefabInstance: {fileID: 517684958}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &517684960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 517684959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListenerNumber: 0
 --- !u!1001 &540469195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3887,12 +3907,12 @@ SpriteRenderer:
   m_SortingLayerID: -1635529235
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 541ca4cd080839d44901785903c1bed3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a2efd8b0639ec9b4f8fbe2c04965f8c6, type: 3}
   m_Color: {r: 0.8018868, g: 0.15508187, b: 0.15508187, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.53, y: 1.52}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
