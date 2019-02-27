@@ -379,6 +379,7 @@ public class Player : MonoBehaviour
                     //Run when holding P
                     if (Input.GetButton("Run"))
                     {
+                        anim.SetBool("Running", true);
                         if (speed < runSpeed)
                         {
                             temp = speed;
@@ -388,6 +389,7 @@ public class Player : MonoBehaviour
                     }
                     else
                     {
+                        anim.SetBool("Running", false);
                         if (speed > runSpeed)
                         {
                             temp = speed;
