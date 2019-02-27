@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 using System;
 
 //CURRENT PLAYER CONTROL LAYOUT
@@ -594,7 +595,8 @@ public class Player : MonoBehaviour
             {
                 //player has died
                 Debug.Log("Player died!");
-                gameObject.SetActive(false);
+                SceneManager.LoadScene("Hub", LoadSceneMode.Single);
+                //gameObject.SetActive(false);
             }
             velocity.x += knockback * knockDir.x;
             velocity.y += knockback * knockDir.y;
