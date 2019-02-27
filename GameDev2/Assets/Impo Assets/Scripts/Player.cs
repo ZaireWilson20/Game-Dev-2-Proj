@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System;
 
 //CURRENT PLAYER CONTROL LAYOUT
@@ -117,8 +116,6 @@ public class Player : MonoBehaviour
     // Animation
     private Rigidbody2D rig2D;
     public Animator anim;
-    public Animator magicAnim;
-    public Animator scienceAnim; 
     private bool idle;
     private bool crouching;
     private bool jumping;
@@ -141,11 +138,11 @@ public class Player : MonoBehaviour
     Vector3 calculateAirdashVector()
     {
         Vector2 vec;
-        if (Input.GetAxisRaw("Horizontal") > 0f && Input.GetAxisRaw("Vertical") > 0f)
+        if (Input.GetAxis("Horizontal") > 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
         {
             vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .65f);
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0f && Input.GetAxisRaw("Vertical") > 0f)
+        else if (Input.GetAxis("Horizontal") < 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
         {
             vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .65f);
         }
@@ -161,6 +158,7 @@ public class Player : MonoBehaviour
         {
             vec = new Vector2(0, airdashSpeed * 1f);
         }
+        Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
     }
 
@@ -269,21 +267,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        crouching = false; 
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
         {
             projectile = boomerangObj;
             pSetCont.showPowerSet("SCIENCE");
-            anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/GameObject.controller", typeof(RuntimeAnimatorController));
-            //anim = scienceAnim; 
         }
         else
         {
             projectile = toxicShot;
             pSetCont.showPowerSet("MAGIC");
-            anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/updatedFullController.controller", typeof(RuntimeAnimatorController));
-            //anim = magicAnim; 
         }
 
         if (controller.cont_collision_info.above || grounded) //  Stops vertical movement if vertical collision detected
@@ -354,15 +347,13 @@ public class Player : MonoBehaviour
                 float temp;
                 //Crouch when down is pressed
                 Transform tf = this.GetComponent<Transform>();
-                if (Input.GetKey(KeyCode.S))
-                {
+                //if (Input.GetKey(KeyCode.S))
+                //{
                 //    //Temp behavior
-                    //tf.localScale = new Vector3(5f, 2.5f, 5f);
-                    //    speed = 0;
-                    //    runSpeed = 0;
-                    crouching = true; 
-                    
-                }
+                //    tf.localScale = new Vector3(5f, 2.5f, 5f);
+                //    speed = 0;
+                //    runSpeed = 0;
+                //}
                 //else
                 //{
                 //    tf.localScale = new Vector3(5f, 5f, 5f);
@@ -541,7 +532,6 @@ public class Player : MonoBehaviour
             JumpAnim();
         }
         //grounded = controller.cont_collision_info.below;
-        CrouchAnim();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
