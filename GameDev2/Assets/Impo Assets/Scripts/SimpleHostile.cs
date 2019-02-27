@@ -50,6 +50,7 @@ public class SimpleHostile : MonoBehaviour
     private float nextFire = 0f;
     public float shootRadius = 10f;
 
+   // private Sprite enemSprite; 
     private GameObject newProjectile;
     public GameObject projectile;
     private int shots = 0;
@@ -57,8 +58,8 @@ public class SimpleHostile : MonoBehaviour
 
     private SpriteRenderer sprite;
 
-    private Animator anim; 
-
+    private Animator anim;
+    private bool dead = false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -72,6 +73,7 @@ public class SimpleHostile : MonoBehaviour
         //get player object
         player = GameObject.FindGameObjectWithTag("Player");
 
+        //enemSprite = GetComponent<Sprite>();
         health = health_max;
     }
 
@@ -111,9 +113,11 @@ public class SimpleHostile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject contact = collision.gameObject;
-
+        
         if (contact.tag.Equals("Player"))
         {
+            Debug.Log("I HIT THE PLAYER");
+            anim.SetTrigger("Attack");
             //Debug.Log("attack!");
             Player pscript = contact.GetComponent<Player>();
             //Debug.Log(lastDir);
@@ -140,7 +144,10 @@ public class SimpleHostile : MonoBehaviour
             {
                 //player has died
                 Debug.Log("Enemy killed!");
-                gameObject.SetActive(false);
+                anim.SetBool("Dead", true);
+                dead = true; 
+                StartCoroutine(deadWait());
+                //gameObject.SetActive(false);
             }
 
             //consider using increasing degree of transparency (via alpha)
@@ -286,13 +293,23 @@ public class SimpleHostile : MonoBehaviour
         }
 
         //travel towards destination if not within 0.1 of target
-        if (Mathf.Abs(transform.position.x - destination.x) > 0.1f)
+        if (Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead)
         {
             //Debug.Log("moving");
             lastDir = direction;
             direction = Mathf.Sign(destination.x - transform.position.x);
             velocity.x = direction * moveSpeed;    //  Speed force added to horizontal velocity, no acceleration
             rb.velocity = velocity;
+            
+            if(direction < 0)
+            {
+                sprite.flipX = false;
+            }
+            else if (direction > 0)
+            {
+                sprite.flipX = true;
+            }
+
             anim.SetBool("Walking", true);
                 //  Damping/acceleration applied throught damping.
             //velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
@@ -310,5 +327,10 @@ public class SimpleHostile : MonoBehaviour
 
 
     }
+    IEnumerator deadWait()
+    {
+        yield return new  WaitForSeconds(.5f);
+        gameObject.SetActive(false);
 
+    }
 }
