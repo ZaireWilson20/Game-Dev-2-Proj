@@ -136,9 +136,10 @@ public class Player : MonoBehaviour
     private Vector2 directionalInput;
     private float halfHeight;
 
-    //  Gmae Manager
+    //  Game Manager
     public GameObject gameManagerObj;
     private GameState gameManager;
+    public string levelName;
 
     //  UI
     public GameObject healthObj;
@@ -600,7 +601,7 @@ public class Player : MonoBehaviour
                 //player has died
                 Debug.Log("Player died!");
                 //health = 5;
-                SceneManager.LoadScene("Hub", LoadSceneMode.Single);
+                SceneManager.LoadScene(levelName, LoadSceneMode.Single);
                 //gameObject.SetActive(false);
             }
             velocity.x += knockback * knockDir.x;
