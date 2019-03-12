@@ -56,6 +56,7 @@ public class Player : MonoBehaviour
     private bool fastFall = false;
     public float fastFallSpeed = 6f;
     public float fallSpeed = 3f;
+    public float groundedDist = .5f; 
 
     private int flashCt = 0;
     public int flashRate = 5;
@@ -403,6 +404,10 @@ public class Player : MonoBehaviour
                         rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
                         jumping = true;
                     }
+                    else if (Input.GetButtonUp("Jump"))
+                    {
+                        anim.ResetTrigger("Jump");
+                    }
                 }
                 //In the air, enable only air movement here
                 else if (!grounded)
@@ -539,7 +544,7 @@ public class Player : MonoBehaviour
                 facingRight = false;
             }
             //Ray blah = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight - .2f), Vector2.down, 0.025f, floorMask);
-            grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, 1f, floorMask);
+            grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
             Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
 
             anim.SetFloat("Falling", rig2D.velocity.y);

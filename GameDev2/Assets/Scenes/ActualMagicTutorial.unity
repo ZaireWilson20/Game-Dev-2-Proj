@@ -2657,6 +2657,11 @@ PrefabInstance:
       propertyPath: jumpHeight
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 998501248941474296, guid: a70acd571dd1df041b67114c4fefd097,
+        type: 3}
+      propertyPath: groundedDist
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1290081202, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
       propertyPath: pa_DeadZone
       value: 
@@ -8246,11 +8251,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 4532766231645114462, guid: 7824ae51d77f4ca41bf3fbab1800a482,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4532766231668939395, guid: 7824ae51d77f4ca41bf3fbab1800a482,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8354,6 +8354,11 @@ PrefabInstance:
     - target: {fileID: 4532766231668939395, guid: 7824ae51d77f4ca41bf3fbab1800a482,
         type: 3}
       propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4532766231645114462, guid: 7824ae51d77f4ca41bf3fbab1800a482,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4532766231460187996, guid: 7824ae51d77f4ca41bf3fbab1800a482,
