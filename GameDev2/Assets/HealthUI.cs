@@ -11,6 +11,10 @@ public class HealthUI : MonoBehaviour
     {
         healthSprites[currentLife].SetActive(false);
         currentLife--;
+        if (currentLife < 0)
+        {
+            currentLife = 0;
+        }
     }
 
 

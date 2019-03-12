@@ -137,9 +137,10 @@ public class Player : MonoBehaviour
     private Vector2 directionalInput;
     private float halfHeight;
 
-    //  Gmae Manager
+    //  Game Manager
     public GameObject gameManagerObj;
     private GameState gameManager;
+    public string levelName;
 
     //  UI
     public GameObject healthObj;
@@ -568,6 +569,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        Debug.Log(collision.gameObject);
     }
 
     //Param 1 - The dictionary of available powers to switch to
@@ -593,16 +595,18 @@ public class Player : MonoBehaviour
 
     public void takeDamage(int damage, Vector2 knockDir)
     {
-        hiScript.loseHealth();
+        
         Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
+            hiScript.loseHealth();
             health -= damage;
             if (health == 0)
             {
                 //player has died
                 Debug.Log("Player died!");
-                SceneManager.LoadScene("Hub", LoadSceneMode.Single);
+                //health = 5;
+                SceneManager.LoadScene(levelName, LoadSceneMode.Single);
                 //gameObject.SetActive(false);
             }
             velocity.x += knockback * knockDir.x;
