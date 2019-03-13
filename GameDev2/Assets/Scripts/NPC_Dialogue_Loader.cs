@@ -17,7 +17,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
 
         foreach (GameObject ga in pa_all_npcs)
         {
-            path = "Assets/Impo Assets/Level Data/" + ga.name + fileName;
+            path = "Assets/Level Data/" + ga.name + fileName;
             ReadData(path, ga.name);
         }
         pa_finished_reading = true;

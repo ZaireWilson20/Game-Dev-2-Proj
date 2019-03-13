@@ -59,12 +59,18 @@ public class NpcDialogue : MonoBehaviour
                 npc_onTrigger.dia_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
             }
-            else if (npc_onTrigger.dia_player_in && Input.GetButton("Jump") && npc_inConvo)
+            else if (npc_onTrigger.dia_player_in && Input.GetButton("Jump") && npc_inConvo && dialogueController.doneSentence)
             {
+                Debug.Log("In next line part");
+                dialogueController.doneSentence = false; 
                 bool inC = dialogueController.nextLine();
                 pa_script.pa_inConvo = inC;
                 npc_inConvo = inC;
                 npc_onTrigger.dia_inConvo = inC;
+            }
+            else
+            {
+                Debug.Log("nothing is happening");
             }
         }
         else if(automatedConvo && !finishAuto && !loading)
@@ -75,9 +81,9 @@ public class NpcDialogue : MonoBehaviour
                 npc_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
             }
-            else if(Input.GetButton("Jump") && npc_inConvo && dialogueController.doneSentence)
+            else if(Input.GetButtonDown("Jump") && npc_inConvo && dialogueController.doneSentence)
             {
-
+                dialogueController.doneSentence = false;
                 bool inC = dialogueController.nextLine();
                 pa_script.pa_inConvo = inC;
                 npc_inConvo = inC;
