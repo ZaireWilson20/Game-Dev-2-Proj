@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPC_Dialogue_Loader : MonoBehaviour
 {
-    Dictionary<string, string[] > pa_npc_to_dia = new Dictionary<string, string[]>(); 
+    Dictionary<string, DialogueObj > pa_npc_to_dia = new Dictionary<string, DialogueObj>(); 
     private GameObject[] pa_all_npcs;
     string path;
     string fileName = ".json";
@@ -36,7 +36,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
             TextAsset targetFile = Resources.Load<TextAsset>(file_path);
             string content = System.IO.File.ReadAllText(file_path);
             diaData = JsonUtility.FromJson<DialogueObj>(content);
-            pa_npc_to_dia.Add(name, diaData.allDialogue);
+            pa_npc_to_dia.Add(name, diaData);
         }
         else
         {
@@ -44,7 +44,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
         }
     }
 
-    public string [] GetConversation(string name)
+    public DialogueObj GetConversation(string name)
     {
         return pa_npc_to_dia[name];
     }

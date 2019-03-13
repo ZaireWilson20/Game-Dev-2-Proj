@@ -10,7 +10,7 @@ public class NpcDialogue : MonoBehaviour
 
     // Dialogue Container
     [SerializeField]
-    private string[] npc_convos;
+    private DialogueObj npc_convos;
     [SerializeField]
     private GameObject pa_game_manager;
     private NPC_Dialogue_Loader pa_dialogue; 
@@ -26,6 +26,9 @@ public class NpcDialogue : MonoBehaviour
     bool npc_manager_done;
     public bool npc_inConvo = false;
     DialogueController dialogueController;
+    public bool automatedConvo;
+    public bool loading = true;
+    private bool finishAuto = false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -39,26 +42,48 @@ public class NpcDialogue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pa_dialogue.pa_finished_reading)
+        if (pa_dialogue.pa_finished_reading && loading)
         {
             npc_convos = pa_dialogue.GetConversation(transform.name);
+            loading = false; 
         }
 
-
-        if (npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && !npc_inConvo)    // If player presses talk button while in range of npc
+        if (!automatedConvo && !loading)
         {
-            pa_script.pa_inConvo = true;
-            npc_inConvo = true;
-            npc_onTrigger.dia_inConvo = true;
-            dialogueController.DisplayText(npc_convos);
+            if (npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && !npc_inConvo)    // If player presses talk button while in range of npc
+            {
+                pa_script.pa_inConvo = true;
+                npc_inConvo = true;
+                npc_onTrigger.dia_inConvo = true;
+                dialogueController.DisplayText(npc_convos);
+            }
+            else if (npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && npc_inConvo)
+            {
+                bool inC = dialogueController.nextLine();
+                pa_script.pa_inConvo = inC;
+                npc_inConvo = inC;
+                npc_onTrigger.dia_inConvo = inC;
+            }
         }
-        else if(npc_onTrigger.dia_player_in && Input.GetKeyDown(KeyCode.RightShift) && npc_inConvo)
+        else if(!finishAuto)
         {
-            bool inC = dialogueController.nextLine();
-            pa_script.pa_inConvo = inC;
-            npc_inConvo = inC;
-            npc_onTrigger.dia_inConvo = inC;
-        }        
-
+            if (!npc_inConvo)
+            {
+                pa_script.pa_inConvo = true;
+                npc_inConvo = true;
+                dialogueController.DisplayText(npc_convos);
+            }
+            else if(Input.GetKeyDown(KeyCode.RightShift) && npc_inConvo && dialogueController.doneSentence)
+            {
+                bool inC = dialogueController.nextLine();
+                pa_script.pa_inConvo = inC;
+                npc_inConvo = inC;
+                npc_onTrigger.dia_inConvo = inC;
+                if (!npc_inConvo)
+                {
+                    finishAuto = true; 
+                }
+            }
+        }
     }
 }

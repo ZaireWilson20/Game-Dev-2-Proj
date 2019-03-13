@@ -5,4 +5,9 @@ using UnityEngine;
 public class DialogueObj
 {
    public string[] allDialogue;
+   public string[] speakerSeq;
+    public string firstSpeaker;
+    public string secondSpeaker;
+    public string fsSprite;
+    public string ssSprite; 
 }

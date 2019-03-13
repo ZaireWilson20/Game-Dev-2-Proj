@@ -28,6 +28,7 @@ public class SimpleHostile : MonoBehaviour
 
     public float detectRadius = 3f;
     public float knockback = 5f;
+    private bool facingRight;
 
     public Vector3 startPos;
     private Vector3 destination;
@@ -42,6 +43,17 @@ public class SimpleHostile : MonoBehaviour
     public int flashRate = 3;
     private int flashCt = 0;
     public bool invincible = false;
+    public bool shooter = false;
+    public float fireCooldown = 2f;
+    public float fireRate = 0.1f;
+    private float fireTime = 0f;
+    private float nextFire = 0f;
+    public float shootRadius = 10f;
+
+    private GameObject newProjectile;
+    public GameObject projectile;
+    private int shots = 0;
+    public int shotSpray = 3;
 
     private SpriteRenderer sprite;
 
@@ -105,7 +117,10 @@ public class SimpleHostile : MonoBehaviour
             Player pscript = contact.GetComponent<Player>();
             //Debug.Log(lastDir);
             if (!pscript.invincible)
-                pscript.takeDamage(attack, lastDir);
+            {
+                pscript.anim.SetTrigger("Hurt");
+                pscript.takeDamage(attack, rb.velocity);
+            }
         }
         /*else if (contact.layer.Equals("Bullet"))
         {
@@ -115,12 +130,12 @@ public class SimpleHostile : MonoBehaviour
         }*/
     }
 
-    public void takeDamage(float damage, float knockDir)
+    public void takeDamage(float damage, Vector2 knockDir)
     {
         if (!invincible)
         {
             health -= damage;
-            if (health == 0)
+            if (health <= 0)
             {
                 //player has died
                 Debug.Log("Enemy killed!");
@@ -132,11 +147,39 @@ public class SimpleHostile : MonoBehaviour
             sprite.enabled = false;
             invincible = true;
             flashCt = 0;
-            velocity.x += knockback * knockDir;
+            velocity.x += knockback * knockDir.x;
+            velocity.y += knockback * knockDir.y;
             //controller.Move(velocity * Time.deltaTime);
             transform.Translate(velocity * Time.deltaTime);
             Debug.Log("Enemy health: " + health);
         }
+    }
+
+    //checks if enemy has line of sight to player within shoot radius distance
+    public bool LineOfSight()
+    {
+        Vector2 origin = transform.position;
+        Vector2 dest = player.transform.position;
+        Vector2 angle = dest - origin;
+        angle.Normalize();
+        int layerMask = ~(LayerMask.GetMask("Hostile"));
+        RaycastHit2D hit = Physics2D.Raycast(origin, angle, shootRadius, layerMask);
+        Debug.DrawLine(new Vector2(transform.position.x, transform.position.y), hit.point);
+
+        //check if player in line of sight
+        if (hit.collider == null)
+        {
+            Debug.Log("null");
+            return false;
+        }
+
+        Debug.Log(hit.collider.gameObject);
+        if (hit.collider.tag.Equals("Player"))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     void Update()
@@ -169,6 +212,7 @@ public class SimpleHostile : MonoBehaviour
             }
         }
 
+        //enemy blinks once when hit
         if (flash)
         {
             if (flashCt < flashRate)
@@ -208,6 +252,38 @@ public class SimpleHostile : MonoBehaviour
         }
 
 
+        //check if enemy is a shooter and can detect player
+        fireTime += Time.deltaTime;
+        //Debug.Log(fireTime);
+        //Debug.Log(nextFire);
+        if (shooter && fireTime > nextFire)
+        {
+            if (LineOfSight())
+            {
+                //check if shoot timer is approved
+                //fire away!
+                if (shots < shotSpray)
+                {
+                    nextFire = fireTime + fireRate;
+                    newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                    //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
+                    //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
+                    newProjectile.SetActive(true);
+                    shots++;
+                }
+                else
+                {
+                    shots = 0;
+                    nextFire = fireCooldown;
+                    fireTime = 0;
+                }
+            }
+            //else
+            //{
+            //    shots = 0;
+            //}
+        }
+
         //travel towards destination if not within 0.1 of target
         if (Mathf.Abs(transform.position.x - destination.x) > 0.1f)
         {
@@ -226,6 +302,7 @@ public class SimpleHostile : MonoBehaviour
         {
             rb.velocity = new Vector2(0, 0);
         }
+
 
 
 
