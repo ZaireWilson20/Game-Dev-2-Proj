@@ -47,6 +47,9 @@ public class Power : IComparable<Power>
 
 public class Player : MonoBehaviour
 {
+    //saved player data
+    public PlayerData localPlayerData = new PlayerData();
+
     //Forces On Player ----------------
     public float speed = 5f;
     public float airdashSpeed = 20f;
@@ -62,7 +65,7 @@ public class Player : MonoBehaviour
 
     public bool alive = true;
     public int health_max = 5;
-    private int health = 5;
+    private int health = 5; //save
     public float attack = 1f;
     public float knockback = 5f;
     public float fireDelta = 0.5f;
@@ -246,6 +249,9 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //load player save data
+        localPlayerData = GlobalControl.Instance.savedPlayer;
+
         controller = GetComponent<Controller2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
@@ -281,6 +287,11 @@ public class Player : MonoBehaviour
         Debug.Log(tWeaponDict.ToString());
         Debug.Log(mPowerDict.ToString());
         Debug.Log(mWeaponDict.ToString());
+    }
+
+    public void SavePlayer()
+    {
+        GlobalControl.Instance.savedPlayer = localPlayerData;
     }
 
     // Update is called once per frame
