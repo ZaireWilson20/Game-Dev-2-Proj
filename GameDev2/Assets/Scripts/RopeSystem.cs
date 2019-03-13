@@ -94,10 +94,22 @@ public class RopeSystem : MonoBehaviour
             ropeRenderer.enabled = true;
             var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
 
+            // 5
+            if (!ropeAttached)
+            {
+                input = true;
+                timeleft = 0f;
+            }
             //Debug.Log(hit.distance);
             // 3
-            if (hit.collider != null)
+            if (player.isSwinging)
             {
+                ResetRope();
+                input = false;
+            }
+            else  if (hit.collider != null)
+            {
+                input = false;
                 player.hasAirdash = true;
                 ropeAttached = true;
                 if (!ropePositions.Contains(hit.point))
@@ -110,17 +122,6 @@ public class RopeSystem : MonoBehaviour
                     ropeJoint.enabled = true;
                     ropeHingeAnchorSprite.enabled = true;
                 }
-            }
-            // 5
-            else
-            {
-                input = false;
-                ResetRope();
-            }
-            if (!ropeAttached)
-            {
-                input = true;
-                timeleft = 0f;
             }
         }
         else if (input)
