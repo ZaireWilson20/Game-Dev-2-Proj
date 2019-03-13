@@ -250,8 +250,13 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Debug.Log("start");
         //load player save data
+        //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
+
         localPlayerData = GlobalControl.Instance.savedPlayer;
+        health = localPlayerData.playerHealth;
+        //Debug.Log(health);
 
         controller = GetComponent<Controller2D>();
         anim = GetComponent<Animator>();
@@ -261,10 +266,10 @@ public class Player : MonoBehaviour
 
         timeSinceLastTp = tpCooldown;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
-        health = health_max;
+        //health = health_max;
 
         hiScript = healthObj.GetComponent<HealthUI>();
-        health = health_max;
+        //health = health_max;
         pSetCont = pSetObj.GetComponent<PowerSetController>();
 
         //Initialize powers
@@ -285,6 +290,8 @@ public class Player : MonoBehaviour
         mUtility = teleport;
         mWeapon = poisonShot;
         tPowerDict[grapple.name].toString();
+        Physics2D.IgnoreLayerCollision(13, 14, false);
+
         //Debug.Log(tWeaponDict.ToString());
         //Debug.Log(mPowerDict.ToString());
         //Debug.Log(mWeaponDict.ToString());
@@ -292,7 +299,9 @@ public class Player : MonoBehaviour
 
     public void SavePlayer()
     {
+        localPlayerData.playerHealth = health;
         GlobalControl.Instance.savedPlayer = localPlayerData;
+        //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
     }
 
     // Update is called once per frame
@@ -580,7 +589,9 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Debug.Log(collision.gameObject);
+        if (collision.gameObject.layer == 14)
+            Debug.Log("I HIT THE PLAYER");
+
     }
 
     //Param 1 - The dictionary of available powers to switch to
@@ -607,16 +618,17 @@ public class Player : MonoBehaviour
     public void takeDamage(int damage, Vector2 knockDir)
     {
         
-        Debug.Log("invincible: " + invincible);
+        //Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
             hiScript.loseHealth();
             health -= damage;
-            if (health == 0)
+            if (health <= 0)
             {
                 //player has died
                 Debug.Log("Player died!");
-                //health = 5;
+                //health = health_max;
+                GlobalControl.Instance.savedPlayer.playerHealth = health_max;
                 SceneManager.LoadScene(levelName, LoadSceneMode.Single);
                 //gameObject.SetActive(false);
             }
@@ -627,7 +639,7 @@ public class Player : MonoBehaviour
             timeLeft = invincibility;
             //turn off collision with enemies for 0.5 seconds
             invincible = true;
-            Debug.Log("invincible: true");
+            //Debug.Log("invincible: true");
             Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 

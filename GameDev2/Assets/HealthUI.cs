@@ -7,6 +7,12 @@ public class HealthUI : MonoBehaviour
     public GameObject[] healthSprites;
     private int currentLife = 4;
 
+    private void Start()
+    {
+        while (currentLife > GlobalControl.Instance.savedPlayer.playerHealth - 1)
+            loseHealth();
+    }
+
     public void loseHealth()
     {
         healthSprites[currentLife].SetActive(false);

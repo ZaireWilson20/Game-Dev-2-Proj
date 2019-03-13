@@ -5,5 +5,5 @@ using System;
 
 public class PlayerData
 {
-    public int playerHealth;
+    public int playerHealth = 5;
 }
