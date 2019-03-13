@@ -36,7 +36,7 @@ public class Power : IComparable<Power>
 
     public void toString()
     {
-        Debug.Log(name + ", " + active + ", " + side);
+        //Debug.Log(name + ", " + active + ", " + side);
     }
 
     public void setActive()
@@ -279,9 +279,9 @@ public class Player : MonoBehaviour
         mUtility = teleport;
         mWeapon = poisonShot;
         tPowerDict[grapple.name].toString();
-        Debug.Log(tWeaponDict.ToString());
-        Debug.Log(mPowerDict.ToString());
-        Debug.Log(mWeaponDict.ToString());
+        //Debug.Log(tWeaponDict.ToString());
+        //Debug.Log(mPowerDict.ToString());
+        //Debug.Log(mWeaponDict.ToString());
     }
 
     // Update is called once per frame
@@ -569,7 +569,7 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision.gameObject);
+        //Debug.Log(collision.gameObject);
     }
 
     //Param 1 - The dictionary of available powers to switch to

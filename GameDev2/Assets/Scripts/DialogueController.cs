@@ -10,6 +10,7 @@ public class DialogueController : MonoBehaviour
     int totalLines; 
 
     private bool talking;
+    private Coroutine _coroutine;
     public GameObject textBox;
     public GameObject nameBox;
     public GameObject bigBox;
@@ -24,9 +25,9 @@ public class DialogueController : MonoBehaviour
     public Image char2;
     private string path = "Assets/Sprites/Portraits/";
     private string fileName = ".png";
-    private string firstSpeaker;
-    private string secondSpeaker;
-    public bool doneSentence = true; 
+    private string firstSpeakerName;   
+    private string secondSpeakerName;
+    public bool doneSentence = false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -50,10 +51,12 @@ public class DialogueController : MonoBehaviour
     public void DisplayText(DialogueObj lines)
     {
         diaObj = lines; 
+
+        //  Set Dialogue sprites for both characters in scene
         char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.fsSprite + fileName, typeof(Sprite)); 
         char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + fileName, typeof(Sprite));
-        firstSpeaker = lines.firstSpeaker;
-        secondSpeaker = lines.secondSpeaker;
+        firstSpeakerName = lines.firstSpeaker;
+        secondSpeakerName = lines.secondSpeaker;
 
         continueBox.SetActive(false);
         bigBox.SetActive(true);
@@ -77,6 +80,8 @@ public class DialogueController : MonoBehaviour
 
     public bool nextLine()
     {
+
+        // If speaker's last line
         if(currentLine == totalLines)
         {
             bigBox.SetActive(false);
@@ -85,7 +90,13 @@ public class DialogueController : MonoBehaviour
         }
         continueBox.SetActive(false);
         setSpeaker(diaObj.speakerSeq[currentLine]);
-        StartCoroutine(TypeSentence(allLines[currentLine]));
+
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+            _coroutine = null;
+        }
+        _coroutine = StartCoroutine(TypeSentence(allLines[currentLine]));
         currentLine++;
         return true; 
     }
@@ -94,13 +105,13 @@ public class DialogueController : MonoBehaviour
     {
         if (speaker == "fSpeaker")
         {
-            nameText.text = firstSpeaker;
+            nameText.text = firstSpeakerName;
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, 1f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, .5f);
         }
         else if (speaker == "sSpeaker")
         {
-            nameText.text = secondSpeaker;
+            nameText.text = secondSpeakerName;
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, .5f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, 1f);
         }
@@ -108,13 +119,13 @@ public class DialogueController : MonoBehaviour
 
     IEnumerator TypeSentence(string sent)
     {
-        doneSentence = false;
         dialogue.text = "";
         int countBeforeSkip = 0; 
         foreach(char letter in sent)
         {
-            if (Input.GetButton("Jump") && countBeforeSkip == 5)
+            if (Input.GetButtonDown("Jump") && !doneSentence && countBeforeSkip > 2)
             {
+                Debug.Log("hot dog");
                 break; 
             }
             dialogue.text += letter;
@@ -124,5 +135,6 @@ public class DialogueController : MonoBehaviour
         dialogue.text = sent; 
         doneSentence = true;
         continueBox.SetActive(true);
+        Debug.Log("done sentence");
     }
 }
