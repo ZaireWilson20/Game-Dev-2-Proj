@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
 
-    private List<PickUp> completeInventory;
-   
+    private List<InventoryItem> completeInventory = new List<InventoryItem>();
+    public int _size = 0; 
     // Start is called before the first frame update
     void Start()
     {
@@ -19,24 +19,13 @@ public class PlayerInventory : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.tag == "Pick Up")
-        {
-            if (Input.GetKeyDown(KeyCode.Y))
-            {
-                PickUp tempPick = collision.gameObject.GetComponent<PickUp>();
-                completeInventory.Add(tempPick);
-                Destroy(collision.gameObject);
-
-
-            }
-        }
-    }
-
     public void AddToInv(PickUp item)
     {
-        PickUp tempPickUp = item;
+        InventoryItem tempPickUp = new InventoryItem();
+        tempPickUp.CopyPickUp(item);
         completeInventory.Add(tempPickUp);
+        _size = completeInventory.Count;
     }
+
+   
 }
