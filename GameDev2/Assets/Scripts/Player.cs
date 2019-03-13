@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
     private GameObject projectile;
 
     public float airdashTime = 0;
-    private bool hasAirdash = false;
+    public bool hasAirdash = false;
     private Vector3 airdashDirection = new Vector3(0, 0, 0);
 
     private bool facingRight = true;

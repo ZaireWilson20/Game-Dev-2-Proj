@@ -21,6 +21,8 @@ public class RopeSystem : MonoBehaviour
     public LayerMask ropeLayerMask;
     public float ropeMaxCastDistance = 20f;
     private List<Vector2> ropePositions = new List<Vector2>();
+    private GameObject[] GrapplePoints;
+    private GameObject currGrapple;
 
     public float climbSpeed = 3f;
     public float maxRopeDistance = 6f;
@@ -51,6 +53,7 @@ public class RopeSystem : MonoBehaviour
         playerPosition = transform.position;
         ropeHingeAnchorRb = ropeHingeAnchor.GetComponent<Rigidbody2D>();
         ropeHingeAnchorSprite = ropeHingeAnchor.GetComponent<SpriteRenderer>();
+        GrapplePoints = GameObject.FindGameObjectsWithTag("GrapplePoint");
     }
 
     // Update is called once per frame
@@ -58,8 +61,11 @@ public class RopeSystem : MonoBehaviour
     {
         player.aimDirection();
         playerPosition = transform.position;
-
-        var aimDirection = Quaternion.Euler(0, 0, player.aimDirection()) * Vector2.right;
+        currGrapple = ClosestGrapple();
+        float xDist = currGrapple.transform.position.x - player.transform.position.x;
+        float yDist = currGrapple.transform.position.y - player.transform.position.y;
+        float aimDir = Mathf.Atan2(yDist, xDist)*Mathf.Rad2Deg;
+        var aimDirection = Quaternion.Euler(0, 0, aimDir) * Vector2.right;
 
         if (!ropeAttached)
         {
@@ -75,14 +81,15 @@ public class RopeSystem : MonoBehaviour
         HandleInput(aimDirection);
         UpdateRopePositions();
         HandleRopeLength();
+        Debug.Log(currGrapple.name);
     }
 
     // 1
     private void HandleInput(Vector2 aimDirection)
     {
-        if (Input.GetButtonDown("Utility") && player.powerset)
+        //Debug.Log(aimDirection);
+        if (Input.GetButtonDown("Utility") && player.powerset && player.tUtility.name == "grapple")
         {
-
             // 2
             ropeRenderer.enabled = true;
             var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
@@ -91,6 +98,7 @@ public class RopeSystem : MonoBehaviour
             // 3
             if (hit.collider != null)
             {
+                player.hasAirdash = true;
                 ropeAttached = true;
                 if (!ropePositions.Contains(hit.point))
                 {
@@ -251,6 +259,21 @@ public class RopeSystem : MonoBehaviour
                     ropeJoint.distance += Time.deltaTime * climbSpeed;
             }
         }
+    }
+
+    private GameObject ClosestGrapple()
+    {
+        GameObject Grapple = null;
+        if (GrapplePoints.Length > 0)
+            Grapple = GrapplePoints[0];
+        for (int i = 1; i < GrapplePoints.Length; ++i)
+        {
+            if (Mathf.Abs(Vector2.Distance(player.transform.position, GrapplePoints[i].transform.position)) < Mathf.Abs(Vector2.Distance(player.transform.position, Grapple.transform.position)))
+            {
+                Grapple = GrapplePoints[i];
+            }
+        }
+        return Grapple;
     }
 
     void OnTriggerStay2D(Collider2D colliderStay)
