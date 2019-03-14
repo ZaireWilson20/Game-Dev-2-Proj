@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerInventory : MonoBehaviour
 {
 
-    private List<InventoryItem> completeInventory = new List<InventoryItem>();
+    public List<InventoryItem> completeInventory = new List<InventoryItem>();
     public int _size = 0; 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +25,7 @@ public class PlayerInventory : MonoBehaviour
         tempPickUp.CopyPickUp(item);
         completeInventory.Add(tempPickUp);
         _size = completeInventory.Count;
+        
     }
 
    

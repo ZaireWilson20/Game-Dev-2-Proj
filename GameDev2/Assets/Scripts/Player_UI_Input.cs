@@ -7,15 +7,18 @@ public class Player_UI_Input : MonoBehaviour
 
     public GameObject menu;
     public GameObject map;
-
+    public GameObject invObj;
 
     //  Game Manager
     public GameObject gameManagerObj;
     private GameState gameManager;
+
+
     private enum ui_state
     {
         game,
         map, 
+        backpack,
         menu 
     }
     
@@ -25,6 +28,7 @@ public class Player_UI_Input : MonoBehaviour
     {
         menu.SetActive(false);
         map.SetActive(false);
+        invObj.SetActive(false);
         gameManager = gameManagerObj.GetComponent<GameState>();
     }
 
@@ -45,6 +49,12 @@ public class Player_UI_Input : MonoBehaviour
             gameManager.paused = true;
 
         }
+        else if(Input.GetKeyDown(KeyCode.I) && currentState == ui_state.game)
+        {
+            currentState = ui_state.backpack;
+            invObj.SetActive(true);
+            gameManager.paused = true; 
+        }
         else if (Input.GetKeyDown(KeyCode.Tab) && currentState == ui_state.map)
         {
             map.SetActive(false);
@@ -54,6 +64,12 @@ public class Player_UI_Input : MonoBehaviour
         else if (Input.GetButtonDown("Pause") && currentState == ui_state.menu)
         {
             menu.SetActive(false);
+            currentState = ui_state.game;
+            gameManager.paused = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.I) && currentState == ui_state.backpack)
+        {
+            invObj.SetActive(false);
             currentState = ui_state.game;
             gameManager.paused = false;
         }

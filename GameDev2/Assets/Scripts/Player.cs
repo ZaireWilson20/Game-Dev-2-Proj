@@ -147,7 +147,7 @@ public class Player : MonoBehaviour
     private HealthUI hiScript;
     public GameObject pSetObj;
     private PowerSetController pSetCont;
-    
+
 
 
     //Calculate airdash direction here
@@ -257,10 +257,10 @@ public class Player : MonoBehaviour
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         health = health_max;
 
+        //UI Inits
         hiScript = healthObj.GetComponent<HealthUI>();
         health = health_max;
         pSetCont = pSetObj.GetComponent<PowerSetController>();
-
         //Initialize powers
         boomerang = new Power("boomerang", true, true);
         grapple = new Power("grapple", true, true);
