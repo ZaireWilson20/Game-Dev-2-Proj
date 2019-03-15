@@ -36,7 +36,7 @@ public class Power : IComparable<Power>
 
     public void toString()
     {
-        //Debug.Log(name + ", " + active + ", " + side);
+        Debug.Log(name + ", " + active + ", " + side);
     }
 
     public void setActive()
@@ -59,6 +59,7 @@ public class Player : MonoBehaviour
     private bool fastFall = false;
     public float fastFallSpeed = 6f;
     public float fallSpeed = 3f;
+    public float swingGrav = 1f;
     public float groundedDist = .5f; 
 
     private int flashCt = 0;
@@ -345,7 +346,7 @@ public class Player : MonoBehaviour
             //While the player is swinging, limit their abilities to just grapple control
             if (isSwinging && powerset)
             {
-                rig2D.gravityScale = 1f;
+                rig2D.gravityScale = swingGrav;
                 wasSwinging = true;
                 airdashTime = 0f;
                 if (directionalInput.x != 0)
@@ -377,9 +378,18 @@ public class Player : MonoBehaviour
                 if (Input.GetButtonDown("Swap"))
                 {
                     if (powerset)
-                        CyclePower(tPowerDict, tUtility);
+                        tUtility = CyclePower(tPowerDict, tUtility);
                     else
-                        CyclePower(mPowerDict, mUtility);
+                        mUtility = CyclePower(mPowerDict, mUtility);
+                }
+                if (Input.GetButtonDown("Utility") && tUtility.name == "anti-grav" && powerset)
+                {
+                    fallSpeed *= -1;
+                    fastFallSpeed *= -1;
+                    swingGrav *= -1;
+                    jumpHeight *= -1;
+                    rig2D.gravityScale = fallSpeed;
+                    sprite.flipY = !sprite.flipY;
                 }
                 //While on the ground, enable all grounded options
                 if (grounded)
@@ -571,8 +581,12 @@ public class Player : MonoBehaviour
                 facingRight = false;
             }
             //Ray blah = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight - .2f), Vector2.down, 0.025f, floorMask);
-            grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
-            Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
+            if (fallSpeed > 0)
+                grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
+            else
+                grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
+
+            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
 
             anim.SetFloat("Falling", rig2D.velocity.y);
             anim.SetBool("Grounded", grounded);
@@ -589,6 +603,12 @@ public class Player : MonoBehaviour
             else
             {
                 anim.SetBool("Swinging", false);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                tPowerDict[antiGrav.name].active = !tPowerDict[antiGrav.name].active;
+                tPowerDict[antiGrav.name].toString();
             }
             tUtility.toString();
             tWeapon.toString();
@@ -610,11 +630,18 @@ public class Player : MonoBehaviour
     public Power CyclePower(Dictionary<string, Power> dict, Power curr)
     {
         bool takeNext = false;
+        bool f = true;
+        Power first = null;
         foreach(Power p in dict.Values)
         {
+            if (f)
+            {
+                first = p;
+                f = false;
+            }
             if (takeNext && p.active)
             {
-                p.ToString();
+                p.toString();
                 return dict[p.name];
             }
             if (p.name == curr.name)
@@ -622,8 +649,8 @@ public class Player : MonoBehaviour
                 takeNext = true;
             }
         }
-        curr.toString();
-        return curr;
+        first.toString();
+        return first;
     }
 
     public bool ActivatePower(Power NewPower)
