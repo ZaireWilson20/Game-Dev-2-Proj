@@ -13,7 +13,8 @@ for a in masterBank[1:len(masterBank)]:
         if b == 0:
             jsonName = a[b]
         if b == 1:
-            dialogueFile = a[b]
+            dialogueFiles = a[b].split(',')
+            print(dialogueFiles)
         if b == 2:
             firstSpeaker = a[b]
         if b == 3:
@@ -25,12 +26,17 @@ for a in masterBank[1:len(masterBank)]:
         if b == 6:
             allDialogue = []
             speakerSequence = []
-            with open(dialogueFile + '.tsv', 'r') as csvfile:
-                tempReader = csv.reader(csvfile, delimiter='\t', quotechar="|")
-                for row in tempReader:
-                    print(row)
-                    allDialogue.append(row[1])
-                    speakerSequence.append(row[0])
+            for dialogue in dialogueFiles:
+                tempDialogue = []
+                tempSequence = []
+                #print(dialogue)
+                with open(dialogue + '.tsv', 'r') as csvfile:
+                    tempReader = csv.reader(csvfile, delimiter='\t', quotechar="|")
+                    for row in tempReader:
+                        tempDialogue.append(row[1])
+                        tempSequence.append(row[0])
+                    allDialogue.append(tempDialogue)
+                    speakerSequence.append(tempSequence)
             with open(jsonName + '.json', 'w') as outfile:
                 data = {}
                 data['allDialogue'] = allDialogue
