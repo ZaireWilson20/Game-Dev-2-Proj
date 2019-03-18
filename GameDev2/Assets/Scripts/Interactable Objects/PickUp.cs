@@ -13,6 +13,7 @@ public class PickUp : MonoBehaviour
     void Start()
     {
         playerInv = playerRef.GetComponent<PlayerInventory>();
+        
     }
 
     // Update is called once per frame
@@ -20,9 +21,9 @@ public class PickUp : MonoBehaviour
     {
         if (playerIn)
         {
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (Input.GetKeyDown(KeyCode.B))
             {
-                Debug.Log("hi");
+                Debug.Log("I'm picking up shit");
                 playerInv.AddToInv(this.GetComponent<PickUp>());
                 Destroy(this.gameObject);
             }
