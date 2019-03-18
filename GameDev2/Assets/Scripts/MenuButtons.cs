@@ -14,7 +14,7 @@ public class MenuButtons : MonoBehaviour
     int horizIndex = 0;
     int debug_ct = 0;
 
-    public float CycleDelay = 0.2f;     //time between button cycling
+    public float CycleDelay = 0.0f;     //time between button cycling
     private float timer = 0.0f;
 
     public Color standard;
@@ -41,10 +41,10 @@ public class MenuButtons : MonoBehaviour
         vertCycle[3] = controls;
 
         //compile horizontal ordering of buttons
-        horizCycle[0] = play;
-        horizCycle[1] = options;
-        horizCycle[2] = quit;
-        horizCycle[3] = controls;
+        //horizCycle[0] = play;
+        //horizCycle[1] = options;
+        //horizCycle[2] = quit;
+        //horizCycle[3] = controls;
 
     }
 
@@ -89,18 +89,29 @@ public class MenuButtons : MonoBehaviour
                 Debug.Log("right");
                 //Debug.Log(debug_ct);
                 timer = 0.0f;
-                horizIndex++;
-                if (horizIndex > 3)
-                    horizIndex = 0;
-                vertIndex += 2;
-                if (vertIndex > 3)
-                    vertIndex = 0;
-                //highlight button at horizCycle[horixIndex]
-                Debug.Log(horizIndex);
+                if (selected == play)
+                {
+                    Highlight(options);
+                    selected = options;
+                } else if (selected == quit)
+                {
+                    Highlight(controls);
+                    selected = controls;
+                }
+
+                //horizIndex++;
+                //if (horizIndex > 3)
+                //    horizIndex = 0;
+                //vertIndex += 2;
+                //if (vertIndex > 3)
+                //    vertIndex = 0;
+                
+                //Debug.Log(horizIndex);
                 //horizCycle[horizIndex].Select();
-                Highlight(horizCycle[horizIndex]);
-                selected = horizCycle[horizIndex];
-                Debug.Log(selected);
+                //highlight button at horizCycle[horixIndex]
+                //Highlight(horizCycle[horizIndex]);
+                //selected = horizCycle[horizIndex];
+                //Debug.Log(selected);
             }
         }
 
@@ -113,16 +124,27 @@ public class MenuButtons : MonoBehaviour
                 //Debug.Log(debug_ct);
                 Debug.Log("left");
                 timer = 0.0f;
-                horizIndex--;
-                vertIndex -= 2;
-                if (horizIndex < 0)
-                    horizIndex = 3;
-                if (vertIndex < 0)
-                    vertIndex = 3;
+                if (selected == options)
+                {
+                    Highlight(play);
+                    selected = play;
+                }
+                else if (selected == controls)
+                {
+                    Highlight(quit);
+                    selected = quit;
+                }
+
+                //horizIndex--;
+                //vertIndex -= 2;
+                //if (horizIndex < 0)
+                //    horizIndex = 3;
+                //if (vertIndex < 0)
+                //    vertIndex = 3;
                 //highlight button at horizCycle[horixIndex]
                 //horizCycle[horizIndex].Select();
-                Highlight(horizCycle[horizIndex]);
-                selected = horizCycle[horizIndex];
+                //Highlight(horizCycle[horizIndex]);
+                //selected = horizCycle[horizIndex];
             }
         }
 
@@ -135,16 +157,27 @@ public class MenuButtons : MonoBehaviour
                 //Debug.Log(debug_ct);
                 Debug.Log("up");
                 timer = 0.0f;
-                vertIndex--;
-                horizIndex -= 2;
-                if (vertIndex < 0)
-                    vertIndex = 3;
-                if (horizIndex < 0)
-                    horizIndex = 3;
+                if (selected == quit)
+                {
+                    Highlight(play);
+                    selected = play;
+                }
+                else if (selected == controls)
+                {
+                    Highlight(options);
+                    selected = options;
+                }
+
+                //vertIndex--;
+                //horizIndex -= 2;
+                //if (vertIndex < 0)
+                //    vertIndex = 3;
+                //if (horizIndex < 0)
+                //    horizIndex = 3;
                 //highlight button at vertCycle[vertIndex]
                 //vertCycle[vertIndex].Select();
-                Highlight(vertCycle[vertIndex]);
-                selected = vertCycle[vertIndex];
+                //Highlight(vertCycle[vertIndex]);
+                //selected = vertCycle[vertIndex];
             }
         }
 
@@ -158,16 +191,27 @@ public class MenuButtons : MonoBehaviour
                 //Debug.Log(debug_ct);
                 Debug.Log("down");
                 timer = 0.0f;
-                vertIndex++;
-                horizIndex += 2;
-                if (vertIndex > 3)
-                    vertIndex = 0;
-                if (horizIndex > 3)
-                    horizIndex = 0;
+                if (selected == play)
+                {
+                    Highlight(quit);
+                    selected = quit;
+                }
+                else if (selected == options)
+                {
+                    Highlight(controls);
+                    selected = controls;
+                }
+
+                //vertIndex++;
+                //horizIndex += 2;
+                //if (vertIndex > 3)
+                //    vertIndex = 0;
+                //if (horizIndex > 3)
+                //    horizIndex = 0;
                 //highlight button at vertCycle[vertIndex]
                 //vertCycle[vertIndex].Select();
-                Highlight(vertCycle[vertIndex]);
-                selected = vertCycle[vertIndex];
+                //Highlight(vertCycle[vertIndex]);
+                //selected = vertCycle[vertIndex];
             }
         }
         timer += Time.deltaTime;
