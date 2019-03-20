@@ -587,12 +587,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer == 14)
-            Debug.Log("I HIT THE PLAYER");
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.layer == 14)
+    //        Debug.Log("I HIT THE ENEMY");
 
-    }
+    //}
 
     //Param 1 - The dictionary of available powers to switch to
     //Param 2 - The current power
