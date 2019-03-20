@@ -42,7 +42,6 @@ public class ToxicShot : Projectile
     protected override void Update()
     {
         base.Update();
-
         //damage intensity is reduced as a function of distance from start position
         float reduction = damageReducFactor * Mathf.Abs(Vector3.Distance(startPos, transform.position));
         damage -= reduction;

@@ -83,6 +83,7 @@ public class Player : MonoBehaviour
     public GameObject boomerangObj;
     public GameObject toxicShot;
     private GameObject projectile;
+    public GameObject reflectWall;
 
     public float airdashTime = 0;
     public bool hasAirdash = false;
@@ -98,6 +99,9 @@ public class Player : MonoBehaviour
     public float tpDistance = 3f;
     public float tpCooldown = 1f;
     private float timeSinceLastTp;
+
+    public float reflectCooldown = 4f;
+    private float refMax;
 
     public LayerMask floorMask;
 
@@ -265,6 +269,7 @@ public class Player : MonoBehaviour
         gameManager = gameManagerObj.GetComponent<GameState>();
 
         timeSinceLastTp = tpCooldown;
+        refMax = 0f;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         //health = health_max;
 
@@ -283,7 +288,7 @@ public class Player : MonoBehaviour
         reflector = new Power("reflect", false, false);
         tPowerDict.Add("grapple", grapple); tPowerDict.Add("anti-grav", antiGrav);
         tWeaponDict.Add("boomerang", boomerang); tWeaponDict.Add("drill", drill);
-        mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflector", reflector);
+        mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflect", reflector);
         mWeaponDict.Add("poison", poisonShot); mWeaponDict.Add("freeze", freeze);
         tUtility = grapple;
         tWeapon = boomerang;
@@ -300,6 +305,13 @@ public class Player : MonoBehaviour
     public void SavePlayer()
     {
         localPlayerData.playerHealth = health;
+
+        localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
+        localPlayerData.mWeap = mWeapon;        localPlayerData.tWeap = tWeapon;
+
+        localPlayerData.tUtils = tPowerDict;    localPlayerData.mUtils = mPowerDict;
+        localPlayerData.tWeaps = tWeaponDict;   localPlayerData.mWeaps = mWeaponDict;
+
         GlobalControl.Instance.savedPlayer = localPlayerData;
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
     }
@@ -382,6 +394,14 @@ public class Player : MonoBehaviour
                     else
                         mUtility = CyclePower(mPowerDict, mUtility);
                 }
+                if (Input.GetButtonDown("SwitchWep"))
+                {
+                    if (powerset)
+                        tWeapon = CyclePower(tWeaponDict, tWeapon);
+                    else
+                        mWeapon = CyclePower(mWeaponDict, mWeapon);
+                }
+                //ANTI-GRAVITY LOGIC
                 if (Input.GetButtonDown("Utility") && tUtility.name == "anti-grav" && powerset)
                 {
                     fallSpeed *= -1;
@@ -391,6 +411,21 @@ public class Player : MonoBehaviour
                     rig2D.gravityScale = fallSpeed;
                     sprite.flipY = !sprite.flipY;
                 }
+                //REFLECT WALL LOGIC
+                if (Input.GetButtonDown("Utility") && mUtility.name == "reflect" && !powerset)
+                {
+                    if (refMax <= 0)
+                    {
+                        refMax = reflectCooldown;
+                        GameObject newWall = Instantiate(reflectWall, transform.position, transform.rotation) as GameObject;
+                        if (facingRight)
+                            newWall.transform.position = new Vector2(newWall.transform.position.x + 3, newWall.transform.position.y);
+                        else
+                            newWall.transform.position = new Vector2(newWall.transform.position.x - 3, newWall.transform.position.y);
+                        newWall.SetActive(true);
+                    }
+                }
+                refMax -= Time.deltaTime;
                 //While on the ground, enable all grounded options
                 if (grounded)
                 {
@@ -490,7 +525,7 @@ public class Player : MonoBehaviour
                 //TELEPORT LOGIC
                 if (timeSinceLastTp > tpCooldown && !powerset)
                 {
-                    if (Input.GetButton("Utility") || Input.GetKeyDown(KeyCode.E))
+                    if (Input.GetButtonDown("Utility") &&  mUtility.name == "teleport")
                     {
                         //Handle teleport
                         float angle = tpDirection();
@@ -582,11 +617,22 @@ public class Player : MonoBehaviour
             }
             //Ray blah = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight - .2f), Vector2.down, 0.025f, floorMask);
             if (fallSpeed > 0)
-                grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
-            else
-                grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
+            {
+                grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) || 
+                           Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x-.4f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
+                           Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x+.4f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
 
-            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
+
+            }
+            else
+            {
+                grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
+                           Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x-.4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
+                           Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x+.4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
+            }
+            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.magenta);
+            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x-.4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, Color.magenta);
+            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x+.4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, Color.magenta);
 
             anim.SetFloat("Falling", rig2D.velocity.y);
             anim.SetBool("Grounded", grounded);
@@ -607,8 +653,8 @@ public class Player : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Y))
             {
-                tPowerDict[antiGrav.name].active = !tPowerDict[antiGrav.name].active;
-                tPowerDict[antiGrav.name].toString();
+                mPowerDict[reflector.name].active = !mPowerDict[reflector.name].active;
+                mPowerDict[reflector.name].toString();
             }
             tUtility.toString();
             tWeapon.toString();

@@ -81,7 +81,7 @@ public class RopeSystem : MonoBehaviour
         HandleInput(aimDirection);
         UpdateRopePositions();
         HandleRopeLength();
-        Debug.Log(currGrapple.name);
+        //Debug.Log(currGrapple.name);
     }
 
     // 1
