@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
     private GameObject projectile;
 
     public float airdashTime = 0;
-    private bool hasAirdash = false;
+    public bool hasAirdash = false;
     private Vector3 airdashDirection = new Vector3(0, 0, 0);
 
     private bool facingRight = true;
@@ -181,8 +181,7 @@ public class Player : MonoBehaviour
         return vec;
     }
 
-    //Returns valid directions you can aim in, used for all aimed projectiles, grappling hook
-    //All but straight down
+    //Returns valid directions you can aim in, used for all aimed projectiles
     public float aimDirection()
     {
         float aim = 0f;
@@ -375,6 +374,13 @@ public class Player : MonoBehaviour
             }
             else
             {
+                if (Input.GetButtonDown("Swap"))
+                {
+                    if (powerset)
+                        CyclePower(tPowerDict, tUtility);
+                    else
+                        CyclePower(mPowerDict, mUtility);
+                }
                 //While on the ground, enable all grounded options
                 if (grounded)
                 {
@@ -584,7 +590,12 @@ public class Player : MonoBehaviour
             {
                 anim.SetBool("Swinging", false);
             }
+            tUtility.toString();
+            tWeapon.toString();
+            mUtility.toString();
+            mWeapon.toString();
         }
+        
     }
 
     //private void OnCollisionEnter2D(Collision2D collision)
@@ -611,8 +622,13 @@ public class Player : MonoBehaviour
                 takeNext = true;
             }
         }
-        curr.ToString();
+        curr.toString();
         return curr;
+    }
+
+    public bool ActivatePower(Power NewPower)
+    {
+        return NewPower.active = true;
     }
 
     public void takeDamage(int damage, Vector2 knockDir)
