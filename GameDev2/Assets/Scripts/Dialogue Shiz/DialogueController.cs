@@ -11,9 +11,9 @@ public class DialogueController : MonoBehaviour
 
     private bool talking;
     private Coroutine _coroutine;
-    public GameObject textBox;
+    public GameObject dialogueBox;
     public GameObject nameBox;
-    public GameObject bigBox;
+    public GameObject conversationUI;   // gameobject as a whole which contains all the different chat elements
     public GameObject popUpBox; 
     public GameObject continueBox; 
     private TMP_Text dialogue;
@@ -31,7 +31,7 @@ public class DialogueController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        dialogue = textBox.GetComponentInChildren<TMP_Text>();
+        dialogue = dialogueBox.GetComponentInChildren<TMP_Text>();
         nameText = nameBox.GetComponentInChildren<TMP_Text>();
         popText = popUpBox.GetComponentInChildren<TMP_Text>();
     }
@@ -59,7 +59,7 @@ public class DialogueController : MonoBehaviour
         secondSpeakerName = lines.secondSpeaker;
 
         continueBox.SetActive(false);
-        bigBox.SetActive(true);
+        conversationUI.SetActive(true);
         allLines = lines.allDialogue;
         totalLines = lines.allDialogue.Length;
         StartCoroutine(TypeSentence(allLines[currentLine]));
@@ -84,7 +84,7 @@ public class DialogueController : MonoBehaviour
         // If speaker's last line
         if(currentLine == totalLines)
         {
-            bigBox.SetActive(false);
+            conversationUI.SetActive(false);
             currentLine = 0; 
             return false; 
         }
