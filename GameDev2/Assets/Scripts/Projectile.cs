@@ -29,6 +29,7 @@ public class Projectile : MonoBehaviour
         Physics2D.IgnoreLayerCollision(15, 15);
         startPos = transform.position;
         sprite = GetComponent<SpriteRenderer>();
+        Debug.Log(velocity);
     }
 
     protected virtual void collide(Collider2D collision)

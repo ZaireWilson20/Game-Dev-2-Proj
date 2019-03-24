@@ -51,6 +51,17 @@ public class EnemyProjectile : MonoBehaviour
 
         }
 
+        if (contact.layer == 14)
+        {
+            SimpleHostile hscript = contact.GetComponent<SimpleHostile>();
+            hscript.takeDamage(damage, direction);
+        }
+
+        if (contact.layer == 18)
+        {
+            velocity *= -1;
+        }
+
         if (contact.layer == 8)
             gameObject.SetActive(false);
         //        }
