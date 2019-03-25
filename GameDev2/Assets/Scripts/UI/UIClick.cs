@@ -7,11 +7,14 @@ public class UIClick : MonoBehaviour
     public GameObject ui_Inventory;
     public GameObject menu;
     public GameObject ui_Skills;
-    public GameObject ui_Quit; 
+    public GameObject ui_Quit;
+    public GameObject gameManager;
+    private Player_UI_Input gmScript;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gmScript = gameManager.GetComponent<Player_UI_Input>();
     }
 
     // Update is called once per frame
@@ -45,6 +48,11 @@ public class UIClick : MonoBehaviour
             ui_Skills.SetActive(true);
             menu.SetActive(false);
         }
+    }
+
+    public void ResumeGame()
+    {
+        gmScript.ResumeGame();
     }
 
     public void backToMenu()

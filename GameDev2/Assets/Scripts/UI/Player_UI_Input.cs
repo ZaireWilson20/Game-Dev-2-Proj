@@ -77,4 +77,11 @@ public class Player_UI_Input : MonoBehaviour
 
 
     }
+
+    public void ResumeGame()
+    {
+        menu.SetActive(false);
+        currentState = ui_state.game;
+        gameManager.paused = false;
+    }
 }
