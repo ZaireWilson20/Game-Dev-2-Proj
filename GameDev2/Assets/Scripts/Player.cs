@@ -22,6 +22,7 @@ public class Power : IComparable<Power>
     public string name;
     public bool active;
     public bool side;
+    public bool inList = false; 
     public Power(string n, bool a, bool s)
     {
         name = n;
@@ -36,7 +37,7 @@ public class Power : IComparable<Power>
 
     public void toString()
     {
-        //Debug.Log(name + ", " + active + ", " + side);
+        Debug.Log(name + ", " + active + ", " + side);
     }
 
     public void setActive()
@@ -300,6 +301,11 @@ public class Player : MonoBehaviour
         //Debug.Log(tWeaponDict.ToString());
         //Debug.Log(mPowerDict.ToString());
         //Debug.Log(mWeaponDict.ToString());
+
+        pSetCont.SetMPowerImg(mUtility.name);
+        pSetCont.SetMWeaponImg(mWeapon.name);
+        pSetCont.SetSPowerImg(tUtility.name);
+        pSetCont.SetSWeaponImg(tWeapon.name);
     }
 
     public void SavePlayer()
@@ -323,13 +329,15 @@ public class Player : MonoBehaviour
         if (powerset)
         {
             projectile = boomerangObj;
-            pSetCont.showPowerSet("SCIENCE");
+            pSetCont.ShowTSet();
+            //pSetCont.showPowerSet("SCIENCE");
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/GameObject.controller", typeof(RuntimeAnimatorController));
         }
         else
         {
             projectile = toxicShot;
-            pSetCont.showPowerSet("MAGIC");
+            pSetCont.ShowMSet();
+            //pSetCont.showPowerSet("MAGIC");
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/updatedFullController.controller", typeof(RuntimeAnimatorController));
         }
 
@@ -393,16 +401,29 @@ public class Player : MonoBehaviour
                 if (Input.GetButtonDown("Swap"))
                 {
                     if (powerset)
+                    {
                         tUtility = CyclePower(tPowerDict, tUtility);
+                        pSetCont.SetSPowerImg(tUtility.name);
+                    }
                     else
+                    {
                         mUtility = CyclePower(mPowerDict, mUtility);
+                        pSetCont.SetMPowerImg(mUtility.name);
+                    }
                 }
                 if (Input.GetButtonDown("SwitchWep"))
                 {
                     if (powerset)
+                    {
                         tWeapon = CyclePower(tWeaponDict, tWeapon);
+                        pSetCont.SetSWeaponImg(tWeapon.name);
+                    }
                     else
+                    {
                         mWeapon = CyclePower(mWeaponDict, mWeapon);
+                        Debug.Log(mWeapon.name);
+                        pSetCont.SetMWeaponImg(mWeapon.name);
+                    }
                 }
                 //ANTI-GRAVITY LOGIC
                 if (Input.GetButtonDown("Utility") && tUtility.name == "anti-grav" && powerset)
@@ -661,10 +682,10 @@ public class Player : MonoBehaviour
                 mPowerDict[reflector.name].active = !mPowerDict[reflector.name].active;
                 mPowerDict[reflector.name].toString();
             }
-            tUtility.toString();
-            tWeapon.toString();
-            mUtility.toString();
-            mWeapon.toString();
+            //tUtility.toString();
+            //tWeapon.toString();
+            //mUtility.toString();
+            //mWeapon.toString();
         }
         
     }
