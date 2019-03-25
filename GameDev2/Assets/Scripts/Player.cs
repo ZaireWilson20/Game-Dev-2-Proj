@@ -128,7 +128,7 @@ public class Player : MonoBehaviour
     float velocX_smooth;
     float accelTime_air = .4f;
     float accelTime_ground = .1f;
-    Vector3 velocity;
+    public Vector3 velocity;
     // --------------------------------
 
     //  Player interactions with environment
