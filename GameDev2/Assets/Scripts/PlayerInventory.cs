@@ -28,5 +28,16 @@ public class PlayerInventory : MonoBehaviour
         
     }
 
+    public bool CheckInventory(string name)
+    {
+        foreach(InventoryItem item in completeInventory)
+        {
+            if(name == item._name)
+            {
+                return true; 
+            }
+        }
+        return false; 
+    }
    
 }

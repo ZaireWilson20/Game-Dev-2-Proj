@@ -36,7 +36,7 @@ public class Power : IComparable<Power>
 
     public void toString()
     {
-        Debug.Log(name + ", " + active + ", " + side);
+        //Debug.Log(name + ", " + active + ", " + side);
     }
 
     public void setActive()
