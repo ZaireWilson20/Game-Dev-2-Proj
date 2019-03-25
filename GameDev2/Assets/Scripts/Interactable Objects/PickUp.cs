@@ -9,6 +9,8 @@ public class PickUp : MonoBehaviour
     public GameObject playerRef;
     private PlayerInventory playerInv;
     private bool playerIn; 
+
+    
     // Start is called before the first frame update
     void Start()
     {
