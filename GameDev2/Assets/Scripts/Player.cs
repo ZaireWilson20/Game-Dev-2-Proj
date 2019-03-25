@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
     private HealthUI hiScript;
     public GameObject pSetObj;
     private PowerSetController pSetCont;
-    
+
 
 
     //Calculate airdash direction here
@@ -273,10 +273,10 @@ public class Player : MonoBehaviour
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         //health = health_max;
 
+        //UI Inits
         hiScript = healthObj.GetComponent<HealthUI>();
         //health = health_max;
         pSetCont = pSetObj.GetComponent<PowerSetController>();
-
         //Initialize powers
         boomerang = new Power("boomerang", true, true);
         grapple = new Power("grapple", true, true);
@@ -340,6 +340,9 @@ public class Player : MonoBehaviour
 
         if (!pa_inConvo)  // Can move while not in conversation
         {
+            grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
+            Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
+
             directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
             WalkAnim(directionalInput);
 
@@ -475,6 +478,7 @@ public class Player : MonoBehaviour
                     {
                         rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
                         jumping = true;
+                        Debug.Log("I jumped");
                     }
                     else if (Input.GetButtonUp("Jump"))
                     {
@@ -498,6 +502,7 @@ public class Player : MonoBehaviour
                         airdashTime = .3f;
                         this.airdashDirection = calculateAirdashVector();
                         anim.SetTrigger("AirDash");
+                        Debug.Log("Air Dashing");
                     }
                 }
 
