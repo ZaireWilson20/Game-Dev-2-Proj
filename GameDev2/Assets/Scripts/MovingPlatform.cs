@@ -7,6 +7,7 @@ public class MovingPlatform : MonoBehaviour
     private Vector3 startPos;
      public Transform target;
      public float speed;
+    public bool movingVertical; 
      private bool moveUp;
      private bool playerTouching; 
 
@@ -30,7 +31,7 @@ public class MovingPlatform : MonoBehaviour
          else{
              positive = true;
          }
-         if(playerTouching){
+         if(playerTouching && !movingVertical){
              player.transform.position = new Vector3(player.transform.position.x + (positive ? step : step*-1f), player.transform.position.y, player.transform.position.z);
          }
          if (transform.position == target.position)

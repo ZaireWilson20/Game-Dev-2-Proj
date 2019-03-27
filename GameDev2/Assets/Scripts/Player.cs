@@ -325,6 +325,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))   //  Lose health for debugging purposes. Should Be Deleted at some point
+        {
+            health--;
+            hiScript.loseHealth();
+        }
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
         {
@@ -758,6 +764,17 @@ public class Player : MonoBehaviour
             Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 
+    }
+
+    public bool IncreaseHealth()
+    {
+        if(health != health_max)
+        {
+            health++;
+            hiScript.gainHealth();
+            return true;
+        }
+        return false;
     }
 
     void WalkAnim(Vector2 input)

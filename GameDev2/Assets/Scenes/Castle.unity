@@ -5986,6 +5986,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 567247403212184004, guid: 0b1edfba0da578e469c8f27e0ef520de,
+        type: 3}
+      propertyPath: movingVertical
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b1edfba0da578e469c8f27e0ef520de, type: 3}
 --- !u!4 &601746442 stripped
@@ -8800,6 +8805,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 567247403212184004, guid: 0b1edfba0da578e469c8f27e0ef520de,
+        type: 3}
+      propertyPath: movingVertical
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b1edfba0da578e469c8f27e0ef520de, type: 3}
 --- !u!4 &935921788 stripped
@@ -9084,7 +9094,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 560668984, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
       propertyPath: m_Name
-      value: Paracelsys317
+      value: Paracelsys
       objectReference: {fileID: 0}
     - target: {fileID: 560668995, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13924,7 +13934,7 @@ PrefabInstance:
     - target: {fileID: 567247404271067520, guid: 0b1edfba0da578e469c8f27e0ef520de,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 16.1
       objectReference: {fileID: 0}
     - target: {fileID: 567247404271067520, guid: 0b1edfba0da578e469c8f27e0ef520de,
         type: 3}
@@ -20450,6 +20460,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3672955052953313032, guid: 98bc7ca2232dd2a46bdd1e0a63214934,
+        type: 3}
+      propertyPath: playerObj
+      value: 
+      objectReference: {fileID: 2143140565}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 98bc7ca2232dd2a46bdd1e0a63214934, type: 3}
 --- !u!4 &2080553536 stripped
@@ -21007,7 +21022,7 @@ PrefabInstance:
     - target: {fileID: 7501577992922472339, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7501577992922472351, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
