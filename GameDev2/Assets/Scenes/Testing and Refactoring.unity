@@ -528,10 +528,6 @@ PrefabInstance:
       propertyPath: jumpHeight
       value: 15
       objectReference: {fileID: 0}
-    - target: {fileID: 1290081202, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1290081198, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
       propertyPath: m_TagString
       value: MainCamera
@@ -545,6 +541,10 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Size.y
       value: 1.2498813
+      objectReference: {fileID: 0}
+    - target: {fileID: 1290081202, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
@@ -828,6 +828,11 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6054823899690792645, guid: b1e40aad002e4034a9ab6eb09790dbd3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2900553431634556392, guid: b1e40aad002e4034a9ab6eb09790dbd3,
         type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -837,11 +842,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
       value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 6054823899690792645, guid: b1e40aad002e4034a9ab6eb09790dbd3,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1e40aad002e4034a9ab6eb09790dbd3, type: 3}
@@ -1467,16 +1467,6 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2900553431634556392, guid: b1e40aad002e4034a9ab6eb09790dbd3,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.x
-      value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2900553431634556392, guid: b1e40aad002e4034a9ab6eb09790dbd3,
-        type: 3}
-      propertyPath: m_SpriteTilingProperty.newSize.y
-      value: 0.16
-      objectReference: {fileID: 0}
     - target: {fileID: 6054823899690792645, guid: b1e40aad002e4034a9ab6eb09790dbd3,
         type: 3}
       propertyPath: m_LocalRotation.z
@@ -1511,6 +1501,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900553431634556392, guid: b1e40aad002e4034a9ab6eb09790dbd3,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900553431634556392, guid: b1e40aad002e4034a9ab6eb09790dbd3,
+        type: 3}
+      propertyPath: m_SpriteTilingProperty.newSize.y
+      value: 0.16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1e40aad002e4034a9ab6eb09790dbd3, type: 3}
@@ -1707,7 +1707,7 @@ PrefabInstance:
     - target: {fileID: 2900553431634556397, guid: b1e40aad002e4034a9ab6eb09790dbd3,
         type: 3}
       propertyPath: m_Name
-      value: GroundSprite
+      value: Kill me
       objectReference: {fileID: 0}
     - target: {fileID: 2900553431634556399, guid: b1e40aad002e4034a9ab6eb09790dbd3,
         type: 3}
@@ -2146,6 +2146,11 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6054823899690792645, guid: b1e40aad002e4034a9ab6eb09790dbd3,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 2900553431634556392, guid: b1e40aad002e4034a9ab6eb09790dbd3,
         type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.x
@@ -2155,11 +2160,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SpriteTilingProperty.newSize.y
       value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 6054823899690792645, guid: b1e40aad002e4034a9ab6eb09790dbd3,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1e40aad002e4034a9ab6eb09790dbd3, type: 3}
