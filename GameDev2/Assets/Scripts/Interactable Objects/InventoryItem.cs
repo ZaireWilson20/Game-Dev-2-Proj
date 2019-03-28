@@ -20,7 +20,7 @@ public class InventoryItem : MonoBehaviour
 
     public void CopyPickUp(PickUp item)
     {
-        _name = item.name;
+        _name = item._name;
         invSprite = item.GetComponent<SpriteRenderer>().sprite;
     }
 }
