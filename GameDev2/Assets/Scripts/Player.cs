@@ -83,6 +83,8 @@ public class Player : MonoBehaviour
     private GameObject newProjectile;
     public GameObject boomerangObj;
     public GameObject toxicShot;
+    public GameObject drillObj;
+    public GameObject freezeObj;
     private GameObject projectile;
     public GameObject reflectWall;
 
@@ -334,14 +336,20 @@ public class Player : MonoBehaviour
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
         {
-            projectile = boomerangObj;
+            if (tWeapon.name == boomerang.name)
+                projectile = boomerangObj;
+            else if (tWeapon.name == drill.name)
+                projectile = drillObj;
             pSetCont.ShowTSet();
             //pSetCont.showPowerSet("SCIENCE");
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/GameObject.controller", typeof(RuntimeAnimatorController));
         }
         else
         {
-            projectile = toxicShot;
+            if (mWeapon.name == poisonShot.name)
+                projectile = toxicShot;
+            else if (mWeapon.name == freeze.name)
+                projectile = freezeObj;
             pSetCont.ShowMSet();
             //pSetCont.showPowerSet("MAGIC");
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/updatedFullController.controller", typeof(RuntimeAnimatorController));
@@ -422,6 +430,7 @@ public class Player : MonoBehaviour
                     if (powerset)
                     {
                         tWeapon = CyclePower(tWeaponDict, tWeapon);
+                        Debug.Log(tWeapon.name);
                         pSetCont.SetSWeaponImg(tWeapon.name);
                     }
                     else
@@ -685,8 +694,11 @@ public class Player : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Y))
             {
-                mPowerDict[reflector.name].active = !mPowerDict[reflector.name].active;
-                mPowerDict[reflector.name].toString();
+                mPowerDict[reflector.name].active = true;
+                mWeaponDict[freeze.name].active = true;
+                tPowerDict[antiGrav.name].active = true;
+                tWeaponDict[drill.name].active = true;
+                Debug.Log("All powers added");
             }
             //tUtility.toString();
             //tWeapon.toString();
