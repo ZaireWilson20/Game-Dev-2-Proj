@@ -671,7 +671,7 @@ PrefabInstance:
         type: 3}
       propertyPath: drillObj
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 550583872}
     - target: {fileID: 1290081202, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -855,6 +855,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 470598064}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &550583872 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6028925925162686910, guid: c108a50c82e92f840a7e4d2b574842a3,
+    type: 3}
+  m_PrefabInstance: {fileID: 580069089}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &580069089
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -926,6 +932,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028925925162686909, guid: c108a50c82e92f840a7e4d2b574842a3,
+        type: 3}
+      propertyPath: accel
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6028925925162686909, guid: c108a50c82e92f840a7e4d2b574842a3,
+        type: 3}
+      propertyPath: speed
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c108a50c82e92f840a7e4d2b574842a3, type: 3}
