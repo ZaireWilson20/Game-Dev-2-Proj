@@ -11,7 +11,7 @@ public class Spikes : MonoBehaviour
     private Vector3 lowPoint;
     private Vector3 highPoint;
     private bool movingDown = true;
-    public GameObject playerObj;
+    private GameObject playerObj;
     public GameObject parent; 
     private Player player;
     public bool moving; 
@@ -20,7 +20,8 @@ public class Spikes : MonoBehaviour
     {
         lowPoint = lowObj.transform.position;
         highPoint = highObj.transform.position;
-        player = playerObj.GetComponent<Player>();
+        player = GameObject.Find("Paracelsys").GetComponent<Player>();
+        //player = playerObj.GetComponent<Player>();
     }
 
     // Update is called once per frame
