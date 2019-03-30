@@ -49,7 +49,7 @@ public class Player_UI_Input : MonoBehaviour
             gameManager.paused = true;
 
         }
-        else if(Input.GetKeyDown(KeyCode.I) && currentState == ui_state.game)
+        else if(Input.GetButtonDown("Inventory") && currentState == ui_state.game)
         {
             currentState = ui_state.backpack;
             invObj.SetActive(true);
@@ -67,7 +67,7 @@ public class Player_UI_Input : MonoBehaviour
             currentState = ui_state.game;
             gameManager.paused = false;
         }
-        else if (Input.GetKeyDown(KeyCode.I) && currentState == ui_state.backpack)
+        else if (Input.GetButtonDown("Inventory") && currentState == ui_state.backpack)
         {
             invObj.SetActive(false);
             currentState = ui_state.game;
