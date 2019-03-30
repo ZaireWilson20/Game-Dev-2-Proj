@@ -23,5 +23,13 @@ public class HealthUI : MonoBehaviour
         }
     }
 
+    public void gainHealth()
+    {
+        if (currentLife < 4)
+        {
+            healthSprites[currentLife + 1].SetActive(true);
+            currentLife++;
+        }
 
+    }
 }

@@ -23,6 +23,7 @@ public class PlayerInventory : MonoBehaviour
     {
         InventoryItem tempPickUp = new InventoryItem();
         tempPickUp.CopyPickUp(item);
+        Debug.Log(tempPickUp._name);
         completeInventory.Add(tempPickUp);
         _size = completeInventory.Count;
         
