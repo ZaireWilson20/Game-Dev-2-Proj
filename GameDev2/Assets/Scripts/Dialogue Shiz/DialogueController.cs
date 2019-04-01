@@ -19,7 +19,8 @@ public class DialogueController : MonoBehaviour
     private TMP_Text dialogue;
     private TMP_Text nameText;
     private TMP_Text popText;
-    private DialogueObj diaObj; 
+    private DialogueObj diaObj;
+    private int curConvo = 0; 
     string[] allLines;
     public Image char1;
     public Image char2;
@@ -50,12 +51,13 @@ public class DialogueController : MonoBehaviour
 
     public void DisplayText(DialogueObj lines)
     {
-        diaObj = lines; 
+        diaObj = lines;
 
         //  Set Dialogue sprites for both characters in scene
-        char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.fsSprite + fileName, typeof(Sprite)); 
-        char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + fileName, typeof(Sprite));
+        char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.fsSprite + lines.mood[currentLine] + fileName, typeof(Sprite)); 
+        char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
         firstSpeakerName = lines.firstSpeaker;
+        Debug.Log(lines.firstSpeaker);
         secondSpeakerName = lines.secondSpeaker;
 
         continueBox.SetActive(false);
@@ -88,7 +90,10 @@ public class DialogueController : MonoBehaviour
             currentLine = 0; 
             return false; 
         }
+
+       
         continueBox.SetActive(false);
+
         setSpeaker(diaObj.speakerSeq[currentLine]);
 
         if (_coroutine != null)
@@ -103,17 +108,26 @@ public class DialogueController : MonoBehaviour
     
     private void setSpeaker(string speaker)
     {
-        if (speaker == "fSpeaker")
+
+        Debug.Log("Current Speaker: " + speaker);
+
+        if (speaker == firstSpeakerName)
         {
             nameText.text = firstSpeakerName;
+            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, 1f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, .5f);
         }
-        else if (speaker == "sSpeaker")
+        else if (speaker == secondSpeakerName)
         {
             nameText.text = secondSpeakerName;
+            char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, .5f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, 1f);
+        }
+        else
+        {
+            Debug.Log("Not Working");
         }
     }
 
