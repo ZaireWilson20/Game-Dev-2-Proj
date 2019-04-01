@@ -677,6 +677,11 @@ PrefabInstance:
       propertyPath: freezeObj
       value: 
       objectReference: {fileID: 680843979996256362}
+    - target: {fileID: 998501248941474296, guid: a70acd571dd1df041b67114c4fefd097,
+        type: 3}
+      propertyPath: floorMask.m_Bits
+      value: 524544
+      objectReference: {fileID: 0}
     - target: {fileID: 1290081202, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -2213,6 +2218,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1539630213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539630211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a8c08761428524db4315f8fa1e5a07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unfreeze: 4
 --- !u!1001 &1541437786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2499,6 +2517,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Freeze
+      objectReference: {fileID: 0}
+    - target: {fileID: 680843979996256362, guid: 6aa9bba8e6998c84b8ed86b5a816dbc8,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9138666577446707108, guid: 6aa9bba8e6998c84b8ed86b5a816dbc8,
         type: 3}
