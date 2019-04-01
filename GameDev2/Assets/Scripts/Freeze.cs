@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class Freeze : Projectile
 {
-    public float damageReducFactor = 0.01f;
-    private Color startColor;
-    private float alpha;
+    public float health;
 
     protected override void Start()
     {
         base.Start();
-        startColor = sprite.color;
-        alpha = startColor.a;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,7 +28,7 @@ public class Freeze : Projectile
             //Debug.Log(lastDir);
 
             pscript.takeDamage(damage, dir);
-
+            health--;
         }
 
         if (contact.layer == 8)
@@ -43,13 +39,8 @@ public class Freeze : Projectile
     {
         base.Update();
         //damage intensity is reduced as a function of distance from start position
-        float reduction = damageReducFactor * Mathf.Abs(Vector3.Distance(startPos, transform.position));
-        damage -= reduction;
-        alpha -= reduction / (damage + 1);
-        sprite.color = new Color(startColor.r, startColor.g, startColor.b, alpha);
-
         //when damage has no power, toxic shot disappears
-        if (damage <= 0)
+        if (health <= 0)
         {
             gameObject.SetActive(false);
         }
