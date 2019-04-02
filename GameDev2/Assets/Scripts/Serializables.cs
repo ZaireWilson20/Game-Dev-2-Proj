@@ -15,3 +15,8 @@ public class PlayerData
     public Dictionary<string, Power> tWeaps;
     public Dictionary<string, Power> mWeaps;
 }
+
+public class DialogueData
+{
+    public bool alreadyRead = false; 
+}

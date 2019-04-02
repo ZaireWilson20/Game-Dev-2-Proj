@@ -6,6 +6,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
 {
     Dictionary<string, DialogueObj > pa_npc_to_dia = new Dictionary<string, DialogueObj>(); 
     private GameObject[] pa_all_npcs;
+    private NpcDialogue npcDia; 
     string path;
     string fileName = ".json";
     private DialogueObj diaData;
@@ -17,8 +18,12 @@ public class NPC_Dialogue_Loader : MonoBehaviour
 
         foreach (GameObject ga in pa_all_npcs)
         {
-            path = "Assets/Level Data/Dialogue Bank/" + ga.name + fileName;
-            ReadData(path, ga.name);
+            //npcDia = ga.GetComponent<NpcDialogue>();
+            for (int i = 1; i < 1 + 1; i++)
+            {
+                path = "Assets/Level Data/Dialogue Bank/" + ga.name + i + fileName;
+                ReadData(path, ga.name + i);
+            }
         }
         pa_finished_reading = true;
     }
