@@ -5,7 +5,7 @@ using UnityEngine;
 public class Freeze : Projectile
 {
     public float health;
-
+    
     protected override void Start()
     {
         base.Start();
@@ -31,19 +31,18 @@ public class Freeze : Projectile
             health--;
         }
 
-        if (contact.layer == 19)
+        FreezeState freezeScript;
+        SpriteRenderer spr = contact.GetComponent<SpriteRenderer>();
+        if (contact.GetComponent<FreezeState>())
+            freezeScript = contact.GetComponent<FreezeState>();
+        else
         {
-            FreezeState freezeScript;
-            SpriteRenderer spr = contact.GetComponent<SpriteRenderer>();
-            if (contact.GetComponent<FreezeState>())
-                freezeScript = contact.GetComponent<FreezeState>();
-            else
-            {
-                Debug.Log("Thing shouldn't freeze");
-                freezeScript = null;
-            }
-            if (freezeScript != null)
-                freezeScript.freeze(true);
+            Debug.Log("Thing shouldn't freeze");
+            freezeScript = null;
+        }
+        if (freezeScript != null)
+        {
+            freezeScript.freeze(true);
             Debug.Log("Should change color here");
         }
 
