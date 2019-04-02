@@ -121,7 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 3782187223739699774}
-  speed: 1
+  speed: 0
+  movingVertical: 0
 --- !u!1 &3782187223016351355
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3782187223739699775}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.4, y: -5.235409, z: 0}
+  m_LocalPosition: {x: 0, y: -5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3782187223016351354}
@@ -265,7 +266,6 @@ MonoBehaviour:
   ascendSpeed: 3
   lowObj: {fileID: 4938112958345570449}
   highObj: {fileID: 4938112958251215286}
-  playerObj: {fileID: 0}
   parent: {fileID: 3782187223016351355}
   moving: 1
 --- !u!61 &4938112958307855415
@@ -318,7 +318,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4938112958345570449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.72, y: -1.63, z: 0}
+  m_LocalPosition: {x: -0.72, y: -0.9, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4938112958307855414}
