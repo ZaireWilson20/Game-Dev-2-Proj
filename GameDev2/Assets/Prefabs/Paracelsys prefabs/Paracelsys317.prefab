@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 560668985}
   - component: {fileID: 560668996}
   m_Layer: 13
-  m_Name: Paracelsys
+  m_Name: Paracelsys317
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -263,8 +263,8 @@ BoxCollider2D:
   m_Offset: {x: 0.06267452, y: -0.051990747}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.66, y: 0.3499999}
-    oldSize: {x: 2.43, y: 1.99}
+    pivot: {x: 0.6889231, y: 0.29665503}
+    oldSize: {x: 2.43, y: 2.02}
     newSize: {x: 0.2, y: 0.2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -521,6 +521,7 @@ MonoBehaviour:
   grounded: 1
   fastFallSpeed: 6
   fallSpeed: 3
+  swingGrav: 1
   groundedDist: 0.5
   flashRate: 3
   alive: 0
@@ -532,8 +533,16 @@ MonoBehaviour:
   invincibility: 1
   invincible: 0
   shootDelay: 0.02
-  boomerangObj: {fileID: 0}
-  toxicShot: {fileID: 0}
+  boomerangObj: {fileID: 2713336346294978300, guid: 0170532918ea64c4d9d85e0807e3db3f,
+    type: 3}
+  toxicShot: {fileID: 2440786543646421539, guid: e45f9580cfb7e1c4ca81d63b35faf640,
+    type: 3}
+  drillObj: {fileID: 6028925925162686910, guid: c108a50c82e92f840a7e4d2b574842a3,
+    type: 3}
+  freezeObj: {fileID: 680843979996256362, guid: 6aa9bba8e6998c84b8ed86b5a816dbc8,
+    type: 3}
+  reflectWall: {fileID: 6303319641482760846, guid: e0a1903e9656cf14ca806b678778e14c,
+    type: 3}
   airdashTime: 0
   hasAirdash: 0
   isSwinging: 0
@@ -541,10 +550,12 @@ MonoBehaviour:
   swingForce: 4
   tpDistance: 3
   tpCooldown: 1
+  reflectCooldown: 4
   floorMask:
     serializedVersion: 2
     m_Bits: 256
   powerset: 0
+  velocity: {x: 0, y: 0, z: 0}
   pa_inConvo: 0
   anim: {fileID: 0}
   doneShooting: 0

@@ -207,7 +207,7 @@ PrefabInstance:
     - target: {fileID: 2900553431634556397, guid: ae5bd72c28d752649bfa8635531d434a,
         type: 3}
       propertyPath: m_Layer
-      value: 19
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2900553431634556399, guid: ae5bd72c28d752649bfa8635531d434a,
         type: 3}
@@ -680,7 +680,7 @@ PrefabInstance:
     - target: {fileID: 998501248941474296, guid: a70acd571dd1df041b67114c4fefd097,
         type: 3}
       propertyPath: floorMask.m_Bits
-      value: 524544
+      value: 1573120
       objectReference: {fileID: 0}
     - target: {fileID: 1290081202, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
       propertyPath: m_Enabled
@@ -1453,6 +1453,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_isInputParsingRequired
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577995000227062, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.599968
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577993351678018, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.599968
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82a554b2e5161b840a48200acaa52035, type: 3}
@@ -2231,6 +2241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unfreeze: 4
+  hscript: {fileID: 0}
 --- !u!1001 &1541437786
 PrefabInstance:
   m_ObjectHideFlags: 0
