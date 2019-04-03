@@ -20,3 +20,8 @@ public class DialogueData
 {
     public bool alreadyRead = false; 
 }
+
+public class SceneData
+{
+    public String lastScene = "Hub";
+}

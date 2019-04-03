@@ -48,8 +48,10 @@ public class Power : IComparable<Power>
 
 public class Player : MonoBehaviour
 {
-    //saved player data
+    //saved player/scene data
     public PlayerData localPlayerData = new PlayerData();
+    private SceneData localScene = new SceneData();
+
 
     //Forces On Player ----------------
     public float speed = 5f;
@@ -326,6 +328,14 @@ public class Player : MonoBehaviour
 
         GlobalControl.Instance.savedPlayer = localPlayerData;
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
+    }
+
+    public void SaveSceneData()
+    {
+        //save important scene details before leaving
+        localScene.lastScene = SceneManager.GetActiveScene().name;
+
+        GlobalControl.Instance.savedScene = localScene;
     }
 
     // Update is called once per frame
@@ -788,7 +798,10 @@ public class Player : MonoBehaviour
                 //player has died
                 Debug.Log("Player died!");
                 //health = health_max;
+                SavePlayer();
+                SaveSceneData();
                 GlobalControl.Instance.savedPlayer.playerHealth = health_max;
+                
                 SceneManager.LoadScene(levelName, LoadSceneMode.Single);
                 //gameObject.SetActive(false);
             }
