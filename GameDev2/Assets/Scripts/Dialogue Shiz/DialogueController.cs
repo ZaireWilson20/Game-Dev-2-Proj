@@ -24,7 +24,8 @@ public class DialogueController : MonoBehaviour
     string[] allLines;
     public Image char1;
     public Image char2;
-    private string path = "Assets/Sprites/Portraits/";
+    private string path1 = "Assets/Sprites/Portraits/";
+    //private string path2 = "Assets/Resources";
     private string fileName = ".png";
     private string firstSpeakerName;   
     private string secondSpeakerName;
@@ -54,8 +55,16 @@ public class DialogueController : MonoBehaviour
         diaObj = lines;
 
         //  Set Dialogue sprites for both characters in scene
-        char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.fsSprite + lines.mood[currentLine] + fileName, typeof(Sprite)); 
-        char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
+#if UNITY_EDITOR
+        char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + lines.fsSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
+        char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
+
+#else
+        char1.sprite = Resources.Load<Sprite>(lines.fsSprite + lines.mood[currentLine]);
+        char2.sprite = Resources.Load<Sprite>(lines.ssSprite + lines.mood[currentLine]);
+#endif
+        //char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.fsSprite + lines.mood[currentLine] + fileName, typeof(Sprite)); 
+        //char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
         firstSpeakerName = lines.firstSpeaker;
         Debug.Log(lines.firstSpeaker);
         secondSpeakerName = lines.secondSpeaker;
@@ -114,14 +123,24 @@ public class DialogueController : MonoBehaviour
         if (speaker == firstSpeakerName)
         {
             nameText.text = firstSpeakerName;
-            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+#if UNITY_EDITOR
+            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+#else
+            char1.sprite = Resources.Load<Sprite>(diaObj.fsSprite + diaObj.mood[currentLine]);
+#endif
+//            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, 1f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, .5f);
         }
         else if (speaker == secondSpeakerName)
         {
             nameText.text = secondSpeakerName;
-            char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+#if UNITY_EDITOR
+            char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+#else
+            char2.sprite = Resources.Load<Sprite>(diaObj.ssSprite + diaObj.mood[currentLine]);
+#endif
+//            char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, .5f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, 1f);
         }

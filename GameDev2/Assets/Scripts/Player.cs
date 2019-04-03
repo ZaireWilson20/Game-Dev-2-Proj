@@ -356,7 +356,11 @@ public class Player : MonoBehaviour
                 projectile = drillObj;
             pSetCont.ShowTSet();
             //pSetCont.showPowerSet("SCIENCE");
+#if UNITY_EDITOR
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/tempController/ParaScience.controller", typeof(RuntimeAnimatorController));
+#else
+            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("ParaScience");
+#endif
         }
         else
         {
@@ -366,7 +370,14 @@ public class Player : MonoBehaviour
                 projectile = freezeObj;
             pSetCont.ShowMSet();
             //pSetCont.showPowerSet("MAGIC");
+#if UNITY_EDITOR
+            // Application.Quit() does not work in the editor so
+            // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/updatedFullController.controller", typeof(RuntimeAnimatorController));
+#else
+            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("updatedFullController");
+#endif
+
         }
 
         if (controller.cont_collision_info.above || grounded) //  Stops vertical movement if vertical collision detected
