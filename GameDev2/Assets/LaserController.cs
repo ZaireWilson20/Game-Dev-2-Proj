@@ -15,6 +15,7 @@ public class LaserController : MonoBehaviour
     LaserBeam lscript;
     public bool transmitter = true;
     private SpriteRenderer sprite;
+    LaserController pairScript;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,12 @@ public class LaserController : MonoBehaviour
         sprite = gameObject.GetComponent<SpriteRenderer>();
         dark = brighter = sprite.color;
         Debug.Log("dark color: " + dark);
+        if (transmitter)
+        {
+            pairScript = pair.GetComponent<LaserController>();
+            pairScript.cooldown = cooldown;
+        }
+            
     }
 
     // Update is called once per frame

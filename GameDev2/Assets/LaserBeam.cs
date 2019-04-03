@@ -38,7 +38,8 @@ public class LaserBeam : MonoBehaviour
         {
             //beamed the player
             Debug.Log("Beamed the player!");
-            pscript.takeDamage(dmg, Vector2.up);    //bounce the player up?
+            ContactPoint2D contact = collision.GetContact(0);
+            pscript.takeDamage(dmg, contact.normal);    //bounce the player away from beam
         }
     }
 

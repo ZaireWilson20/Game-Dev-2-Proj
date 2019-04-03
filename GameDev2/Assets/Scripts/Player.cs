@@ -497,8 +497,8 @@ public class Player : MonoBehaviour
                             pSetCont.SetSWeaponImg(tWeapon.name);
                             AGTimeLeft = AGTimer;
                         }
-                        AGTimeLeft -= Time.deltaTime;
                     }
+                    AGTimeLeft -= Time.deltaTime;
                     //REFLECT WALL LOGIC
                     if (Input.GetButtonDown("Utility") && mUtility.name == "reflect" && !powerset)
                     {
@@ -816,6 +816,7 @@ public class Player : MonoBehaviour
             Physics2D.IgnoreLayerCollision(13, 14, true);
             if (isSwinging)
             {
+                Debug.Log("release rope");
                 rs.ResetRope();
             }
         }
