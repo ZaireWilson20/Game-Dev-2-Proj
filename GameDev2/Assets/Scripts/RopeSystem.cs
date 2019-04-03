@@ -81,7 +81,7 @@ public class RopeSystem : MonoBehaviour
         HandleInput(aimDirection);
         UpdateRopePositions();
         HandleRopeLength();
-        Debug.Log(currGrapple.name);
+        //Debug.Log(currGrapple.name);
     }
 
     // 1
@@ -104,11 +104,14 @@ public class RopeSystem : MonoBehaviour
             // 3
             if (player.isSwinging)
             {
+                player.anim.SetTrigger("OffGrapple");
                 ResetRope();
                 input = false;
             }
             else  if (hit.collider != null)
             {
+                player.anim.SetTrigger("Grapple");
+
                 input = false;
                 player.hasAirdash = true;
                 ropeAttached = true;
@@ -138,6 +141,8 @@ public class RopeSystem : MonoBehaviour
                 // 3
                 if (hit.collider != null)
                 {
+                    player.anim.SetTrigger("Grapple");
+
                     ropeAttached = true;
                     if (!ropePositions.Contains(hit.point))
                     {
@@ -164,6 +169,7 @@ public class RopeSystem : MonoBehaviour
         }
         else if (Input.GetButtonDown("Jump") && ropeAttached)
         {
+            player.anim.SetTrigger("OffGrapple");
             ResetRope();
         }
     }

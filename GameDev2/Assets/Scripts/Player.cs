@@ -22,6 +22,7 @@ public class Power : IComparable<Power>
     public string name;
     public bool active;
     public bool side;
+    public bool inList = false; 
     public Power(string n, bool a, bool s)
     {
         name = n;
@@ -36,7 +37,7 @@ public class Power : IComparable<Power>
 
     public void toString()
     {
-        //Debug.Log(name + ", " + active + ", " + side);
+        Debug.Log(name + ", " + active + ", " + side);
     }
 
     public void setActive()
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
     private bool fastFall = false;
     public float fastFallSpeed = 6f;
     public float fallSpeed = 3f;
+    public float swingGrav = 1f;
     public float groundedDist = .5f; 
 
     private int flashCt = 0;
@@ -82,6 +84,7 @@ public class Player : MonoBehaviour
     public GameObject boomerangObj;
     public GameObject toxicShot;
     private GameObject projectile;
+    public GameObject reflectWall;
 
     public float airdashTime = 0;
     public bool hasAirdash = false;
@@ -97,6 +100,9 @@ public class Player : MonoBehaviour
     public float tpDistance = 3f;
     public float tpCooldown = 1f;
     private float timeSinceLastTp;
+
+    public float reflectCooldown = 4f;
+    private float refMax;
 
     public LayerMask floorMask;
 
@@ -122,7 +128,7 @@ public class Player : MonoBehaviour
     float velocX_smooth;
     float accelTime_air = .4f;
     float accelTime_ground = .1f;
-    Vector3 velocity;
+    public Vector3 velocity;
     // --------------------------------
 
     //  Player interactions with environment
@@ -150,7 +156,7 @@ public class Player : MonoBehaviour
     private HealthUI hiScript;
     public GameObject pSetObj;
     private PowerSetController pSetCont;
-    
+
 
 
     //Calculate airdash direction here
@@ -264,13 +270,14 @@ public class Player : MonoBehaviour
         gameManager = gameManagerObj.GetComponent<GameState>();
 
         timeSinceLastTp = tpCooldown;
+        refMax = 0f;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         //health = health_max;
 
+        //UI Inits
         hiScript = healthObj.GetComponent<HealthUI>();
         //health = health_max;
         pSetCont = pSetObj.GetComponent<PowerSetController>();
-
         //Initialize powers
         boomerang = new Power("boomerang", true, true);
         grapple = new Power("grapple", true, true);
@@ -282,7 +289,7 @@ public class Player : MonoBehaviour
         reflector = new Power("reflect", false, false);
         tPowerDict.Add("grapple", grapple); tPowerDict.Add("anti-grav", antiGrav);
         tWeaponDict.Add("boomerang", boomerang); tWeaponDict.Add("drill", drill);
-        mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflector", reflector);
+        mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflect", reflector);
         mWeaponDict.Add("poison", poisonShot); mWeaponDict.Add("freeze", freeze);
         tUtility = grapple;
         tWeapon = boomerang;
@@ -294,11 +301,23 @@ public class Player : MonoBehaviour
         //Debug.Log(tWeaponDict.ToString());
         //Debug.Log(mPowerDict.ToString());
         //Debug.Log(mWeaponDict.ToString());
+
+        pSetCont.SetMPowerImg(mUtility.name);
+        pSetCont.SetMWeaponImg(mWeapon.name);
+        pSetCont.SetSPowerImg(tUtility.name);
+        pSetCont.SetSWeaponImg(tWeapon.name);
     }
 
     public void SavePlayer()
     {
         localPlayerData.playerHealth = health;
+
+        localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
+        localPlayerData.mWeap = mWeapon;        localPlayerData.tWeap = tWeapon;
+
+        localPlayerData.tUtils = tPowerDict;    localPlayerData.mUtils = mPowerDict;
+        localPlayerData.tWeaps = tWeaponDict;   localPlayerData.mWeaps = mWeaponDict;
+
         GlobalControl.Instance.savedPlayer = localPlayerData;
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
     }
@@ -306,17 +325,25 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))   //  Lose health for debugging purposes. Should Be Deleted at some point
+        {
+            health--;
+            hiScript.loseHealth();
+        }
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
         {
             projectile = boomerangObj;
-            pSetCont.showPowerSet("SCIENCE");
-            anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/GameObject.controller", typeof(RuntimeAnimatorController));
+            pSetCont.ShowTSet();
+            //pSetCont.showPowerSet("SCIENCE");
+            anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/tempController/ParaScience.controller", typeof(RuntimeAnimatorController));
         }
         else
         {
             projectile = toxicShot;
-            pSetCont.showPowerSet("MAGIC");
+            pSetCont.ShowMSet();
+            //pSetCont.showPowerSet("MAGIC");
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/updatedFullController.controller", typeof(RuntimeAnimatorController));
         }
 
@@ -324,255 +351,336 @@ public class Player : MonoBehaviour
         {
             velocity.y = 0;
         }
-
-        if (!pa_inConvo)  // Can move while not in conversation
+        if (gameManager.paused)
         {
-            directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-            WalkAnim(directionalInput);
-
-
-
-            //Flip Player Based on Direction
-            if (directionalInput.x > 0)
+            //this.GetComponent<Rigidbody2D>().isKinematic = true;
+            //this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX;
+            //this.GetComponent<Rigidbody2D>().gravityScale = 0f; 
+        }
+        else
+        {
+            //this.GetComponent<Rigidbody2D>().isKinematic = false;
+            //this.GetComponent<Rigidbody2D>().gravityScale = 1f;
+        }
+        if (!gameManager.paused) {
+            if (!pa_inConvo)  // Can move while not in conversation
             {
-                sprite.flipX = true;
-            }
-            else if (directionalInput.x < 0)
-            {
-                sprite.flipX = false;
-            }
+                //grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
+                //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
+                if (fallSpeed > 0)
+                {
+                    grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .4f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .4f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
 
-            //While the player is swinging, limit their abilities to just grapple control
-            if (isSwinging && powerset)
-            {
-                rig2D.gravityScale = 1f;
-                wasSwinging = true;
-                airdashTime = 0f;
-                if (directionalInput.x != 0)
-                {
-                    //1
-                    var playerToHookDirection = (ropeHook - (Vector2)transform.position).normalized;
 
-                    //2
-                    Vector2 perpendicularDirection;
-                    if (directionalInput.x < 0)
-                    {
-                        perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
-                        var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
-                        Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
-                    }
-                    else
-                    {
-                        perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
-                        var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
-                        Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
-                    }
-
-                    var force = perpendicularDirection * swingForce;
-                    this.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Force);
-                }
-            }
-            else
-            {
-                if (Input.GetButtonDown("Swap"))
-                {
-                    if (powerset)
-                        CyclePower(tPowerDict, tUtility);
-                    else
-                        CyclePower(mPowerDict, mUtility);
-                }
-                //While on the ground, enable all grounded options
-                if (grounded)
-                {
-                    hasAirdash = true;
-                    fastFall = false;
-                    GetComponent<Rigidbody2D>().gravityScale = fallSpeed;
-                    hasAirdash = true;
-                    float temp;
-                    //Crouch when down is pressed
-                    Transform tf = this.GetComponent<Transform>();
-                    //if (Input.GetKey(KeyCode.S))
-                    //{
-                    //    //Temp behavior
-                    //    tf.localScale = new Vector3(5f, 2.5f, 5f);
-                    //    speed = 0;
-                    //    runSpeed = 0;
-                    //}
-                    //else
-                    //{
-                    //    tf.localScale = new Vector3(5f, 5f, 5f);
-                    //    speed = 5;
-                    //    runSpeed = 10;
-                    //}
-                    //Run when holding P
-                    if (Input.GetButton("Run"))
-                    {
-                        anim.SetBool("Running", true);
-                        if (speed < runSpeed)
-                        {
-                            temp = speed;
-                            speed = runSpeed;
-                            runSpeed = temp;
-                        }
-                    }
-                    else
-                    {
-                        anim.SetBool("Running", false);
-                        if (speed > runSpeed)
-                        {
-                            temp = speed;
-                            speed = runSpeed;
-                            runSpeed = temp;
-                        }
-                    }
-                    //Jump when space is pressed
-                    if (Input.GetButtonDown("Jump"))
-                    {
-                        rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
-                        jumping = true;
-                    }
-                    else if (Input.GetButtonUp("Jump"))
-                    {
-                        anim.ResetTrigger("Jump");
-                    }
-                }
-                //In the air, enable only air movement here
-                else if (!grounded)
-                {
-                    //Fastfall when down is pressed in the air
-                    if (Input.GetAxisRaw("Vertical") < 0f)
-                    {
-                        GetComponent<Rigidbody2D>().gravityScale = fastFallSpeed;
-                        fastFall = true;
-                    }
-                    //Airdash when space is pressed in the air
-                    if (hasAirdash && Input.GetButtonDown("Jump") && !wasSwinging)
-                    {
-                        //Used airdash
-                        hasAirdash = false;
-                        airdashTime = .3f;
-                        this.airdashDirection = calculateAirdashVector();
-                        anim.SetTrigger("AirDash");
-                    }
-                }
-
-                if (airdashTime - Time.deltaTime > 0)
-                {
-                    airdashTime -= Time.deltaTime;
-                    rig2D.velocity = airdashDirection;
-                }
-                else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
-                {
-                    rig2D.velocity = new Vector2(0, 0);
-                    velocity.y = 0;
-                    velocity.x = 0;
-                    airdashTime = 0;
                 }
                 else
                 {
-                    float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
-                                                                            //  Damping/acceleration applied throught damping.
-                    velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
-                    //  Call to move function in controller2D class
-                    controller.Move(velocity * Time.deltaTime);
+                    grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
+                }
+                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.green);
+                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x - .4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.green);
+                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x + .4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.green);
+                directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+                WalkAnim(directionalInput);
+
+
+
+                //Flip Player Based on Direction
+                if (directionalInput.x > 0)
+                {
+                    sprite.flipX = true;
+                }
+                else if (directionalInput.x < 0)
+                {
+                    sprite.flipX = false;
                 }
 
-                //TELEPORT LOGIC
-                if (timeSinceLastTp > tpCooldown && !powerset)
+                //While the player is swinging, limit their abilities to just grapple control
+                if (isSwinging && powerset)
                 {
-                    if (Input.GetButton("Utility") || Input.GetKeyDown(KeyCode.E))
+                    rig2D.gravityScale = swingGrav;
+                    wasSwinging = true;
+                    airdashTime = 0f;
+                    if (directionalInput.x != 0)
                     {
-                        //Handle teleport
-                        float angle = tpDirection();
-                        //Debug.Log(angle);
-                        Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
-                        dir.x *= tpDistance;
-                        dir.y *= tpDistance;
-                        transform.position = transform.position + (Vector3)dir;
-                        timeSinceLastTp = 0f;
-                        anim.SetTrigger("Tele");
+                        //1
+                        var playerToHookDirection = (ropeHook - (Vector2)transform.position).normalized;
+
+                        //2
+                        Vector2 perpendicularDirection;
+                        if (directionalInput.x < 0)
+                        {
+                            perpendicularDirection = new Vector2(-playerToHookDirection.y, playerToHookDirection.x);
+                            var leftPerpPos = (Vector2)transform.position - perpendicularDirection * -2f;
+                            Debug.DrawLine(transform.position, leftPerpPos, Color.green, 0f);
+                        }
+                        else
+                        {
+                            perpendicularDirection = new Vector2(playerToHookDirection.y, -playerToHookDirection.x);
+                            var rightPerpPos = (Vector2)transform.position + perpendicularDirection * 2f;
+                            Debug.DrawLine(transform.position, rightPerpPos, Color.green, 0f);
+                        }
+
+                        var force = perpendicularDirection * swingForce;
+                        this.GetComponent<Rigidbody2D>().AddForce(force, ForceMode2D.Force);
                     }
                 }
-                timeSinceLastTp += Time.deltaTime;
-
-                //fire projectile if '1' key pressed and cooldown expired
-                fireTime = fireTime + Time.deltaTime;
-                if (Input.GetButton("Fire") && fireTime > nextFire)
+                else
                 {
-                    nextFire = fireTime + fireDelta;
-                    //newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-                    //newProjectile.SetActive(true);
-
-                    ////check facing of sprite
-                    //if (sprite.flipY)
-                    //{
-                    //    //sprite facing left (backwards)
-                    //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
-                    //}
-                    //else
-                    //{
-                    //    //sprite facing right (forwards)
-                    //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
-                    //}
-
-
-                    //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
-
-                    // create code here that animates the newProjectile
-                    //Debug.Log("Fire!");
-                    if (!powerset)
+                    if (Input.GetButtonDown("Swap"))
                     {
-                        ToxicShotAnim();
+                        if (powerset)
+                        {
+                            tUtility = CyclePower(tPowerDict, tUtility);
+                            pSetCont.SetSPowerImg(tUtility.name);
+                        }
+                        else
+                        {
+                            mUtility = CyclePower(mPowerDict, mUtility);
+                            pSetCont.SetMPowerImg(mUtility.name);
+                        }
+                    }
+                    if (Input.GetButtonDown("SwitchWep"))
+                    {
+                        if (powerset)
+                        {
+                            tWeapon = CyclePower(tWeaponDict, tWeapon);
+                            pSetCont.SetSWeaponImg(tWeapon.name);
+                        }
+                        else
+                        {
+                            mWeapon = CyclePower(mWeaponDict, mWeapon);
+                            Debug.Log(mWeapon.name);
+                            pSetCont.SetMWeaponImg(mWeapon.name);
+                        }
+                    }
+                    //ANTI-GRAVITY LOGIC
+                    if ((Input.GetButtonDown("Utility")|| Input.GetKeyDown(KeyCode.Alpha3)) && tUtility.name == "anti-grav" && powerset)
+                    {
+                        Debug.Log("Anti grav activated");
+                        fallSpeed *= -1;
+                        fastFallSpeed *= -1;
+                        swingGrav *= -1;
+                        jumpHeight *= -1;
+                        rig2D.gravityScale = fallSpeed;
+                        sprite.flipY = !sprite.flipY;
+                    }
+                    //REFLECT WALL LOGIC
+                    if (Input.GetButtonDown("Utility") && mUtility.name == "reflect" && !powerset)
+                    {
+                        if (refMax <= 0)
+                        {
+                            refMax = reflectCooldown;
+                            GameObject newWall = Instantiate(reflectWall, transform.position, transform.rotation) as GameObject;
+                            if (facingRight)
+                                newWall.transform.position = new Vector2(newWall.transform.position.x + 3, newWall.transform.position.y);
+                            else
+                                newWall.transform.position = new Vector2(newWall.transform.position.x - 3, newWall.transform.position.y);
+                            newWall.SetActive(true);
+                        }
+                    }
+                    refMax -= Time.deltaTime;
+                    //While on the ground, enable all grounded options
+                    if (grounded)
+                    {
+                        hasAirdash = true;
+                        fastFall = false;
+                        GetComponent<Rigidbody2D>().gravityScale = fallSpeed;
+                        hasAirdash = true;
+                        float temp;
+                        //Crouch when down is pressed
+                        Transform tf = this.GetComponent<Transform>();
+                        //if (Input.GetKey(KeyCode.S))
+                        //{
+                        //    //Temp behavior
+                        //    tf.localScale = new Vector3(5f, 2.5f, 5f);
+                        //    speed = 0;
+                        //    runSpeed = 0;
+                        //}
+                        //else
+                        //{
+                        //    tf.localScale = new Vector3(5f, 5f, 5f);
+                        //    speed = 5;
+                        //    runSpeed = 10;
+                        //}
+                        //Run when holding P
+                        if (Input.GetButton("Run"))
+                        {
+                            anim.SetBool("Running", true);
+                            if (speed < runSpeed)
+                            {
+                                temp = speed;
+                                speed = runSpeed;
+                                runSpeed = temp;
+                            }
+                        }
+                        else
+                        {
+                            anim.SetBool("Running", false);
+                            if (speed > runSpeed)
+                            {
+                                temp = speed;
+                                speed = runSpeed;
+                                runSpeed = temp;
+                            }
+                        }
+                        //Jump when space is pressed
+                        if (Input.GetButtonDown("Jump"))
+                        {
+                            rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
+                            jumping = true;
+                            Debug.Log("I jumped");
+                        }
+                        else if (Input.GetButtonUp("Jump"))
+                        {
+                            anim.ResetTrigger("Jump");
+                        }
+                    }
+                    //In the air, enable only air movement here
+                    else if (!grounded)
+                    {
+                        //Fastfall when down is pressed in the air
+                        if (Input.GetAxisRaw("Vertical") < 0f)
+                        {
+                            GetComponent<Rigidbody2D>().gravityScale = fastFallSpeed;
+                            fastFall = true;
+                        }
+                        //Airdash when space is pressed in the air
+                        if (hasAirdash && Input.GetButtonDown("Jump") && !wasSwinging)
+                        {
+                            //Used airdash
+                            hasAirdash = false;
+                            airdashTime = .3f;
+                            this.airdashDirection = calculateAirdashVector();
+                            anim.SetTrigger("AirDash");
+                            Debug.Log("Air Dashing");
+                        }
+                    }
+
+                    if (airdashTime - Time.deltaTime > 0)
+                    {
+                        airdashTime -= Time.deltaTime;
+                        rig2D.velocity = airdashDirection;
+                    }
+                    else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
+                    {
+                        rig2D.velocity = new Vector2(0, 0);
+                        velocity.y = 0;
+                        velocity.x = 0;
+                        airdashTime = 0;
                     }
                     else
                     {
-                        BoomerangShotAnim();
+                        float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
+                                                                                //  Damping/acceleration applied throught damping.
+                        velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
+                        //  Call to move function in controller2D class
+                        controller.Move(velocity * Time.deltaTime);
                     }
-                    doneShooting = false;
-                    anim.SetBool("DoneShooting", doneShooting);
-                    nextFire = nextFire - fireTime;
-                    fireTime = 0.0F;
-                    StartCoroutine(ShootAfterTime(shootDelay));
+
+                    //TELEPORT LOGIC
+                    if (timeSinceLastTp > tpCooldown && !powerset)
+                    {
+                        if (Input.GetButtonDown("Utility") && mUtility.name == "teleport")
+                        {
+                            //Handle teleport
+                            float angle = tpDirection();
+                            //Debug.Log(angle);
+                            Vector2 dir = (Vector2)(Quaternion.Euler(0, 0, angle) * Vector2.right);
+                            dir.x *= tpDistance;
+                            dir.y *= tpDistance;
+                            transform.position = transform.position + (Vector3)dir;
+                            timeSinceLastTp = 0f;
+                            anim.SetTrigger("Tele");
+                        }
+                    }
+                    timeSinceLastTp += Time.deltaTime;
+
+                    //fire projectile if '1' key pressed and cooldown expired
+                    fireTime = fireTime + Time.deltaTime;
+                    if (Input.GetButton("Fire") && fireTime > nextFire)
+                    {
+                        nextFire = fireTime + fireDelta;
+                        //newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                        //newProjectile.SetActive(true);
+
+                        ////check facing of sprite
+                        //if (sprite.flipY)
+                        //{
+                        //    //sprite facing left (backwards)
+                        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(-1, 0);
+                        //}
+                        //else
+                        //{
+                        //    //sprite facing right (forwards)
+                        //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+                        //}
+
+
+                        //Debug.Log(newProjectile.GetComponent<Rigidbody2D>().velocity);
+
+                        // create code here that animates the newProjectile
+                        //Debug.Log("Fire!");
+                        if (!powerset)
+                        {
+                            ToxicShotAnim();
+                        }
+                        else
+                        {
+                            BoomerangShotAnim();
+                        }
+                        doneShooting = false;
+                        anim.SetBool("DoneShooting", doneShooting);
+                        nextFire = nextFire - fireTime;
+                        fireTime = 0.0F;
+                        StartCoroutine(ShootAfterTime(shootDelay));
+                    }
+
+                    if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q))
+                        powerset = !powerset;
+                    wasSwinging = false;
                 }
 
-                if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q))
-                    powerset = !powerset;
-                wasSwinging = false;
-            }
-
-            if (invincible)
-            {
-                //Debug.Log("ignore collision? " + Physics2D.GetIgnoreLayerCollision(9, 11));
-                //Debug.Log(invincible);
-                if (flashCt % flashRate == 0)
-                    sprite.enabled = !sprite.enabled;
-
-                flashCt++;
-                timeLeft -= Time.deltaTime;
-                //Debug.Log(timeLeft);
-                if (timeLeft <= 0.0)
+                if (invincible)
                 {
-                    invincible = false;
-                    Physics2D.IgnoreLayerCollision(13, 14, false);
-                }
-            }
-            else
-            {
-                flashCt = 0;
-                sprite.enabled = true;
-            }
+                    //Debug.Log("ignore collision? " + Physics2D.GetIgnoreLayerCollision(9, 11));
+                    //Debug.Log(invincible);
+                    if (flashCt % flashRate == 0)
+                        sprite.enabled = !sprite.enabled;
 
-            if (velocity.x > 0)
-            {
-                facingRight = true;
-            }
-            else if (velocity.x < 0)
-            {
-                facingRight = false;
+                    flashCt++;
+                    timeLeft -= Time.deltaTime;
+                    //Debug.Log(timeLeft);
+                    if (timeLeft <= 0.0)
+                    {
+                        invincible = false;
+                        Physics2D.IgnoreLayerCollision(13, 14, false);
+                    }
+                }
+                else
+                {
+                    flashCt = 0;
+                    sprite.enabled = true;
+                }
+
+                if (velocity.x > 0)
+                {
+                    facingRight = true;
+                }
+                else if (velocity.x < 0)
+                {
+                    facingRight = false;
+                }
             }
             //Ray blah = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight - .2f), Vector2.down, 0.025f, floorMask);
-            grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
-            Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
+
+            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.magenta);
+            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x-.4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, Color.magenta);
+            //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x+.4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, Color.magenta);
 
             anim.SetFloat("Falling", rig2D.velocity.y);
             anim.SetBool("Grounded", grounded);
@@ -583,17 +691,26 @@ public class Player : MonoBehaviour
             //grounded = controller.cont_collision_info.below;
             if (isSwinging)
             {
-                anim.SetTrigger("Grapple");
+                //anim.SetTrigger("Grapple");
                 anim.SetBool("Swinging", true);
             }
             else
             {
                 anim.SetBool("Swinging", false);
             }
-            tUtility.toString();
-            tWeapon.toString();
-            mUtility.toString();
-            mWeapon.toString();
+
+            if (Input.GetKeyDown(KeyCode.Y))
+            {
+                mPowerDict[reflector.name].active = !mPowerDict[reflector.name].active;
+                mPowerDict[reflector.name].toString();
+                tPowerDict[antiGrav.name].active = !tPowerDict[antiGrav.name].active;
+                tPowerDict[antiGrav.name].toString();
+                
+            }
+            //tUtility.toString();
+            //tWeapon.toString();
+            //mUtility.toString();
+            //mWeapon.toString();
         }
         
     }
@@ -610,11 +727,18 @@ public class Player : MonoBehaviour
     public Power CyclePower(Dictionary<string, Power> dict, Power curr)
     {
         bool takeNext = false;
+        bool f = true;
+        Power first = null;
         foreach(Power p in dict.Values)
         {
+            if (f)
+            {
+                first = p;
+                f = false;
+            }
             if (takeNext && p.active)
             {
-                p.ToString();
+                p.toString();
                 return dict[p.name];
             }
             if (p.name == curr.name)
@@ -622,8 +746,8 @@ public class Player : MonoBehaviour
                 takeNext = true;
             }
         }
-        curr.toString();
-        return curr;
+        first.toString();
+        return first;
     }
 
     public bool ActivatePower(Power NewPower)
@@ -659,6 +783,17 @@ public class Player : MonoBehaviour
             Physics2D.IgnoreLayerCollision(13, 14, true);
         }
 
+    }
+
+    public bool IncreaseHealth()
+    {
+        if(health != health_max)
+        {
+            health++;
+            hiScript.gainHealth();
+            return true;
+        }
+        return false;
     }
 
     void WalkAnim(Vector2 input)

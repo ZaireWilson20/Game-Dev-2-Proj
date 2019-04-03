@@ -8,7 +8,7 @@ public class GlobalControl : MonoBehaviour
 
     //player data
     public PlayerData savedPlayer = new PlayerData();
-
+    public DialogueData savedDialogue = new DialogueData();
     void Awake()
     {
         if (Instance == null)
