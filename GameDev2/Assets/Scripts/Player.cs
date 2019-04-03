@@ -159,7 +159,7 @@ public class Player : MonoBehaviour
     public GameObject pSetObj;
     private PowerSetController pSetCont;
 
-
+    private RopeSystem rs;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -308,6 +308,8 @@ public class Player : MonoBehaviour
         pSetCont.SetMWeaponImg(mWeapon.name);
         pSetCont.SetSPowerImg(tUtility.name);
         pSetCont.SetSWeaponImg(tWeapon.name);
+
+        rs = this.GetComponent<RopeSystem>();
     }
 
     public void SavePlayer()
@@ -651,7 +653,7 @@ public class Player : MonoBehaviour
                         StartCoroutine(ShootAfterTime(shootDelay));
                     }
 
-                    if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q))
+                    if ((Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q)) || Input.GetButtonDown("Change Side"))
                         powerset = !powerset;
                     wasSwinging = false;
                 }
@@ -792,6 +794,10 @@ public class Player : MonoBehaviour
             invincible = true;
             //Debug.Log("invincible: true");
             Physics2D.IgnoreLayerCollision(13, 14, true);
+            if (isSwinging)
+            {
+                rs.ResetRope();
+            }
         }
 
     }
