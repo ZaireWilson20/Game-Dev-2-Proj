@@ -651,7 +651,7 @@ public class Player : MonoBehaviour
                         StartCoroutine(ShootAfterTime(shootDelay));
                     }
 
-                    if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q))
+                    if ((Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q)) || Input.GetButtonDown("Change Side"))
                         powerset = !powerset;
                     wasSwinging = false;
                 }
