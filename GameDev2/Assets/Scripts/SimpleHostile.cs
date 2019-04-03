@@ -141,12 +141,17 @@ public class SimpleHostile : MonoBehaviour
 
     public void takeDamage(float damage, Vector2 knockDir)
     {
-        if (!invincible)
+        //Special freeze shot case
+        if (damage == 0)
+        {
+
+        }
+        else if (!invincible)
         {
             health -= damage;
             if (health <= 0)
             {
-                //player has died
+                //enemy has died
                 Debug.Log("Enemy killed!");
                 anim.SetBool("Dead", true);
                 dead = true; 

@@ -6,7 +6,7 @@ public class FactoryBoss : MonoBehaviour
 {
     //public float detectRadius = 2.0f;
     public float health_max = 20;
-    private float health = 2;
+    private float health = 20;
 
     //movement variables
     public int mvmtForce = 10;
@@ -31,49 +31,49 @@ public class FactoryBoss : MonoBehaviour
     public float stompTimer = 5f;
 
     public int attack = 1;
-    public float seekSpeed = 1.25f;
-    public float attackSpeed = 2f;
-    private bool chasing = false;
-    private bool searching = false;
-    private bool timer_started = true;
-    //private bool returning = false;
-    public float searchTimeout = 3.0f;
-    private float timeleft;
-    private float direction = 0f;
-    private float lastDir;
+    //public float seekSpeed = 1.25f;
+    //public float attackSpeed = 2f;
+    //private bool chasing = false;
+    //private bool searching = false;
+    //private bool timer_started = true;
+    ////private bool returning = false;
+    //public float searchTimeout = 3.0f;
+    //private float timeleft;
+    //private float direction = 0f;
+    //private float lastDir;
 
-    public float detectRadius = 3f;
+    //public float detectRadius = 3f;
     public float knockback = 5f;
-    private bool facingRight;
+    //private bool facingRight;
 
     public Vector3 startPos;
-    private Vector3 destination;
-    private GameObject target;
-    private float moveSpeed;
+    //private Vector3 destination;
+    //private GameObject target;
+    //private float moveSpeed;
     private Vector2 velocity = new Vector2(0, 0);
     public Rigidbody2D rb;
-    //public Collider2D detectCollider;
-    //public Collider2D hitbox;
+    ////public Collider2D detectCollider;
+    ////public Collider2D hitbox;
     private bool flash = false;
     public int flashRate = 3;
     private int flashCt = 0;
     public bool invincible = false;
-    public bool shooter = false;
-    public float fireCooldown = 2f;
-    public float fireRate = 0.1f;
-    private float fireTime = 0f;
-    private float nextFire = 0f;
-    public float shootRadius = 10f;
+    //public bool shooter = false;
+    //public float fireCooldown = 2f;
+    //public float fireRate = 0.1f;
+    //private float fireTime = 0f;
+    //private float nextFire = 0f;
+    //public float shootRadius = 10f;
 
-    // private Sprite enemSprite; 
-    private GameObject newProjectile;
-    public GameObject projectile;
-    private int shots = 0;
-    public int shotSpray = 3;
+    //// private Sprite enemSprite; 
+    //private GameObject newProjectile;
+    //public GameObject projectile;
+    //private int shots = 0;
+    //public int shotSpray = 3;
 
     private SpriteRenderer sprite;
 
-    private Animator anim;
+    //private Animator anim;
     private bool dead = false;
 
     [SerializeField]
@@ -87,7 +87,7 @@ public class FactoryBoss : MonoBehaviour
         //get rigidbody and colliders
         rb = GetComponent<Rigidbody2D>();
         //detectCollider = GetComponent<Collider2D>();
-        anim = GetComponent<Animator>();
+        //anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         //get player object
         player = GameObject.FindGameObjectWithTag("Player");
@@ -137,15 +137,57 @@ public class FactoryBoss : MonoBehaviour
         }
     }
 
+    public void takeDamage(float damage, Vector2 knockDir)
+    {
+        if (!invincible)
+        {
+            health -= damage;
+            if (health <= 0)
+            {
+                //enemy has died
+                Debug.Log("Enemy killed!");
+                //anim.SetBool("Dead", true);
+                dead = true;
+                gameObject.SetActive(false);
+            }
+
+            //consider using increasing degree of transparency (via alpha)
+            flash = true;
+            sprite.enabled = false;
+            invincible = true;
+            flashCt = 0;
+            velocity.x += knockback * knockDir.x;
+            velocity.y += knockback * knockDir.y;
+            //controller.Move(velocity * Time.deltaTime);
+            transform.Translate(velocity * Time.deltaTime);
+            Debug.Log("Enemy health: " + health);
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (specTime >= specialAttackTime)
-            behavior = -1;
+        //if (specTime >= specialAttackTime)
+        //    behavior = -1;
+
+        //enemy blinks once when hit
+        if (flash)
+        {
+            if (flashCt < flashRate)
+            {
+                flashCt++;
+            }
+            else
+            {
+                invincible = false;
+                flash = false;
+                sprite.enabled = true;
+            }
+        }
 
         if (behavior == 0)
         {
-            Debug.Log(rb.velocity);
+            //Debug.Log(rb.velocity);
             //move side-to-side using AddForce
             //detect distance from wall
             bool leftRay = Physics2D.Raycast(transform.position, Vector2.left, dist, LayerMask.GetMask("Ground"));
@@ -156,6 +198,7 @@ public class FactoryBoss : MonoBehaviour
                 //Debug.Log("left wall detected");
                 //switch to move right
                 mvdir = Vector2.right;
+                sprite.flipX = true;
             }
             RaycastHit2D rightRay = Physics2D.Raycast(transform.position, Vector2.right, dist, LayerMask.GetMask("Ground"));
             Debug.DrawRay(transform.position, Vector2.right * dist, Color.cyan);
@@ -165,6 +208,7 @@ public class FactoryBoss : MonoBehaviour
                 //Debug.Log("right wall detected");
                 //switch to move left
                 mvdir = Vector2.left;
+                sprite.flipX = false;
             }
             rb.AddForce(mvdir * mvmtForce);
             if (rb.velocity.magnitude > velocityCap)
