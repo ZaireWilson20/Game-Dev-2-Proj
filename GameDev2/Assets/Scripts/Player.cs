@@ -160,6 +160,8 @@ public class Player : MonoBehaviour
     private PowerSetController pSetCont;
 
     private RopeSystem rs;
+    public float AGTimer;
+    private float AGTimeLeft;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -469,18 +471,23 @@ public class Player : MonoBehaviour
                         }
                     }
                     //ANTI-GRAVITY LOGIC
-                    if ((Input.GetButtonDown("Utility")|| Input.GetKeyDown(KeyCode.Alpha3)) && tUtility.name == "anti-grav" && powerset)
+                    if ((Input.GetButtonDown("Utility") || Input.GetKeyDown(KeyCode.Alpha3)) && tUtility.name == "anti-grav" && powerset)
                     {
-                        Debug.Log("Anti grav activated");
-                        fallSpeed *= -1;
-                        fastFallSpeed *= -1;
-                        swingGrav *= -1;
-                        jumpHeight *= -1;
-                        rig2D.gravityScale = fallSpeed;
-                        sprite.flipY = !sprite.flipY;
-                        tWeapon = CyclePower(tWeaponDict, tWeapon);
-                        Debug.Log(tWeapon.name);
-                        pSetCont.SetSWeaponImg(tWeapon.name);
+                        if (AGTimeLeft <= 0)
+                        {
+                            Debug.Log("Anti grav activated");
+                            fallSpeed *= -1;
+                            fastFallSpeed *= -1;
+                            swingGrav *= -1;
+                            jumpHeight *= -1;
+                            rig2D.gravityScale = fallSpeed;
+                            sprite.flipY = !sprite.flipY;
+                            tWeapon = CyclePower(tWeaponDict, tWeapon);
+                            Debug.Log(tWeapon.name);
+                            pSetCont.SetSWeaponImg(tWeapon.name);
+                            AGTimeLeft = AGTimer;
+                        }
+                        AGTimeLeft -= Time.deltaTime;
                     }
                     //REFLECT WALL LOGIC
                     if (Input.GetButtonDown("Utility") && mUtility.name == "reflect" && !powerset)
