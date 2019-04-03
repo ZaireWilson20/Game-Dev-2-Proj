@@ -175,7 +175,7 @@ public class RopeSystem : MonoBehaviour
     }
 
     // 6
-    private void ResetRope()
+    public void ResetRope()
     {
         ropeJoint.enabled = false;
         ropeAttached = false;

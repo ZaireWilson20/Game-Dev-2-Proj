@@ -20,7 +20,7 @@ public class Spikes : MonoBehaviour
     {
         lowPoint = lowObj.transform.position;
         highPoint = highObj.transform.position;
-        player = GameObject.Find("Paracelsys").GetComponent<Player>();
+        player = GameObject.Find("Paracelsys317").GetComponent<Player>();
         //player = playerObj.GetComponent<Player>();
     }
 

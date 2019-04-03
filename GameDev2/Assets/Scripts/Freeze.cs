@@ -9,6 +9,9 @@ public class Freeze : Projectile
     protected override void Start()
     {
         base.Start();
+        damage = 0;
+        health = 2;
+        speed = 10;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
