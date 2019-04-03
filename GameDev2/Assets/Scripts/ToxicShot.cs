@@ -26,12 +26,22 @@ public class ToxicShot : Projectile
         //Debug.Log("i shouldn't be here");
         if (contact.layer == 14)
         {
-
+            SimpleHostile hscript;
+            FactoryBoss fscript;
             Debug.Log("hit!");
-            SimpleHostile pscript = contact.GetComponent<SimpleHostile>();
+            if (contact.tag.Equals("FactoryBoss"))
+            {
+                fscript = contact.GetComponent<FactoryBoss>();
+                fscript.takeDamage(damage, dir);
+            }
+            else
+            {
+                hscript = contact.GetComponent<SimpleHostile>();
+                hscript.takeDamage(damage, dir);
+            }
             //Debug.Log(lastDir);
 
-            pscript.takeDamage(damage, dir);
+            //pscript.takeDamage(damage, dir);
 
         }
 

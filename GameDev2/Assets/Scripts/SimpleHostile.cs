@@ -146,7 +146,7 @@ public class SimpleHostile : MonoBehaviour
             health -= damage;
             if (health <= 0)
             {
-                //player has died
+                //enemy has died
                 Debug.Log("Enemy killed!");
                 anim.SetBool("Dead", true);
                 dead = true; 

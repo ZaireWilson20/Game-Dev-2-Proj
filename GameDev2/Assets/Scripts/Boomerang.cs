@@ -45,9 +45,22 @@ public class Boomerang : Projectile
             Debug.Log("hits remaining: " + hits);
             
             Debug.Log("hit!");
-            SimpleHostile pscript = contact.GetComponent<SimpleHostile>();
+            SimpleHostile hscript;
+            FactoryBoss fscript;
+            Debug.Log("hit!");
+            if (contact.tag.Equals("FactoryBoss"))
+            {
+                fscript = contact.GetComponent<FactoryBoss>();
+                fscript.takeDamage(damage, dir);
+            }
+            else
+            {
+                hscript = contact.GetComponent<SimpleHostile>();
+                hscript.takeDamage(damage, dir);
+            }
             //Debug.Log(lastDir);
-            pscript.takeDamage(damage, dir);
+
+            //pscript.takeDamage(damage, dir);
             if (hits <= 0)
                 gameObject.SetActive(false);
 
