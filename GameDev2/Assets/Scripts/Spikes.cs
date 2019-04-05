@@ -55,6 +55,8 @@ public class Spikes : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
+            Debug.Log("Player hit spikes");
+            Debug.Log(transform.position);
             player.takeDamage(1, new Vector3(Mathf.Sign(player.velocity.x) * -1f, 1f, 0));
         }
     }
