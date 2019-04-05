@@ -17,6 +17,7 @@ public class SceneManagement : MonoBehaviour
             player.GetComponent<Player>().SavePlayer();
             player.GetComponent<Player>().SaveSceneData();
 
+            Debug.Log("Player should be saved");        
             SceneManager.LoadScene(levelName, LoadSceneMode.Single);
 
         }

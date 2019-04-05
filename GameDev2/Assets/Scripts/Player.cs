@@ -108,6 +108,10 @@ public class Player : MonoBehaviour
     public float reflectCooldown = 4f;
     private float refMax;
 
+    private RopeSystem rs;
+    public float AGTimer;
+    private float AGTimeLeft;
+
     public LayerMask floorMask;
 
     //This variable is super important, true means you're in tech mode, false means you're in psychic mode
@@ -161,33 +165,48 @@ public class Player : MonoBehaviour
     public GameObject pSetObj;
     private PowerSetController pSetCont;
 
-    private RopeSystem rs;
-    public float AGTimer;
-    private float AGTimeLeft;
-
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
     {
         Vector2 vec;
-        if (Input.GetAxis("Horizontal") > 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
+        if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") <= .75f)
         {
             vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .85f);
         }
-        else if (Input.GetAxis("Horizontal") < 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
+        else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") <= .75f)
         {
             vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .85f);
         }
-        else if (Input.GetAxisRaw("Horizontal") > 0f)
+        else if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") > -.25f && Input.GetAxis("Vertical") <= .25f)
         {
             vec = new Vector2(airdashSpeed, 0f);
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0f)
+        else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") > -.25f && Input.GetAxis("Vertical") <= .25f)
         {
             vec = new Vector2(-airdashSpeed, 0f);
         }
+        else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") <= -.25f && Input.GetAxis("Vertical") > -.75f)
+        {
+            vec = new Vector2(-airdashSpeed * .65f, -airdashSpeed * .85f);
+        }
+        else if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") <= -.25f && Input.GetAxis("Vertical") > -.75f)
+        {
+            vec = new Vector2(airdashSpeed * .65f, -airdashSpeed * .85f);
+        }
+        else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") < -.25f)
+        {
+            vec = new Vector2(0, -airdashSpeed);
+        }
+        else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") > .25f)
+        {
+            vec = new Vector2(0, airdashSpeed);
+        }
         else
         {
-            vec = new Vector2(0, airdashSpeed * 1f);
+            if (fallSpeed > 0)
+                vec = new Vector2(0, airdashSpeed * 1f);
+            else
+                vec = new Vector2(0, airdashSpeed * 1f);
         }
         Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
@@ -284,7 +303,7 @@ public class Player : MonoBehaviour
         hiScript = healthObj.GetComponent<HealthUI>();
         //health = health_max;
         pSetCont = pSetObj.GetComponent<PowerSetController>();
-        //Initialize powers
+
         boomerang = new Power("boomerang", true, true);
         grapple = new Power("grapple", true, true);
         poisonShot = new Power("poison", true, false);
@@ -293,20 +312,37 @@ public class Player : MonoBehaviour
         drill = new Power("drill", false, true);
         freeze = new Power("freeze", false, false);
         reflector = new Power("reflect", false, false);
-        tPowerDict.Add("grapple", grapple); tPowerDict.Add("anti-grav", antiGrav);
-        tWeaponDict.Add("boomerang", boomerang); tWeaponDict.Add("drill", drill);
-        mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflect", reflector);
-        mWeaponDict.Add("poison", poisonShot); mWeaponDict.Add("freeze", freeze);
-        tUtility = grapple;
-        tWeapon = boomerang;
-        mUtility = teleport;
-        mWeapon = poisonShot;
-        tPowerDict[grapple.name].toString();
+
+        //Initialize powers
+        if (!localPlayerData.reload)
+        {
+            tPowerDict.Add("grapple", grapple); tPowerDict.Add("anti-grav", antiGrav);
+            tWeaponDict.Add("boomerang", boomerang); tWeaponDict.Add("drill", drill);
+            mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflect", reflector);
+            mWeaponDict.Add("poison", poisonShot); mWeaponDict.Add("freeze", freeze);
+            tUtility = grapple;
+            tWeapon = boomerang;
+            mUtility = teleport;
+            mWeapon = poisonShot;
+        }
+        //tPowerDict[grapple.name].toString();
         Physics2D.IgnoreLayerCollision(13, 14, false);
 
         //Debug.Log(tWeaponDict.ToString());
         //Debug.Log(mPowerDict.ToString());
         //Debug.Log(mWeaponDict.ToString());
+        
+        if (localPlayerData.reload)
+        {
+            tWeapon = GlobalControl.Instance.savedPlayer.tWeap;
+            tUtility = GlobalControl.Instance.savedPlayer.tUtil;
+            mWeapon = GlobalControl.Instance.savedPlayer.mWeap;
+            mUtility = GlobalControl.Instance.savedPlayer.mUtil;
+            tWeaponDict = GlobalControl.Instance.savedPlayer.tWeaps;
+            tPowerDict = GlobalControl.Instance.savedPlayer.tUtils;
+            mWeaponDict = GlobalControl.Instance.savedPlayer.mWeaps;
+            mPowerDict = GlobalControl.Instance.savedPlayer.mUtils;
+        }
 
         pSetCont.SetMPowerImg(mUtility.name);
         pSetCont.SetMWeaponImg(mWeapon.name);
@@ -325,6 +361,8 @@ public class Player : MonoBehaviour
 
         localPlayerData.tUtils = tPowerDict;    localPlayerData.mUtils = mPowerDict;
         localPlayerData.tWeaps = tWeaponDict;   localPlayerData.mWeaps = mWeaponDict;
+
+        localPlayerData.reload = true;
 
         GlobalControl.Instance.savedPlayer = localPlayerData;
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
