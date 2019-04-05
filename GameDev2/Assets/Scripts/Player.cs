@@ -108,6 +108,10 @@ public class Player : MonoBehaviour
     public float reflectCooldown = 4f;
     private float refMax;
 
+    private RopeSystem rs;
+    public float AGTimer;
+    private float AGTimeLeft;
+
     public LayerMask floorMask;
 
     //This variable is super important, true means you're in tech mode, false means you're in psychic mode
@@ -160,10 +164,6 @@ public class Player : MonoBehaviour
     private HealthUI hiScript;
     public GameObject pSetObj;
     private PowerSetController pSetCont;
-
-    private RopeSystem rs;
-    public float AGTimer;
-    private float AGTimeLeft;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -284,7 +284,7 @@ public class Player : MonoBehaviour
         hiScript = healthObj.GetComponent<HealthUI>();
         //health = health_max;
         pSetCont = pSetObj.GetComponent<PowerSetController>();
-        //Initialize powers
+
         boomerang = new Power("boomerang", true, true);
         grapple = new Power("grapple", true, true);
         poisonShot = new Power("poison", true, false);
@@ -293,20 +293,37 @@ public class Player : MonoBehaviour
         drill = new Power("drill", false, true);
         freeze = new Power("freeze", false, false);
         reflector = new Power("reflect", false, false);
-        tPowerDict.Add("grapple", grapple); tPowerDict.Add("anti-grav", antiGrav);
-        tWeaponDict.Add("boomerang", boomerang); tWeaponDict.Add("drill", drill);
-        mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflect", reflector);
-        mWeaponDict.Add("poison", poisonShot); mWeaponDict.Add("freeze", freeze);
-        tUtility = grapple;
-        tWeapon = boomerang;
-        mUtility = teleport;
-        mWeapon = poisonShot;
-        tPowerDict[grapple.name].toString();
+
+        //Initialize powers
+        if (!localPlayerData.reload)
+        {
+            tPowerDict.Add("grapple", grapple); tPowerDict.Add("anti-grav", antiGrav);
+            tWeaponDict.Add("boomerang", boomerang); tWeaponDict.Add("drill", drill);
+            mPowerDict.Add("teleport", teleport); mPowerDict.Add("reflect", reflector);
+            mWeaponDict.Add("poison", poisonShot); mWeaponDict.Add("freeze", freeze);
+            tUtility = grapple;
+            tWeapon = boomerang;
+            mUtility = teleport;
+            mWeapon = poisonShot;
+        }
+        //tPowerDict[grapple.name].toString();
         Physics2D.IgnoreLayerCollision(13, 14, false);
 
         //Debug.Log(tWeaponDict.ToString());
         //Debug.Log(mPowerDict.ToString());
         //Debug.Log(mWeaponDict.ToString());
+        
+        if (localPlayerData.reload)
+        {
+            tWeapon = GlobalControl.Instance.savedPlayer.tWeap;
+            tUtility = GlobalControl.Instance.savedPlayer.tUtil;
+            mWeapon = GlobalControl.Instance.savedPlayer.mWeap;
+            mUtility = GlobalControl.Instance.savedPlayer.mUtil;
+            tWeaponDict = GlobalControl.Instance.savedPlayer.tWeaps;
+            tPowerDict = GlobalControl.Instance.savedPlayer.tUtils;
+            mWeaponDict = GlobalControl.Instance.savedPlayer.mWeaps;
+            mPowerDict = GlobalControl.Instance.savedPlayer.mUtils;
+        }
 
         pSetCont.SetMPowerImg(mUtility.name);
         pSetCont.SetMWeaponImg(mWeapon.name);
@@ -325,6 +342,8 @@ public class Player : MonoBehaviour
 
         localPlayerData.tUtils = tPowerDict;    localPlayerData.mUtils = mPowerDict;
         localPlayerData.tWeaps = tWeaponDict;   localPlayerData.mWeaps = mWeaponDict;
+
+        localPlayerData.reload = true;
 
         GlobalControl.Instance.savedPlayer = localPlayerData;
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
