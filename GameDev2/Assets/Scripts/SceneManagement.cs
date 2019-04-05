@@ -15,7 +15,8 @@ public class SceneManagement : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             player.GetComponent<Player>().SavePlayer();
-            
+            player.GetComponent<Player>().SaveSceneData();
+
             SceneManager.LoadScene(levelName, LoadSceneMode.Single);
 
         }

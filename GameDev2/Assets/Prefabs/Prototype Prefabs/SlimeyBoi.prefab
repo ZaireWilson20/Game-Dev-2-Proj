@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 540469196}
   - component: {fileID: 1087658309}
-  - component: {fileID: 1087658308}
   - component: {fileID: 1087658307}
   - component: {fileID: 1087658310}
   - component: {fileID: 1087658306}
+  - component: {fileID: 2283203109867679696}
   m_Layer: 14
-  m_Name: Enemy (9)
+  m_Name: SlimeyBoi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,22 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &1087658308
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1087658305}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.04314692, y: -0.19045396}
-  m_Size: {x: 0.511014, y: 0.38326043}
-  m_Direction: 0
 --- !u!50 &1087658307
 Rigidbody2D:
   serializedVersion: 4
@@ -156,6 +140,7 @@ MonoBehaviour:
   seekSpeed: 1.25
   attackSpeed: 2
   searchTimeout: 3
+  freezeDuration: 5
   detectRadius: 3
   knockback: 0
   startPos: {x: 0, y: 0, z: 0}
@@ -168,3 +153,31 @@ MonoBehaviour:
   shootRadius: 10
   projectile: {fileID: 0}
   shotSpray: 3
+  freezable: 1
+  pa_script: {fileID: 0}
+--- !u!61 &2283203109867679696
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1087658305}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0140793845, y: -0.21810687}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.62, y: 0.75}
+    newSize: {x: 3.48, y: 2.99}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.46043366, y: 0.31378627}
+  m_EdgeRadius: 0

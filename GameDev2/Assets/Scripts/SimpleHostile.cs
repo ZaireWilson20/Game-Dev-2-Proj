@@ -24,6 +24,8 @@ public class SimpleHostile : MonoBehaviour
     public float searchTimeout = 3.0f;
     private float timeleft;
     private float direction = 0f;
+    private float freezeTimer = 0f;
+    public float freezeDuration = 5f;
     private float lastDir;
 
     public float detectRadius = 3f;
@@ -57,9 +59,13 @@ public class SimpleHostile : MonoBehaviour
     public int shotSpray = 3;
 
     private SpriteRenderer sprite;
+    private Color origColor;
+    //Player pscript;
 
     private Animator anim;
     private bool dead = false;
+    public bool freezable = true;
+    private bool frozen = false;
 
     [SerializeField]
     //GameObject pa_playerObj;
@@ -74,6 +80,7 @@ public class SimpleHostile : MonoBehaviour
         //detectCollider = GetComponent<Collider2D>();
         anim = GetComponent<Animator>(); 
         sprite = GetComponent<SpriteRenderer>();
+        origColor = sprite.color;
         //get player object
         player = GameObject.FindGameObjectWithTag("Player");
         pa_script = player.GetComponent<Player>();
@@ -117,18 +124,25 @@ public class SimpleHostile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject contact = collision.gameObject;
+        //Debug.Log("layer: " + gameObject.layer);
+        Debug.Log("grounded: " + pa_script.grounded);
+        //if (contact.layer != 8 && contact.layer != 0)
+        //    Debug.Log(contact.tag);
         //Debug.Log(collision.gameObject);
         if (contact.tag.Equals("Player"))
         {
-            Debug.Log("I HIT THE PLAYER");
-            anim.SetTrigger("Attack");
-            //Debug.Log("attack!");
-            Player pscript = contact.GetComponent<Player>();
-            //Debug.Log(lastDir);
-            if (!pscript.invincible)
+            Debug.Log("frozen: " + frozen);
+            if (!frozen)
             {
-                pscript.anim.SetTrigger("Hurt");
-                pscript.takeDamage(attack, rb.velocity);
+                Debug.Log("I HIT THE PLAYER");
+                anim.SetTrigger("Attack");
+                //Debug.Log("attack!");
+                //Debug.Log(lastDir);
+                if (!pa_script.invincible)
+                {
+                    pa_script.anim.SetTrigger("Hurt");
+                    pa_script.takeDamage(attack, rb.velocity);
+                }
             }
         }
         /*else if (contact.layer.Equals("Bullet"))
@@ -197,6 +211,29 @@ public class SimpleHostile : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Freeze(bool freezing)
+    {
+        if (!freezable)
+            return;
+
+        if (freezing)
+        {
+            gameObject.layer = 20;
+            gameObject.transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            rb.velocity = new Vector2(0, 0);
+            sprite.color = new Color(0, 194, 255, 255);
+            freezeTimer = freezeDuration;
+            frozen = true;
+        }
+        else
+        {
+            gameObject.layer = 14;
+            gameObject.transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+            sprite.color = origColor;
+            frozen = false;
+        }
     }
 
     void Update()
@@ -273,7 +310,7 @@ public class SimpleHostile : MonoBehaviour
         fireTime += Time.deltaTime;
         //Debug.Log(fireTime);
         //Debug.Log(nextFire);
-        if (shooter && fireTime > nextFire)
+        if (!frozen && shooter && fireTime > nextFire)
         {
             if (LineOfSight())
             {
@@ -302,7 +339,7 @@ public class SimpleHostile : MonoBehaviour
         }
 
         //travel towards destination if not within 0.1 of target
-        if (Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead && !pa_script.pa_inConvo)
+        if (!frozen && Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead && !pa_script.pa_inConvo)
         {
             //Debug.Log("moving");
             lastDir = direction;
@@ -331,11 +368,16 @@ public class SimpleHostile : MonoBehaviour
             anim.SetBool("Walking", false);
         }
 
+        Debug.Log("layer: " + gameObject.layer);
+        if (freezeTimer <= 0)
+            Freeze(false);
+        //Debug.Log(sprite.color);
+        freezeTimer -= Time.deltaTime;
 
-
-
-
+   
     }
+
+
     IEnumerator deadWait()
     {
         yield return new  WaitForSeconds(.5f);

@@ -29,25 +29,24 @@ public class Freeze : Projectile
             Debug.Log("hit!");
             SimpleHostile pscript = contact.GetComponent<SimpleHostile>();
             //Debug.Log(lastDir);
-
-            pscript.takeDamage(damage, dir);
+            pscript.Freeze(true);
+            //pscript.takeDamage(damage, dir);
             health--;
         }
 
-        FreezeState freezeScript;
-        SpriteRenderer spr = contact.GetComponent<SpriteRenderer>();
-        if (contact.GetComponent<FreezeState>())
-            freezeScript = contact.GetComponent<FreezeState>();
-        else
-        {
-            Debug.Log("Thing shouldn't freeze");
-            freezeScript = null;
-        }
-        if (freezeScript != null)
-        {
-            freezeScript.freeze(true);
-            Debug.Log("Should change color here");
-        }
+        //SpriteRenderer spr = contact.GetComponent<SpriteRenderer>();
+        //if (contact.GetComponent<FreezeState>())
+        //    freezeScript = contact.GetComponent<FreezeState>();
+        //else
+        //{
+        //    Debug.Log("Thing shouldn't freeze");
+        //    freezeScript = null;
+        //}
+        //if (freezeScript != null)
+        //{
+        //    freezeScript.freeze(true);
+        //    Debug.Log("Should change color here");
+        //}
 
         if (contact.layer == 8)
             gameObject.SetActive(false);
