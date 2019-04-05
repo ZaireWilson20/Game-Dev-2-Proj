@@ -169,25 +169,44 @@ public class Player : MonoBehaviour
     Vector3 calculateAirdashVector()
     {
         Vector2 vec;
-        if (Input.GetAxis("Horizontal") > 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
+        if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") <= .75f)
         {
             vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .85f);
         }
-        else if (Input.GetAxis("Horizontal") < 0f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") < .75f)
+        else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") <= .75f)
         {
             vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .85f);
         }
-        else if (Input.GetAxisRaw("Horizontal") > 0f)
+        else if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") > -.25f && Input.GetAxis("Vertical") <= .25f)
         {
             vec = new Vector2(airdashSpeed, 0f);
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0f)
+        else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") > -.25f && Input.GetAxis("Vertical") <= .25f)
         {
             vec = new Vector2(-airdashSpeed, 0f);
         }
+        else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") <= -.25f && Input.GetAxis("Vertical") > -.75f)
+        {
+            vec = new Vector2(-airdashSpeed * .65f, -airdashSpeed * .85f);
+        }
+        else if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") <= -.25f && Input.GetAxis("Vertical") > -.75f)
+        {
+            vec = new Vector2(airdashSpeed * .65f, -airdashSpeed * .85f);
+        }
+        else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") < -.25f)
+        {
+            vec = new Vector2(0, -airdashSpeed);
+        }
+        else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") > .25f)
+        {
+            vec = new Vector2(0, airdashSpeed);
+        }
         else
         {
-            vec = new Vector2(0, airdashSpeed * 1f);
+            if (fallSpeed > 0)
+                vec = new Vector2(0, airdashSpeed * 1f);
+            else
+                vec = new Vector2(0, airdashSpeed * 1f);
         }
         Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
