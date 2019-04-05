@@ -14,6 +14,7 @@ public class PlayerData
     public Dictionary<string, Power> mUtils;
     public Dictionary<string, Power> tWeaps;
     public Dictionary<string, Power> mWeaps;
+    public bool reload = false;
 }
 
 public class DialogueData
