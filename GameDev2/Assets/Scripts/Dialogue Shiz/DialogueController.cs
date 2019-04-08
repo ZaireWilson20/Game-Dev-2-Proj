@@ -6,7 +6,7 @@ using UnityEditor;
 using TMPro;
 public class DialogueController : MonoBehaviour
 {
-    int currentLine = 0;
+    public int currentLine = 0;
     int totalLines; 
 
     private bool talking;
@@ -29,7 +29,8 @@ public class DialogueController : MonoBehaviour
     private string fileName = ".png";
     private string firstSpeakerName;   
     private string secondSpeakerName;
-    public bool doneSentence = false; 
+    public bool doneSentence = false;
+    public bool inCutscene = false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +67,6 @@ public class DialogueController : MonoBehaviour
         //char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.fsSprite + lines.mood[currentLine] + fileName, typeof(Sprite)); 
         //char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
         firstSpeakerName = lines.firstSpeaker;
-        Debug.Log(lines.firstSpeaker);
         secondSpeakerName = lines.secondSpeaker;
 
         continueBox.SetActive(false);
@@ -75,6 +75,7 @@ public class DialogueController : MonoBehaviour
         totalLines = lines.allDialogue.Length;
         StartCoroutine(TypeSentence(allLines[currentLine]));
         setSpeaker(lines.speakerSeq[currentLine]);
+
         currentLine++;
     }
 
@@ -91,9 +92,13 @@ public class DialogueController : MonoBehaviour
 
     public bool nextLine()
     {
-
+        if (gameObject.name == "HubInit" && currentLine == 5)
+        {
+            inCutscene = true;
+            return true; 
+        }
         // If speaker's last line
-        if(currentLine == totalLines)
+        if (currentLine == totalLines)
         {
             conversationUI.SetActive(false);
             currentLine = 0; 

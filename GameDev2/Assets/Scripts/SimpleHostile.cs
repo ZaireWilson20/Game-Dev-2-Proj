@@ -368,7 +368,7 @@ public class SimpleHostile : MonoBehaviour
             anim.SetBool("Walking", false);
         }
 
-        Debug.Log("layer: " + gameObject.layer);
+        //Debug.Log("layer: " + gameObject.layer);
         if (freezeTimer <= 0)
             Freeze(false);
         //Debug.Log(sprite.color);
