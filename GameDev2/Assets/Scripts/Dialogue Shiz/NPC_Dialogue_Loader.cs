@@ -14,6 +14,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         pa_all_npcs = GameObject.FindGameObjectsWithTag("NPC");
 
         foreach (GameObject ga in pa_all_npcs)
@@ -31,7 +32,6 @@ public class NPC_Dialogue_Loader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
     }
 
     void ReadData(string file_path, string name)

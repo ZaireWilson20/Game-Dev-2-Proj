@@ -283,7 +283,10 @@ public class Player : MonoBehaviour
         //Debug.Log("start");
         //load player save data
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
-
+        if (GlobalControl.Instance.savedScene.inCutScene)
+        {
+            //gameObject.SetActive(false);
+        }
         localPlayerData = GlobalControl.Instance.savedPlayer;
         health = localPlayerData.playerHealth;
         //Debug.Log(health);

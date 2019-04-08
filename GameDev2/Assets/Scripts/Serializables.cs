@@ -19,10 +19,13 @@ public class PlayerData
 
 public class DialogueData
 {
-    public bool alreadyRead = false; 
+    public bool alreadyRead = false;
+    public int currentLine = 0; 
 }
 
 public class SceneData
 {
     public String lastScene = "Hub";
+    public bool inCutScene = false;
+    public int currentConversationNum = 0; 
 }

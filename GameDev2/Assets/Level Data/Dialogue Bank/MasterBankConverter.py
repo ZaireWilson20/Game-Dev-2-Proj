@@ -8,6 +8,7 @@ with open('MasterBank.tsv', 'r') as csvfile:
     #print(tempReader)
     for row in tempReader:
         masterBank.append(row)
+print("length of master bank:",len(masterBank))
 for a in masterBank[1:len(masterBank)]:
     for b in range(0,len(a)):
         if b == 0:

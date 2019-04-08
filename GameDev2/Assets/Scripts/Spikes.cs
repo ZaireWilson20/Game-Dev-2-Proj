@@ -22,6 +22,7 @@ public class Spikes : MonoBehaviour
         lowPoint = lowObj.transform.position;
         highPoint = highObj.transform.position;
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        
         //player = playerObj.GetComponent<Player>();
     }
 
@@ -58,9 +59,9 @@ public class Spikes : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.gameObject.tag == "Player")
         {
             spikeTrigger = true;
         }
