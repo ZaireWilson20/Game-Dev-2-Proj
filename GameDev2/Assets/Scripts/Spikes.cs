@@ -14,20 +14,27 @@ public class Spikes : MonoBehaviour
     private GameObject playerObj;
     public GameObject parent; 
     private Player player;
-    public bool moving; 
+    public bool moving;
+    private bool spikeTrigger;
     // Start is called before the first frame update
     void Start()
     {
         lowPoint = lowObj.transform.position;
         highPoint = highObj.transform.position;
-        player = GameObject.Find("Paracelsys317").GetComponent<Player>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
         //player = playerObj.GetComponent<Player>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (spikeTrigger)
+        {
+            Debug.Log("Player hit spikes");
+            Debug.Log(transform.position);
+            player.takeDamage(1, new Vector3(Mathf.Sign(player.velocity.x) * -1f, 1f, 0));
+            spikeTrigger = false; 
+        }
         if (moving)
         {
             if (transform.position.y < lowPoint.y)
@@ -55,9 +62,7 @@ public class Spikes : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            Debug.Log("Player hit spikes");
-            Debug.Log(transform.position);
-            player.takeDamage(1, new Vector3(Mathf.Sign(player.velocity.x) * -1f, 1f, 0));
+            spikeTrigger = true;
         }
     }
 }
