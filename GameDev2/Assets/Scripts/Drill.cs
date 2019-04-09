@@ -25,11 +25,7 @@ public class Drill : Projectile
         if (contact.layer == 14)
         {
 
-            Debug.Log("hit!");
-            SimpleHostile pscript = contact.GetComponent<SimpleHostile>();
-            //Debug.Log(lastDir);
-
-            pscript.takeDamage(damage, dir);
+            collide(collision);
 
         }
 

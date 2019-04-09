@@ -8,6 +8,7 @@ public class FactoryBoss : MonoBehaviour
     //public float detectRadius = 2.0f;
     public float health_max = 20;
     private float health = 20;
+    public float shield_health = 5; //at or below this health level, you must headshot the boss...
 
     //movement variables
     public int mvmtForce = 10;
@@ -30,6 +31,7 @@ public class FactoryBoss : MonoBehaviour
 
     public float specialAttackTime = 15f;
     public float stompTimer = 5f;
+    public bool shielded = false;
 
     public int attack = 1;
     //public float seekSpeed = 1.25f;
@@ -100,6 +102,11 @@ public class FactoryBoss : MonoBehaviour
         height = sprite.bounds.extents.y;
     }
 
+    public float GetHealth()
+    {
+        return health;
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         GameObject contact = collision.gameObject;
@@ -143,6 +150,11 @@ public class FactoryBoss : MonoBehaviour
         if (!invincible)
         {
             health -= damage;
+            if (health <= shield_health)
+            {
+                shielded = true;
+                Debug.Log("shielded");
+            }
             if (health <= 0)
             {
                 //enemy has died
@@ -152,7 +164,12 @@ public class FactoryBoss : MonoBehaviour
                 gameObject.SetActive(false);
             }
 
-            //consider using increasing degree of transparency (via alpha)
+            //turn back to player when damage is taken
+            if (transform.position.x - player.transform.position.x > 0)
+                mvdir = Vector2.left;
+            else if (transform.position.x - player.transform.position.x < 0)
+                mvdir = Vector2.right;
+
             flash = true;
             sprite.enabled = false;
             invincible = true;
@@ -199,7 +216,7 @@ public class FactoryBoss : MonoBehaviour
                 //Debug.Log("left wall detected");
                 //switch to move right
                 mvdir = Vector2.right;
-                sprite.flipX = true;
+                //sprite.flipX = true;
             }
             RaycastHit2D rightRay = Physics2D.Raycast(transform.position, Vector2.right, dist, LayerMask.GetMask("Ground"));
             Debug.DrawRay(transform.position, Vector2.right * dist, Color.cyan);
@@ -209,8 +226,12 @@ public class FactoryBoss : MonoBehaviour
                 //Debug.Log("right wall detected");
                 //switch to move left
                 mvdir = Vector2.left;
-                sprite.flipX = false;
+                //sprite.flipX = false;
             }
+            if (mvdir == Vector2.right)
+                sprite.flipX = true;
+            else
+                sprite.flipX = false;
             rb.AddForce(mvdir * mvmtForce);
             if (rb.velocity.magnitude > velocityCap)
                 rb.velocity = mvdir * velocityCap;

@@ -137,7 +137,7 @@ public class RopeSystem : MonoBehaviour
 
                 var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
 
-                Debug.Log(hit.distance);
+                //Debug.Log(hit.distance);
                 // 3
                 if (hit.collider != null)
                 {

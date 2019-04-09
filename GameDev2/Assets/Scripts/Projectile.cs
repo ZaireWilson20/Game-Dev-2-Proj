@@ -29,7 +29,7 @@ public class Projectile : MonoBehaviour
         Physics2D.IgnoreLayerCollision(15, 15);
         startPos = transform.position;
         sprite = GetComponent<SpriteRenderer>();
-        Debug.Log(velocity);
+        //Debug.Log(velocity);
     }
 
     protected virtual void collide(Collider2D collision)
@@ -47,10 +47,25 @@ public class Projectile : MonoBehaviour
             SimpleHostile hscript;
             FactoryBoss fscript;
             Debug.Log("hit!");
-            if (contact.tag.Equals("FactoryBoss"))
+            if (contact.tag.Contains("Mantis"))
             {
-                fscript = contact.GetComponent<FactoryBoss>();
-                fscript.takeDamage(damage, dir);
+                fscript = contact.transform.parent.gameObject.GetComponent<FactoryBoss>();
+                if (contact.tag.Contains("Head"))
+                {
+                    //double damage for headshot
+                    Debug.Log("Headshot");
+                    fscript.takeDamage(2 * damage, dir);
+                } else if (contact.tag.Equals("Claws"))
+                {
+                    //regular damage for claws
+                    fscript.takeDamage(damage, dir);
+                } else
+                {
+                    //legs can be shielded
+                    if (!fscript.shielded)
+                        fscript.takeDamage(damage, dir);
+                }
+                //fscript.takeDamage(damage, dir);
             }
             else
             {

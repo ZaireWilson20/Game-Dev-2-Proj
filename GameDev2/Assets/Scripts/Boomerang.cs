@@ -47,11 +47,28 @@ public class Boomerang : Projectile
             Debug.Log("hit!");
             SimpleHostile hscript;
             FactoryBoss fscript;
-            Debug.Log("hit!");
-            if (contact.tag.Equals("FactoryBoss"))
+            Debug.Log(contact.tag);
+            if (contact.tag.Contains("Mantis"))
             {
-                fscript = contact.GetComponent<FactoryBoss>();
-                fscript.takeDamage(damage, dir);
+                fscript = contact.transform.parent.gameObject.GetComponent<FactoryBoss>();
+                if (contact.tag.Contains("Head"))
+                {
+                    //double damage for headshot
+                    Debug.Log("Headshot");
+                    fscript.takeDamage(2 * damage, dir);
+                }
+                else if (contact.tag.Equals("Claws"))
+                {
+                    //regular damage for claws
+                    fscript.takeDamage(damage, dir);
+                }
+                else
+                {
+                    //legs can be shielded
+                    if (!fscript.shielded)
+                        fscript.takeDamage(damage, dir);
+                }
+                //fscript.takeDamage(damage, dir);
             }
             else
             {

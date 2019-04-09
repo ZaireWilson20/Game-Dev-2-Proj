@@ -67,7 +67,7 @@ public class LaserController : MonoBehaviour
             brighter.g = brighter.b = 0;    //is this necessary/desired?
         }
         sprite.color = brighter;
-        Debug.Log("color: " + sprite.color);
+        //Debug.Log("color: " + sprite.color);
         timer += Time.deltaTime;
     }
 }
