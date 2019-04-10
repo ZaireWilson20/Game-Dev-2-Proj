@@ -26,28 +26,48 @@ public class ToxicShot : Projectile
         //Debug.Log("i shouldn't be here");
         if (contact.layer == 14)
         {
+
             SimpleHostile hscript;
             FactoryBoss fscript;
+            SalBoss salScript;
             Debug.Log("hit!");
-            if (contact.tag.Equals("FactoryBoss"))
+            if (contact.tag.Contains("Mantis"))
             {
-                fscript = contact.GetComponent<FactoryBoss>();
-                fscript.takeDamage(damage, dir);
+                fscript = contact.transform.parent.gameObject.GetComponent<FactoryBoss>();
+                if (contact.tag.Contains("Head"))
+                {
+                    //double damage for headshot
+                    Debug.Log("Headshot");
+                    fscript.takeDamage(2 * damage, dir);
+                }
+                else if (contact.tag.Equals("Claws"))
+                {
+                    //regular damage for claws
+                    fscript.takeDamage(damage, dir);
+                }
+                else
+                {
+                    //legs can be shielded
+                    if (!fscript.shielded)
+                        fscript.takeDamage(damage, dir);
+                }
+                //fscript.takeDamage(damage, dir);
+            }
+            else if (contact.tag.Contains("Sal"))
+            {
+                salScript = contact.GetComponent<SalBoss>();
+                salScript.takeDamage(damage);
             }
             else
             {
                 hscript = contact.GetComponent<SimpleHostile>();
                 hscript.takeDamage(damage, dir);
             }
-            //Debug.Log(lastDir);
 
-            //pscript.takeDamage(damage, dir);
-
+            if (contact.layer == 8)
+                gameObject.SetActive(false);
         }
-
-        if (contact.layer == 8)
-            gameObject.SetActive(false);
-    } 
+    }
 
     protected override void Update()
     {

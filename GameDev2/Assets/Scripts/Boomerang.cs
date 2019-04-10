@@ -47,6 +47,7 @@ public class Boomerang : Projectile
             Debug.Log("hit!");
             SimpleHostile hscript;
             FactoryBoss fscript;
+            SalBoss salScript;
             Debug.Log(contact.tag);
             if (contact.tag.Contains("Mantis"))
             {
@@ -69,6 +70,11 @@ public class Boomerang : Projectile
                         fscript.takeDamage(damage, dir);
                 }
                 //fscript.takeDamage(damage, dir);
+            }
+            else if (contact.tag.Contains("Sal"))
+            {
+                salScript = contact.GetComponent<SalBoss>();
+                salScript.takeDamage(damage);
             }
             else
             {

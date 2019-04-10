@@ -314,31 +314,6 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7501577994660034941, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: playerObj
-      value: 
-      objectReference: {fileID: 1373621940}
-    - target: {fileID: 7501577994401447109, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1828598571}
-    - target: {fileID: 7501577993700178595, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1828598571}
-    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1828598571}
-    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1828598571}
     - target: {fileID: 7501577992996979785, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -449,6 +424,31 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7501577994660034941, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: playerObj
+      value: 
+      objectReference: {fileID: 1373621940}
+    - target: {fileID: 7501577994401447109, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
+    - target: {fileID: 7501577993700178595, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
+    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
+    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
     - target: {fileID: 7501577994960064783, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_sharedMaterial
@@ -1483,6 +1483,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9176695710859513780, guid: a70acd571dd1df041b67114c4fefd097,
+        type: 3}
+      propertyPath: buffer
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 998501248941474296, guid: a70acd571dd1df041b67114c4fefd097,
         type: 3}
       propertyPath: gameManagerObj
@@ -1527,11 +1532,6 @@ PrefabInstance:
       propertyPath: pa_DeadZone
       value: 
       objectReference: {fileID: 2084004160}
-    - target: {fileID: 9176695710859513780, guid: a70acd571dd1df041b67114c4fefd097,
-        type: 3}
-      propertyPath: buffer
-      value: 0.5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a70acd571dd1df041b67114c4fefd097, type: 3}
 --- !u!1 &1117624951
