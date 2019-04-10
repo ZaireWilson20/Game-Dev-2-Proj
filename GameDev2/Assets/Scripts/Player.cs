@@ -140,6 +140,8 @@ public class Player : MonoBehaviour
     float accelTime_air = .4f;
     float accelTime_ground = .1f;
     public Vector3 velocity;
+    private Vector2 storeVel;
+    private bool justPaused = false;
     // --------------------------------
 
     //  Player interactions with environment
@@ -434,14 +436,17 @@ public class Player : MonoBehaviour
         {
             //this.GetComponent<Rigidbody2D>().isKinematic = true;
             //this.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX;
-            //this.GetComponent<Rigidbody2D>().gravityScale = 0f; 
-        }
-        else
-        {
-            //this.GetComponent<Rigidbody2D>().isKinematic = false;
-            //this.GetComponent<Rigidbody2D>().gravityScale = 1f;
-        }
-        if (!gameManager.paused) {
+            rig2D.gravityScale = 0;
+            storeVel = rig2D.velocity;
+            rig2D.velocity = Vector2.zero;
+            justPaused = true;
+        } else if (!gameManager.paused) {
+            if (justPaused)
+            {
+                justPaused = false;
+                rig2D.gravityScale = fallSpeed;
+                rig2D.velocity = storeVel;
+            }
             if (!pa_inConvo)  // Can move while not in conversation
             {
                 //grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
