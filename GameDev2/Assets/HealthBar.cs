@@ -15,6 +15,10 @@ public class HealthBar : MonoBehaviour
     private float shield_health;
     Image[] images;
     Image bar, bkgnd;
+    Image[] bigShields = new Image[2];
+    private int bigCt = 0;
+    Image[] barShields = new Image[3];
+    private int barCt = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +45,15 @@ public class HealthBar : MonoBehaviour
                 bar = im;
             else if (im.name.Equals("Background"))
                 bkgnd = im;
+            else if (im.name.Contains("BarShield"))
+            {
+                barShields[barCt] = im;
+                barCt++;
+            } else if (im.name.Contains("BigShield")) {
+                bigShields[bigCt] = im;
+                im.enabled = false;
+                bigCt++;
+            }
         }
     }
 
@@ -48,6 +61,25 @@ public class HealthBar : MonoBehaviour
     {
        //amount of health lost, scaled from 0 to 1
        return (health_max - health) / health_max;
+    }
+
+    private void EnableShields(Image[] shields, bool enable)
+    {
+        foreach (Image im in shields)
+            im.enabled = enable;
+    }
+
+    private void DisableShield(float health)
+    {
+        foreach (Image im in barShields)
+        {
+            if (im.name.Contains("Right") && health < 0.75 * shield_health)
+                im.enabled = false;
+            else if (im.name.Contains("Center") && health < 0.5 * shield_health)
+                im.enabled = false;
+            else if (im.name.Contains("Left") && health < 0.25 * shield_health)
+                im.enabled = false;
+        }
     }
 
     // Update is called once per frame
@@ -59,6 +91,8 @@ public class HealthBar : MonoBehaviour
             healthBarSlider.value = 1 - GetHealthLost(cur_health);
             if (cur_health <= shield_health)
             {
+                EnableShields(bigShields, true);
+                DisableShield(cur_health);
                 bar.color = shieldZone.color;
                 shieldZone.enabled = false;
                 //                original value                scaled health lost from initial
@@ -66,6 +100,8 @@ public class HealthBar : MonoBehaviour
             if (healthBarSlider.value <= 0)
             {
                 bar.enabled = false;
+                EnableShields(bigShields, false);
+                EnableShields(barShields, false);
             }
 
         }
