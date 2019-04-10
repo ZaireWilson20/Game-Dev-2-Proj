@@ -46,6 +46,7 @@ public class Projectile : MonoBehaviour
 
             SimpleHostile hscript;
             FactoryBoss fscript;
+            SalBoss salScript;
             Debug.Log("hit!");
             if (contact.tag.Contains("Mantis"))
             {
@@ -66,6 +67,11 @@ public class Projectile : MonoBehaviour
                         fscript.takeDamage(damage, dir);
                 }
                 //fscript.takeDamage(damage, dir);
+            }
+            else if (contact.tag.Contains("Sal"))
+            {
+                salScript = contact.GetComponent<SalBoss>();
+                salScript.takeDamage(damage);
             }
             else
             {

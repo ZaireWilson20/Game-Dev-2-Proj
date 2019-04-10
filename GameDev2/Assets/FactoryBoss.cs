@@ -34,6 +34,7 @@ public class FactoryBoss : MonoBehaviour
     public bool shielded = false;
 
     public float collide_attack = 0.5f;
+    Collider2D[] colliders;
     //public float seekSpeed = 1.25f;
     //public float attackSpeed = 2f;
     //private bool chasing = false;
@@ -102,6 +103,7 @@ public class FactoryBoss : MonoBehaviour
         mvdir = Vector2.left;
         height = sprite.bounds.extents.y;
         anim = GetComponent<Animator>();
+        colliders = GetComponentsInChildren<Collider2D>();
         anim.SetInteger("Dead", -1);    //set animator to not dead
     }
 
@@ -114,7 +116,7 @@ public class FactoryBoss : MonoBehaviour
     {
         GameObject contact = collision.gameObject;
         //Debug.Log(collision.gameObject);
-        if (contact.tag.Equals("Player"))
+        if (contact.tag.Equals("Player") && !dead)
         {
             Debug.Log("I HIT THE PLAYER");
             //anim.SetTrigger("Attack");
@@ -137,15 +139,18 @@ public class FactoryBoss : MonoBehaviour
 
     public void Swipe()
     {
-        Debug.Log("swipe");
-        //play swipe (spit) animation
-        bool swipeRay = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - height / 2f), mvdir, swipeDist, LayerMask.GetMask("Player"));
-        Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - height / 2f), mvdir * swipeDist, Color.red);
-        if (swipeRay)
+        if (!dead)
         {
-            //player hit by swipe
-            Debug.Log("swiped the player");
-            pscript.takeDamage(swipeDamage, mvdir);
+            Debug.Log("swipe");
+            //play swipe (spit) animation
+            bool swipeRay = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - height / 2f), mvdir, swipeDist, LayerMask.GetMask("Player"));
+            Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - height / 2f), mvdir * swipeDist, Color.red);
+            if (swipeRay)
+            {
+                //player hit by swipe
+                Debug.Log("swiped the player");
+                pscript.takeDamage(swipeDamage, mvdir);
+            }
         }
     }
 
@@ -164,6 +169,7 @@ public class FactoryBoss : MonoBehaviour
                 if (!shielded)
                 {
                     //play shielding animation and inform player that legs are shielded now
+
                 }
                 shielded = true;
                 Debug.Log("shielded");
@@ -172,33 +178,47 @@ public class FactoryBoss : MonoBehaviour
             {
                 //enemy has died
                 //play death animation
+                Debug.Log("boss is dying");
+                dead = true;
                 anim.SetInteger("Dead", 1);
-                
+                GetComponent<Rigidbody2D>().velocity = Vector2.zero;
             }
 
-            //turn back to player when damage is taken
-            if (transform.position.x - player.transform.position.x > 0)
-                mvdir = Vector2.left;
-            else if (transform.position.x - player.transform.position.x < 0)
-                mvdir = Vector2.right;
+            if (!dead)
+            {
+                //turn back to player when damage is taken
+                if (transform.position.x - player.transform.position.x > 0)
+                    mvdir = Vector2.left;
+                else if (transform.position.x - player.transform.position.x < 0)
+                    mvdir = Vector2.right;
 
-            flash = true;
-            sprite.enabled = false;
-            invincible = true;
-            flashCt = 0;
-            velocity.x += knockback * knockDir.x;
-            velocity.y += knockback * knockDir.y;
-            //controller.Move(velocity * Time.deltaTime);
-            transform.Translate(velocity * Time.deltaTime);
+                flash = true;
+                sprite.enabled = false;
+                invincible = true;
+                flashCt = 0;
+                velocity.x += knockback * knockDir.x;
+                velocity.y += knockback * knockDir.y;
+                //controller.Move(velocity * Time.deltaTime);
+                transform.Translate(velocity * Time.deltaTime);
+            }
             Debug.Log("Enemy health: " + health);
         }
+    }
+
+    private void EnableColliders(bool enabled)
+    {
+        foreach (Collider2D col in colliders)
+            col.enabled = enabled;
     }
 
     public void Death()
     {
         Debug.Log("Enemy killed!");
-        dead = true;
-        gameObject.SetActive(false);
+        //turn off colliders, disable gravity, and put in background
+        GetComponent<Rigidbody2D>().gravityScale = 0;
+        EnableColliders(false);
+        sprite.sortingLayerName = "Background";
+        //gameObject.SetActive(false);
     }
 
     public void EndSwipe()
@@ -227,7 +247,7 @@ public class FactoryBoss : MonoBehaviour
             }
         }
 
-        if (behavior == 0)
+        if (behavior == 0 && !dead)
         {
             //Debug.Log(rb.velocity);
             //move side-to-side using AddForce
