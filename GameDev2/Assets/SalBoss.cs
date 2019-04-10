@@ -12,6 +12,10 @@ public class SalBoss : MonoBehaviour
     private float health;
     public float phase2Health;
 
+    public GameObject minion;
+    public GameObject heatSeeking;
+    public GameObject bulletRain;
+
     public float timeToAttack = 2f;
     public float timeToTeleport = 1f;
     private float timeSinceLastAttack = 0;
