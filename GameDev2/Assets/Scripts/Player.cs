@@ -57,6 +57,7 @@ public class Player : MonoBehaviour
     public float speed = 5f;
     public float airdashSpeed = 20f;
     public float runSpeed = 10f;
+    public float terminalVel = 20f;
     public float jumpHeight = 20f;
     public bool grounded = true;
     private bool fastFall = false;
@@ -111,6 +112,8 @@ public class Player : MonoBehaviour
     private RopeSystem rs;
     public float AGTimer;
     private float AGTimeLeft;
+
+    public int points;
 
     public LayerMask floorMask;
 
@@ -289,6 +292,7 @@ public class Player : MonoBehaviour
         }
         localPlayerData = GlobalControl.Instance.savedPlayer;
         health = localPlayerData.playerHealth;
+        points = localPlayerData.points;
         //Debug.Log(health);
 
         controller = GetComponent<Controller2D>();
@@ -358,6 +362,7 @@ public class Player : MonoBehaviour
     public void SavePlayer()
     {
         localPlayerData.playerHealth = health;
+        localPlayerData.points = points;
 
         localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
         localPlayerData.mWeap = mWeapon;        localPlayerData.tWeap = tWeapon;
@@ -661,6 +666,8 @@ public class Player : MonoBehaviour
                                                                                 //  Damping/acceleration applied throught damping.
                         velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
                         //  Call to move function in controller2D class
+                        if (velocity.x > terminalVel) velocity.x = terminalVel;
+                        if (velocity.y > terminalVel) velocity.y = terminalVel;
                         controller.Move(velocity * Time.deltaTime);
                     }
 

@@ -313,6 +313,7 @@ MonoBehaviour:
   speed: 5
   airdashSpeed: 18
   runSpeed: 10
+  terminalVel: 25
   jumpHeight: 12
   grounded: 1
   fastFallSpeed: 6
@@ -347,6 +348,8 @@ MonoBehaviour:
   tpDistance: 3
   tpCooldown: 1
   reflectCooldown: 4
+  AGTimer: 1
+  points: 0
   floorMask:
     serializedVersion: 2
     m_Bits: 1573120
@@ -359,7 +362,6 @@ MonoBehaviour:
   levelName: 
   healthObj: {fileID: 0}
   pSetObj: {fileID: 0}
-  AGTimer: 0
 --- !u!95 &3971820785236441715
 Animator:
   serializedVersion: 3
