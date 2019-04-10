@@ -6,6 +6,7 @@ using System;
 public class PlayerData
 {
     public float playerHealth = 5;
+    public int points = 0;
     public Power mUtil;
     public Power tUtil;
     public Power mWeap;
