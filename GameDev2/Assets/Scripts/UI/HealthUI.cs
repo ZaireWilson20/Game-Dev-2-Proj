@@ -9,17 +9,21 @@ public class HealthUI : MonoBehaviour
 
     private void Start()
     {
-        while (currentLife > GlobalControl.Instance.savedPlayer.playerHealth - 1)
-            loseHealth();
+        //should have five butterflies if 4 < health <= 5 
+        while (GlobalControl.Instance.savedPlayer.playerHealth - currentLife <= 0)
+            loseHealth(GlobalControl.Instance.savedPlayer.playerHealth);
     }
 
-    public void loseHealth()
+    public void loseHealth(float health)
     {
-        healthSprites[currentLife].SetActive(false);
-        currentLife--;
-        if (currentLife < 0)
+        if (health - currentLife <= 0)
         {
-            currentLife = 0;
+            healthSprites[currentLife].SetActive(false);
+            currentLife--;
+            if (currentLife < 0)
+            {
+                currentLife = 0;
+            }
         }
     }
 

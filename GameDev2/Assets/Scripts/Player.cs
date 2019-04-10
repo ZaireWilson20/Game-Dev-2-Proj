@@ -69,8 +69,8 @@ public class Player : MonoBehaviour
     public int flashRate = 5;
 
     public bool alive = true;
-    public int health_max = 5;
-    private int health = 5; //save
+    public float health_max = 5;
+    private float health = 5; //save
     public float attack = 1f;
     public float knockback = 5f;
     public float fireDelta = 0.5f;
@@ -386,7 +386,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))   //  Lose health for debugging purposes. Should Be Deleted at some point
         {
             health--;
-            hiScript.loseHealth();
+            hiScript.loseHealth(health);
         }
         //use boomerang if in tech powerset, toxicShot if magic
         if (powerset)
@@ -837,14 +837,14 @@ public class Player : MonoBehaviour
         return NewPower.active = true;
     }
 
-    public void takeDamage(int damage, Vector2 knockDir)
+    public void takeDamage(float damage, Vector2 knockDir)
     {
         
         //Debug.Log("invincible: " + invincible);
         if (!invincible)
         {
-            hiScript.loseHealth();
             health -= damage;
+            hiScript.loseHealth(health);
             if (health <= 0)
             {
                 //player has died

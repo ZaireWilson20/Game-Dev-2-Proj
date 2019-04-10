@@ -13,7 +13,7 @@ public class FactoryBoss : MonoBehaviour
     //movement variables
     public int mvmtForce = 10;
     Vector2 mvdir = Vector2.left;
-    public float dist = 10f;
+    public float dist = 4.5f;
     public float velocityCap = 10f;
 
     //behavior management
@@ -33,7 +33,7 @@ public class FactoryBoss : MonoBehaviour
     public float stompTimer = 5f;
     public bool shielded = false;
 
-    public int attack = 1;
+    public float collide_attack = 0.5f;
     //public float seekSpeed = 1.25f;
     //public float attackSpeed = 2f;
     //private bool chasing = false;
@@ -82,6 +82,7 @@ public class FactoryBoss : MonoBehaviour
     [SerializeField]
     //GameObject pa_playerObj;
 
+    public Animator anim;
     // Start is called before the first frame update
     void Start()
     {
@@ -100,6 +101,8 @@ public class FactoryBoss : MonoBehaviour
         rb.AddForce(Vector2.left * mvmtForce);
         mvdir = Vector2.left;
         height = sprite.bounds.extents.y;
+        anim = GetComponent<Animator>();
+        anim.SetInteger("Dead", -1);    //set animator to not dead
     }
 
     public float GetHealth()
@@ -121,7 +124,7 @@ public class FactoryBoss : MonoBehaviour
             if (!pscript.invincible)
             {
                 pscript.anim.SetTrigger("Hurt");
-                pscript.takeDamage(attack, rb.velocity);
+                pscript.takeDamage(collide_attack, mvdir);
             }
         }
         /*else if (contact.layer.Equals("Bullet"))
@@ -132,36 +135,45 @@ public class FactoryBoss : MonoBehaviour
         }*/
     }
 
-    void Swipe(Vector2 dir)
+    public void Swipe()
     {
         Debug.Log("swipe");
-        bool swipeRay = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - height / 2), dir, swipeDist, LayerMask.GetMask("Player"));
-        Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - height / 2), dir * swipeDist, Color.red);
+        //play swipe (spit) animation
+        bool swipeRay = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - height / 2f), mvdir, swipeDist, LayerMask.GetMask("Player"));
+        Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - height / 2f), mvdir * swipeDist, Color.red);
         if (swipeRay)
         {
             //player hit by swipe
             Debug.Log("swiped the player");
-            pscript.takeDamage(swipeDamage, dir);
+            pscript.takeDamage(swipeDamage, mvdir);
         }
     }
 
     public void takeDamage(float damage, Vector2 knockDir)
     {
+        //anim.SetFloat("Health", health);
+
         if (!invincible)
         {
+            //play hurt animation
+            anim.SetTrigger("Damaged");
+
             health -= damage;
             if (health <= shield_health)
             {
+                if (!shielded)
+                {
+                    //play shielding animation and inform player that legs are shielded now
+                }
                 shielded = true;
                 Debug.Log("shielded");
             }
             if (health <= 0)
             {
                 //enemy has died
-                Debug.Log("Enemy killed!");
-                //anim.SetBool("Dead", true);
-                dead = true;
-                gameObject.SetActive(false);
+                //play death animation
+                anim.SetInteger("Dead", 1);
+                
             }
 
             //turn back to player when damage is taken
@@ -180,6 +192,18 @@ public class FactoryBoss : MonoBehaviour
             transform.Translate(velocity * Time.deltaTime);
             Debug.Log("Enemy health: " + health);
         }
+    }
+
+    public void Death()
+    {
+        Debug.Log("Enemy killed!");
+        dead = true;
+        gameObject.SetActive(false);
+    }
+
+    public void EndSwipe()
+    {
+        time = 0;
     }
 
     // Update is called once per frame
@@ -228,10 +252,12 @@ public class FactoryBoss : MonoBehaviour
                 mvdir = Vector2.left;
                 //sprite.flipX = false;
             }
+            //make boss face correct direction
             if (mvdir == Vector2.right)
-                sprite.flipX = true;
+                transform.rotation = Quaternion.Euler(0, 180f, 0);
             else
-                sprite.flipX = false;
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+
             rb.AddForce(mvdir * mvmtForce);
             if (rb.velocity.magnitude > velocityCap)
                 rb.velocity = mvdir * velocityCap;
@@ -240,38 +266,38 @@ public class FactoryBoss : MonoBehaviour
             if (time >= swipeTime)
             {
                 //cooldown over; swipe at player
-                Swipe(mvdir);
+                anim.SetTrigger("Swipe");
                 time = 0;
             }
             else
                 time += Time.deltaTime;
         }
-        else if (behavior == 1)
-        {
-            //flight attack
-            Debug.Log("start flying");
+        //else if (behavior == 1)
+        //{
+        //    //flight attack
+        //    Debug.Log("start flying");
 
 
-        } else if (behavior == 2)
-        {
-            //stomp attack
-            Debug.Log("Prepare to stomp");
+        //} else if (behavior == 2)
+        //{
+        //    //stomp attack
+        //    Debug.Log("Prepare to stomp");
 
 
-        } else
-        {
-            //randomly select special attack
-            if (Random.value >= 5.0f)
-            {
-                behavior = 1;
+        //} else
+        //{
+        //    //randomly select special attack
+        //    if (Random.value >= 5.0f)
+        //    {
+        //        behavior = 1;
 
-            }
-            else
-            {
-                behavior = 2;
-                //stompTimer = 0;
-            }
-        }
+        //    }
+        //    else
+        //    {
+        //        behavior = 2;
+        //        //stompTimer = 0;
+        //    }
+        //}
 
         specTime += Time.deltaTime;
     }
