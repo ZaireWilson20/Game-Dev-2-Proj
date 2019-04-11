@@ -28,6 +28,11 @@ public class HeatSeeking : EnemyProjectile
             gameObject.SetActive(false);
     }
 
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        base.collide(collision);
+    }
+
     // Update is called once per frame
     protected override void Update()
     {
