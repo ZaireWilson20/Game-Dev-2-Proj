@@ -15,6 +15,8 @@ public class SalBoss : MonoBehaviour
     public GameObject minion;
     public GameObject heatSeeking;
     public GameObject bulletRain;
+    private GameObject newEnemy;
+    private GameObject newProjectile;
 
     public float timeToAttack = 2f;
     public float timeToTeleport = 1f;
@@ -38,6 +40,7 @@ public class SalBoss : MonoBehaviour
         health = maxHealth;
         phase2Health = maxHealth / 2;
         spr = GetComponent<SpriteRenderer>();
+        Random.InitState((int)(1000*Random.value));
     }
 
     public void takeDamage(float damage)
@@ -169,12 +172,20 @@ public class SalBoss : MonoBehaviour
                 {
                     currentLocation = chooseLocation();
                     transform.position = teleportToLocation(currentLocation);
+                    newProjectile = Instantiate(heatSeeking, transform.position, transform.rotation) as GameObject;
+                    newProjectile.SetActive(true);
                     Debug.Log("Heat seeking");
                 }
                 if (lastAttack == 2)
                 {
                     currentLocation = 4;
                     transform.position = teleportToLocation(4);
+                    Vector2 spawnPos = new Vector2();
+                    if ((int)(Random.value * 2) == 1) spawnPos.x = -4;
+                    else spawnPos.x = 20;
+                    spawnPos.y = -1.4f;
+                    newEnemy = Instantiate(minion, spawnPos, transform.rotation) as GameObject;
+                    newEnemy.SetActive(true);
                     Debug.Log("Summon guy");
                 }
                 timeSinceLastAttack = timeToAttack;
@@ -193,6 +204,12 @@ public class SalBoss : MonoBehaviour
                 {
                     currentLocation = 4;
                     transform.position = teleportToLocation(4);
+                    Vector2 spawnPos = new Vector2();
+                    if ((int)(Random.value * 2) == 1) spawnPos.x = -4;
+                    else spawnPos.x = 20;
+                    spawnPos.y = -1.4f;
+                    newEnemy = Instantiate(minion, spawnPos, transform.rotation) as GameObject;
+                    newEnemy.SetActive(true);
                     Debug.Log("Summon guy");
                 }
                 if (lastAttack == 3)

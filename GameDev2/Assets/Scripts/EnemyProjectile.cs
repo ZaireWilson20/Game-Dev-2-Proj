@@ -10,7 +10,7 @@ public class EnemyProjectile : MonoBehaviour
     //protected float dir;
     protected Vector3 velocity = new Vector3(0, 0, 0);
     private Rigidbody2D rb;
-    private GameObject player;
+    protected GameObject player;
 
 
     // Start is called before the first frame update
