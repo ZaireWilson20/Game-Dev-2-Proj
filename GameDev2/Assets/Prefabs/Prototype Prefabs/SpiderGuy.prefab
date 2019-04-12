@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3700016731916465346}
   - component: {fileID: 1042399919}
   m_Layer: 14
-  m_Name: EnemyT 1
+  m_Name: SpiderGuy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,8 @@ MonoBehaviour:
   seekSpeed: 1.25
   attackSpeed: 2
   searchTimeout: 3
-  detectRadius: 3
+  freezeDuration: 5
+  detectRadius: 8
   knockback: 0
   startPos: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
@@ -128,6 +129,8 @@ MonoBehaviour:
   shootRadius: 10
   projectile: {fileID: 0}
   shotSpray: 3
+  freezable: 1
+  pa_script: {fileID: 0}
 --- !u!50 &3700016731916465346
 Rigidbody2D:
   serializedVersion: 4
