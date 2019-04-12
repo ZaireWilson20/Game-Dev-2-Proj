@@ -6,11 +6,15 @@ public class Drill : Projectile
 {
     public float accel;
     public int health;
+    public GameObject gameManagerObj;
+    private GameState gameManager;
 
     protected override void Start()
     {
         speed = 1f;
         base.Start();
+        gameManager = gameManagerObj.GetComponent<GameState>();
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -43,9 +47,17 @@ public class Drill : Projectile
 
     protected override void Update()
     {
-        velocity += (Vector3) (accel*dir);
-        base.Update();
-        Debug.Log(velocity);
+        if (gameManager.paused)
+        {
+            Debug.Log("paused");
+            rb.velocity = Vector2.zero;
+        }
+        if (!gameManager.paused) {
+            velocity += (Vector3)(accel * dir);
+            base.Update();
+
+        }
+        //Debug.Log(velocity);
         if (health <= 0)
         {
             gameObject.SetActive(false);

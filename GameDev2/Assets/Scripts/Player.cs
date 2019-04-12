@@ -440,12 +440,14 @@ public class Player : MonoBehaviour
             storeVel = rig2D.velocity;
             rig2D.velocity = Vector2.zero;
             justPaused = true;
+            anim.enabled = false;
         } else if (!gameManager.paused) {
             if (justPaused)
             {
                 justPaused = false;
                 rig2D.gravityScale = fallSpeed;
                 rig2D.velocity = storeVel;
+                anim.enabled = true;
             }
             if (!pa_inConvo)  // Can move while not in conversation
             {

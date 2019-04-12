@@ -12,6 +12,10 @@ public class Projectile : MonoBehaviour
     protected Vector3 startPos;
     protected SpriteRenderer sprite;
 
+    //public GameObject gameManagerObj;
+    //protected GameState gameManager;
+    //protected bool justPaused = false;
+    //protected Vector2 storeVel;
 
     // Start is called before the first frame update
     protected virtual void Start()
@@ -30,6 +34,7 @@ public class Projectile : MonoBehaviour
         startPos = transform.position;
         sprite = GetComponent<SpriteRenderer>();
         //Debug.Log(velocity);
+
     }
 
     protected virtual void collide(Collider2D collision)
@@ -98,7 +103,6 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        //Debug.Log(velocity);
         transform.Translate(velocity * Time.deltaTime);
     }
 }
