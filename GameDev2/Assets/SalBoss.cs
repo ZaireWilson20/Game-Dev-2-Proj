@@ -14,7 +14,9 @@ public class SalBoss : MonoBehaviour
 
     public GameObject minion;
     public GameObject heatSeeking;
-    public GameObject bulletRain;
+    public GameObject fireWall1;
+    public GameObject fireWall2;
+    public GameObject fireWall3;
     private GameObject newEnemy;
     private GameObject newProjectile;
 
@@ -198,6 +200,8 @@ public class SalBoss : MonoBehaviour
                 {
                     currentLocation = chooseLocation();
                     transform.position = teleportToLocation(currentLocation);
+                    newProjectile = Instantiate(heatSeeking, transform.position, transform.rotation) as GameObject;
+                    newProjectile.SetActive(true);
                     Debug.Log("Heat seeking");
                 }
                 if (lastAttack == 2)
@@ -216,7 +220,13 @@ public class SalBoss : MonoBehaviour
                 {
                     currentLocation = 4;
                     transform.position = teleportToLocation(4);
-                    Debug.Log("Bullet Rain");
+                    newProjectile = Instantiate(fireWall1, transform.position, fireWall1.transform.rotation) as GameObject;
+                    newProjectile.SetActive(true);
+                    newProjectile = Instantiate(fireWall2, transform.position, fireWall2.transform.rotation) as GameObject;
+                    newProjectile.SetActive(true);
+                    newProjectile = Instantiate(fireWall3, transform.position, fireWall3.transform.rotation) as GameObject;
+                    newProjectile.SetActive(true);
+                    Debug.Log("Fire Cage");
                 }
                 numTeleports += (int)(Random.value * 3);
                 Debug.Log("TP Before next attack: "+(3-numTeleports));
