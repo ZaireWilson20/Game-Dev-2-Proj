@@ -67,6 +67,10 @@ public class SimpleHostile : MonoBehaviour
     public bool freezable = true;
     private bool frozen = false;
 
+    public bool isFlying = false;
+    public LayerMask flyingMask;
+    public float flySpeed = 3f;
+
     [SerializeField]
     //GameObject pa_playerObj;
     Player pa_script;
@@ -89,23 +93,8 @@ public class SimpleHostile : MonoBehaviour
     }
 
 
+    
     /*
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        //Debug.Log("hello?");
-        if (other.tag.Equals("Player"))
-        {
-            target = other.gameObject;
-            //player entered detection radius
-            Debug.Log("attack!");
-            //start chasing player
-            chasing = true;
-            searching = false;
-            moveSpeed = attackSpeed;
-            //returning = false;
-        }
-    }
-
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.tag.Equals("Player"))
@@ -144,6 +133,13 @@ public class SimpleHostile : MonoBehaviour
                     pa_script.takeDamage(attack, rb.velocity);
                 }
             }
+        }
+
+        //Behavior for flying enemies
+        if (isFlying)
+        {
+            flySpeed *= -1;
+            Debug.Log("Switch Dir");
         }
         /*else if (contact.layer.Equals("Bullet"))
         {
@@ -238,134 +234,151 @@ public class SimpleHostile : MonoBehaviour
 
     void Update()
     {
-        //check if player within detection radius
-        if (Vector3.Distance(player.transform.position, transform.position) <= detectRadius)
+        //Flying enemies don't take damage and don't follow the player
+        if (!isFlying)
         {
-            target = player;
-            //player entered detection radius
-            //Debug.Log("attack!");
-            //start chasing player
-            chasing = true;
-            searching = false;
-            timer_started = false;
-            moveSpeed = attackSpeed;
-            //returning = false;
-        }
-        else
-        {
-            if (!timer_started)
+            //check if player within detection radius
+            if (Vector3.Distance(player.transform.position, transform.position) <= detectRadius)
             {
-                timer_started = true;
-                //player left detection radius; continue traveling with same velocity
-                chasing = false;
-                searching = true;
-                //start 3 second search timer
-                timeleft = searchTimeout;
-                moveSpeed = seekSpeed;
+                target = player;
+                //player entered detection radius
+                //Debug.Log("attack!");
+                //start chasing player
+                chasing = true;
+                searching = false;
+                timer_started = false;
+                moveSpeed = attackSpeed;
                 //returning = false;
-            }
-        }
-
-        //enemy blinks once when hit
-        if (flash)
-        {
-            if (flashCt < flashRate)
-            {
-                flashCt++;
             }
             else
             {
-                invincible = false;
-                flash = false;
-                sprite.enabled = true;
-            }
-        }
-        //follow player
-        if (chasing)
-        {
-            //track down player
-            //Debug.Log("chasing player");
-            destination = target.transform.position;
-            //GetComponent<UnityEngine.AI.NavMeshAgent>().destination = target.transform.position;
-        }
-        if (!chasing && !searching)
-        {
-            //return to starting position
-            //Debug.Log("returning to start");
-            destination = startPos;
-            //GetComponent<UnityEngine.AI.NavMeshAgent>().destination = startPos;
-        }
-
-        //search for player for 3 seconds before returning to start position
-        if (searching && timeleft > 0f)
-        {
-            timeleft -= Time.deltaTime;     //decrease timer by one update frame
-        } else if (timeleft <= 0f)
-        {
-            searching = false;              //stop search and return to start
-        }
-
-
-        //check if enemy is a shooter and can detect player
-        fireTime += Time.deltaTime;
-        //Debug.Log(fireTime);
-        //Debug.Log(nextFire);
-        if (!frozen && shooter && fireTime > nextFire)
-        {
-            if (LineOfSight())
-            {
-                //check if shoot timer is approved
-                //fire away!
-                if (shots < shotSpray)
+                if (!timer_started)
                 {
-                    nextFire = fireTime + fireRate;
-                    newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
-                    //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
-                    //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
-                    newProjectile.SetActive(true);
-                    shots++;
+                    timer_started = true;
+                    //player left detection radius; continue traveling with same velocity
+                    chasing = false;
+                    searching = true;
+                    //start 3 second search timer
+                    timeleft = searchTimeout;
+                    moveSpeed = seekSpeed;
+                    //returning = false;
+                }
+            }
+
+            //enemy blinks once when hit
+            if (flash)
+            {
+                if (flashCt < flashRate)
+                {
+                    flashCt++;
                 }
                 else
                 {
-                    shots = 0;
-                    nextFire = fireCooldown;
-                    fireTime = 0;
+                    invincible = false;
+                    flash = false;
+                    sprite.enabled = true;
                 }
             }
-            //else
-            //{
-            //    shots = 0;
-            //}
-        }
 
-        //travel towards destination if not within 0.1 of target
-        if (!frozen && Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead && !pa_script.pa_inConvo)
-        {
-            //Debug.Log("moving");
-            lastDir = direction;
-            direction = Mathf.Sign(destination.x - transform.position.x);
-            velocity.x = direction * moveSpeed;    //  Speed force added to horizontal velocity, no acceleration
-            rb.velocity = velocity;
-            
-            if(direction < 0)
+            //follow player
+            if (chasing)
             {
-                sprite.flipX = false;
+                //track down player
+                //Debug.Log("chasing player");
+                destination = target.transform.position;
+                //GetComponent<UnityEngine.AI.NavMeshAgent>().destination = target.transform.position;
             }
-            else if (direction > 0)
+            if (!chasing && !searching)
             {
-                sprite.flipX = true;
+                //return to starting position
+                //Debug.Log("returning to start");
+                destination = startPos;
+                //GetComponent<UnityEngine.AI.NavMeshAgent>().destination = startPos;
             }
 
-            anim.SetBool("Walking", true);
+            //search for player for 3 seconds before returning to start position
+            if (searching && timeleft > 0f)
+            {
+                timeleft -= Time.deltaTime;     //decrease timer by one update frame
+            }
+            else if (timeleft <= 0f)
+            {
+                searching = false;              //stop search and return to start
+            }
+
+
+            //check if enemy is a shooter and can detect player
+            fireTime += Time.deltaTime;
+            //Debug.Log(fireTime);
+            //Debug.Log(nextFire);
+            if (!frozen && shooter && fireTime > nextFire)
+            {
+                if (LineOfSight())
+                {
+                    //check if shoot timer is approved
+                    //fire away!
+                    if (shots < shotSpray)
+                    {
+                        nextFire = fireTime + fireRate;
+                        newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                        //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
+                        //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
+                        newProjectile.SetActive(true);
+                        shots++;
+                    }
+                    else
+                    {
+                        shots = 0;
+                        nextFire = fireCooldown;
+                        fireTime = 0;
+                    }
+                }
+                //else
+                //{
+                //    shots = 0;
+                //}
+            }
+
+            //travel towards destination if not within 0.1 of target
+            if (!frozen && Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead && !pa_script.pa_inConvo)
+            {
+                //Debug.Log("moving");
+                lastDir = direction;
+                direction = Mathf.Sign(destination.x - transform.position.x);
+                velocity.x = direction * moveSpeed;    //  Speed force added to horizontal velocity, no acceleration
+                rb.velocity = velocity;
+
+                if (direction < 0)
+                {
+                    sprite.flipX = false;
+                }
+                else if (direction > 0)
+                {
+                    sprite.flipX = true;
+                }
+
+                anim.SetBool("Walking", true);
                 //  Damping/acceleration applied throught damping.
-            //velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
+                //velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, controller.cont_collision_info.below ? accelTime_ground : accelTime_air);
 
+            }
+            //stop moving
+            else
+            {
+                rb.velocity = new Vector2(0, 0);
+                anim.SetBool("Walking", false);
+            }
         }
-        //stop moving
         else
         {
-            rb.velocity = new Vector2(0, 0);
-            anim.SetBool("Walking", false);
+            if (flySpeed > 0)
+                sprite.flipX = true;
+            else
+                sprite.flipX = false;
+            invincible = true;
+            velocity.x = flySpeed;
+            velocity.y = 0;
+            rb.velocity = velocity;
         }
 
         //Debug.Log("layer: " + gameObject.layer);

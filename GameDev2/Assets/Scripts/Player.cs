@@ -114,6 +114,7 @@ public class Player : MonoBehaviour
     private float AGTimeLeft;
 
     public int points;
+    public bool canSwitch = false;
 
     public LayerMask floorMask;
 
@@ -295,6 +296,7 @@ public class Player : MonoBehaviour
         localPlayerData = GlobalControl.Instance.savedPlayer;
         health = localPlayerData.playerHealth;
         points = localPlayerData.points;
+        canSwitch = localPlayerData.canSwitch;
         //Debug.Log(health);
 
         controller = GetComponent<Controller2D>();
@@ -365,6 +367,7 @@ public class Player : MonoBehaviour
     {
         localPlayerData.playerHealth = health;
         localPlayerData.points = points;
+        localPlayerData.canSwitch = canSwitch;
 
         localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
         localPlayerData.mWeap = mWeapon;        localPlayerData.tWeap = tWeapon;
@@ -736,7 +739,9 @@ public class Player : MonoBehaviour
                         StartCoroutine(ShootAfterTime(shootDelay));
                     }
 
-                    if ((Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q)) || Input.GetButtonDown("Change Side"))
+                    if (Input.GetKey(KeyCode.H) && Input.GetKeyDown(KeyCode.Q))
+                        powerset = !powerset;
+                    if (Input.GetButtonDown("Change Side") && canSwitch)
                         powerset = !powerset;
                     wasSwinging = false;
                 }
