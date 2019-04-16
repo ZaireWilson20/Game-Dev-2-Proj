@@ -260,6 +260,14 @@ public class SalBoss : MonoBehaviour
         timeSinceLastAttack -= Time.deltaTime;
         animTime -= Time.deltaTime;
         anim.SetFloat("AnimTime", animTime);
+        if (animTime < 0f)
+        {
+            anim.SetBool("Idle", true);
+        }
+        else
+        {
+            anim.SetBool("Idle", false);
+        }
         //Want to have 3 attacks chosen using attack codes
         //1 = Heat-seeking shot
         //2 = Summon enemy
