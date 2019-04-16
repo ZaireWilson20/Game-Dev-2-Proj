@@ -70,7 +70,7 @@ public class Player : MonoBehaviour
     public int flashRate = 5;
 
     public bool alive = true;
-    public float health_max = 5;
+    private int health_max;
     private float health = 5; //save
     public float attack = 1f;
     public float knockback = 5f;
@@ -295,6 +295,7 @@ public class Player : MonoBehaviour
         }
         localPlayerData = GlobalControl.Instance.savedPlayer;
         health = localPlayerData.playerHealth;
+        health_max = localPlayerData.playerHealthCap;
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
         //Debug.Log(health);
@@ -366,6 +367,7 @@ public class Player : MonoBehaviour
     public void SavePlayer()
     {
         localPlayerData.playerHealth = health;
+        localPlayerData.playerHealthCap = health_max;
         localPlayerData.points = points;
         localPlayerData.canSwitch = canSwitch;
 
