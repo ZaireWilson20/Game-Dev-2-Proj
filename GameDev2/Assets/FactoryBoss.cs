@@ -49,6 +49,8 @@ public class FactoryBoss : MonoBehaviour
     private SpriteRenderer sprite;
     private bool dead = false;
     public Animator anim;
+    public RuntimeAnimatorController shieldedController;
+    public GameObject exitDoor;
 
     public GameObject gameManagerObj;
     private GameState gameManager;
@@ -77,6 +79,13 @@ public class FactoryBoss : MonoBehaviour
         colliders = GetComponentsInChildren<Collider2D>();
         anim.SetInteger("Dead", -1);    //set animator to not dead
         gameManager = gameManagerObj.GetComponent<GameState>();
+        if (GlobalControl.Instance.savedPlayer.factoryBossDefeated)
+        {
+            dead = true;
+            GetComponent<Rigidbody2D>().gravityScale = 0;
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            anim.SetInteger("Dead", 0);
+        }
 
     }
 
@@ -142,6 +151,7 @@ public class FactoryBoss : MonoBehaviour
                 if (!shielded)
                 {
                     //play shielding animation and inform player that legs are shielded now
+                    anim.runtimeAnimatorController = shieldedController;
 
                 }
                 shielded = true;
@@ -178,6 +188,11 @@ public class FactoryBoss : MonoBehaviour
         }
     }
 
+    public bool IsDead()
+    {
+        return dead;
+    }
+
     private void EnableColliders(bool enabled)
     {
         foreach (Collider2D col in colliders)
@@ -191,7 +206,9 @@ public class FactoryBoss : MonoBehaviour
         GetComponent<Rigidbody2D>().gravityScale = 0;
         EnableColliders(false);
         sprite.sortingLayerName = "Background";
+        GlobalControl.Instance.savedPlayer.factoryBossDefeated = true;
         //gameObject.SetActive(false);
+        exitDoor.SetActive(true);
     }
 
     public void EndSwipe()
@@ -308,6 +325,14 @@ public class FactoryBoss : MonoBehaviour
             //        //stompTimer = 0;
             //    }
             //}
+            if (dead)
+            {
+                rb.velocity = Vector2.zero;
+                GetComponent<Rigidbody2D>().gravityScale = 0;
+                EnableColliders(false);
+                sprite.sortingLayerName = "Background";
+                exitDoor.SetActive(true);
+            }
 
             specTime += Time.deltaTime;
         }
