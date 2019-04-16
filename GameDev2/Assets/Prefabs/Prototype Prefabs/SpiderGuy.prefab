@@ -130,6 +130,11 @@ MonoBehaviour:
   projectile: {fileID: 0}
   shotSpray: 3
   freezable: 1
+  isFlying: 0
+  flyingMask:
+    serializedVersion: 2
+    m_Bits: 0
+  flySpeed: 0
   pa_script: {fileID: 0}
 --- !u!50 &3700016731916465346
 Rigidbody2D:
@@ -146,7 +151,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 10
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
