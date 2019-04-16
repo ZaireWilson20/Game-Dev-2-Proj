@@ -113,6 +113,7 @@ public class Player : MonoBehaviour
     public float AGTimer;
     private float AGTimeLeft;
 
+    private int powerBoost = 0;
     public int points;
     public bool canSwitch = false;
 
@@ -802,6 +803,53 @@ public class Player : MonoBehaviour
                 anim.SetBool("Swinging", false);
             }
 
+            //Certain point values give static buffs to the player, corresponding to the number of points already picked up
+            if (powerBoost/10 > 0)
+            {
+                if (powerBoost / 10 >= 7)
+                {
+                    speed = 8;
+                    runSpeed = 16;
+                }
+                else if (powerBoost / 10 >= 4)
+                {
+                    speed = 7;
+                    runSpeed = 14;
+                }
+                else if (powerBoost / 10 >= 1)
+                {
+                    speed = 6;
+                    runSpeed = 12;
+                }
+                if (powerBoost / 10 >= 8)
+                {
+                    health_max = 8;
+                }
+                else if (powerBoost / 10 >= 5)
+                {
+                    health_max = 7;
+                }
+                else if (powerBoost / 10 >= 2)
+                {
+                    health_max = 6;
+                }
+                if (powerBoost/10 >= 9)
+                {
+                    airdashSpeed = 36;
+                }
+                else if (powerBoost / 10 >= 6)
+                {
+                    airdashSpeed = 30;
+                }
+                else if (powerBoost / 10 >= 3)
+                {
+                    airdashSpeed = 24;
+                }
+                Debug.Log("Power Level = " + powerBoost / 10);
+            }
+
+            powerBoost = points;
+            //Add all powers cheat code
             if (Input.GetKeyDown(KeyCode.Y))
             {
                 mPowerDict[reflector.name].active = true;
