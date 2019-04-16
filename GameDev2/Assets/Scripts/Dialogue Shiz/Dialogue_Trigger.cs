@@ -25,6 +25,7 @@ public class Dialogue_Trigger : MonoBehaviour
         if (dia_player_in && !dia_inConvo)
         {
             //  Show pop up icon
+            //Debug.Log("in");
             dia_icon.SetActive(true);
         }
         else

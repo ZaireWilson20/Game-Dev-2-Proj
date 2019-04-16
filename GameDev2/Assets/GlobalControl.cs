@@ -10,6 +10,7 @@ public class GlobalControl : MonoBehaviour
     public PlayerData savedPlayer = new PlayerData();
     public DialogueData savedDialogue = new DialogueData();
     public SceneData savedScene = new SceneData();
+    public DoorData savedDoors = new DoorData();
     void Awake()
     {
         if (Instance == null)

@@ -292,7 +292,7 @@ public class Player : MonoBehaviour
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
         if (GlobalControl.Instance.savedScene.inCutScene)
         {
-            //gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
         localPlayerData = GlobalControl.Instance.savedPlayer;
         health = localPlayerData.playerHealth;
@@ -395,7 +395,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (GlobalControl.Instance.savedScene.inCutScene){gameObject.SetActive(true);}
         if (Input.GetKeyDown(KeyCode.Alpha1))   //  Lose health for debugging purposes. Should Be Deleted at some point
         {
             health--;
@@ -455,7 +455,7 @@ public class Player : MonoBehaviour
                 rig2D.velocity = storeVel;
                 anim.enabled = true;
             }
-            if (!pa_inConvo)  // Can move while not in conversation
+            if (!pa_inConvo && !gameManager.cutscene)  // Can move while not in conversation
             {
                 //grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
                 //Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.magenta);
@@ -875,6 +875,31 @@ public class Player : MonoBehaviour
 
     //Param 1 - The dictionary of available powers to switch to
     //Param 2 - The current power
+    public bool AutomatedWalkToPosition(Vector3 pos)
+    {
+        if(this.transform.position.x < pos.x) {
+            sprite.flipX = true; 
+            directionalInput = new Vector3(1, 0, 0);            
+            
+        }
+        else if(this.transform.position.x > pos.x)
+        {
+            sprite.flipX = false;
+            directionalInput = new Vector3(-1, 0, 0);
+            
+        }
+        controller.Move(directionalInput * speed * Time.deltaTime);
+        if(Math.Abs(transform.position.x - pos.x) <= 1)
+        {
+            directionalInput.x = 0;
+            WalkAnim(directionalInput);
+            return true; 
+        }
+        WalkAnim(directionalInput);
+        anim.SetBool("Walk", true);
+        return false; 
+    }
+
     public Power CyclePower(Dictionary<string, Power> dict, Power curr)
     {
         bool takeNext = false;

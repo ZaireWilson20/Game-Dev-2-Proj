@@ -22,13 +22,231 @@ public class PlayerData
 
 public class DialogueData
 {
+
     public bool alreadyRead = false;
-    public int currentLine = 0; 
+    //public int currentLine = 0;
+    public List<data> conversationData = new List<data>();
+
+
+    public class data
+    {
+        public data(int curLine, string sceneName, bool hasBeenRead) {
+            _name = sceneName;
+            read = hasBeenRead;
+            currentLine = curLine; 
+        }
+        public string _name; 
+        public bool read;
+        public int currentLine;
+        public bool on = true; 
+    }
+
+    public bool HasBeenRead(string sceneName)
+    {
+        foreach(data i in conversationData)
+        {
+            if(i._name == sceneName)
+            {
+                return i.read; 
+            }
+        }
+        return false; 
+    }
+
+    public int findCurrentLine(string sceneName)
+    {
+        foreach(data i in conversationData)
+        {
+            if(i._name == sceneName)
+            {
+                return i.currentLine;
+            }
+        }
+        return -1; 
+    }
+
+    public void SaveDialogue(string sceneName, int curLine, bool _read)
+    {
+        foreach(data i in conversationData)
+        {
+            if(i._name == sceneName)
+            {
+                i.read = _read;
+                i.currentLine = curLine; 
+                return; 
+            }
+        }
+        data tempData = new data(curLine, sceneName, _read);
+        conversationData.Add(tempData);
+    }
+
+    public void FinReading(string sceneName)
+    {
+        for (int i = 0; i < conversationData.Count; i++)
+        {
+            if(conversationData[i]._name == sceneName)
+            {
+                conversationData[i].read = false; 
+            }
+        }
+    }
+
+    public bool InList(string sceneName)
+    {
+        for (int i = 0; i < conversationData.Count; i++)
+        {
+            if (conversationData[i]._name == sceneName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public bool IsOn(string sceneName)
+    {
+        for (int i = 0; i < conversationData.Count; i++)
+        {
+            if (conversationData[i]._name == sceneName && conversationData[i].on)
+            {
+                return true; 
+            }
+        }
+        return false;
+    }
+    public void TurnOff(string sceneName)
+    {
+        for (int i = 0; i < conversationData.Count; i++)
+        {
+            if (conversationData[i]._name == sceneName)
+            {
+                conversationData[i].on = false; 
+            }
+        }
+    }
+
+    public void SetState(string sceneName, bool state)
+    {
+        for (int i = 0; i < conversationData.Count; i++)
+        {
+            if (conversationData[i]._name == sceneName)
+            {
+                Debug.Log("Set " + sceneName + " to " + state);
+                conversationData[i].on = state;
+            }
+        }
+    }
+
 }
 
 public class SceneData
 {
     public String lastScene = "Hub";
     public bool inCutScene = false;
-    public int currentConversationNum = 0; 
+    public int currentConversationNum = 0;
+    public List<SceneTrigger> sceneTriggers = new List<SceneTrigger>();
+
+    public void AddTrigger(SceneTrigger tempTrig)
+    {
+        SceneTrigger trigger = new SceneTrigger();
+        trigger._name = tempTrig._name;
+        if (tempTrig.Triggered())
+        {
+            trigger.setTrigger();
+        }
+        else
+        {
+            trigger.breakTrigger();
+        }
+        trigger.finishedScene = tempTrig.finishedScene;
+        sceneTriggers.Add(trigger);
+    }
+
+    public bool findTrigger(string tName)
+    {
+        foreach (SceneTrigger i in sceneTriggers)
+        {
+            if (i._name == tName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
+public class DoorData
+{
+    public class DoorsState
+    {
+        public bool unlocked;
+        public string _name;
+        public bool _active;
+    }
+    public List<DoorsState> doors = new List<DoorsState>(); 
+    public void SetDoorState(string doorName, bool state)
+    {
+        foreach(DoorsState d in doors)
+        {
+            if(d._name == doorName)
+            {
+                d.unlocked = state; 
+            }
+        }
+    }
+    public bool GetUnlocked(string doorName)
+    {
+        foreach (DoorsState d in doors)
+        {
+            if (d._name == doorName)
+            {
+                return d.unlocked; 
+            }
+        }
+        return false; 
+    }
+
+    public bool InList(string doorName)
+    {
+        foreach (DoorsState d in doors)
+        {
+            if (d._name == doorName)
+            {
+                return true; 
+            }
+        }
+        return false; 
+    }
+
+    public void AddDoor(string doorName, bool state, bool active)
+    {
+        DoorsState tempDoor = new DoorsState();
+        tempDoor._name = doorName;
+        tempDoor.unlocked = state;
+        tempDoor._active = active;
+        doors.Add(tempDoor);
+    }
+
+    public void SetPortalState(string portalName, bool state)
+    {
+        foreach (DoorsState d in doors)
+        {
+            if (d._name == portalName)
+            {
+                d._active = state;
+            }
+        }
+    }
+
+    public bool GetActive(string doorName)
+    {
+        foreach (DoorsState d in doors)
+        {
+            if (d._name == doorName)
+            {
+                return d._active;
+            }
+        }
+        return false; 
+    }
+}
+

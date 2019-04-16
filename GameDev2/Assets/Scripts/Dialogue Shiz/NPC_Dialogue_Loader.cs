@@ -5,28 +5,30 @@ using UnityEngine;
 public class NPC_Dialogue_Loader : MonoBehaviour
 {
     Dictionary<string, DialogueObj > pa_npc_to_dia = new Dictionary<string, DialogueObj>(); 
-    private GameObject[] pa_all_npcs;
+    public GameObject[] pa_all_npcs;
     private NpcDialogue npcDia; 
     string path;
     string fileName = ".json";
     private DialogueObj diaData;
-    public bool pa_finished_reading = false; 
+    public bool pa_finished_reading = false;
+    public string[] convosInScene; 
     // Start is called before the first frame update
     void Start()
     {
 
-        pa_all_npcs = GameObject.FindGameObjectsWithTag("NPC");
+        //pa_all_npcs = GameObject.FindGameObjectsWithTag("NPC");
 
-        foreach (GameObject ga in pa_all_npcs)
-        {
+
             //npcDia = ga.GetComponent<NpcDialogue>();
-            for (int i = 1; i < 1 + 1; i++)
+            foreach (string s in convosInScene)
             {
-                path = "Assets/Level Data/Dialogue Bank/" + ga.name + i + fileName;
-                ReadData(path, ga.name + i);
+                path = "Assets/Level Data/Dialogue Bank/" + s + fileName;
+                ReadData(path, s);
             }
-        }
+        int count = 0; 
+
         pa_finished_reading = true;
+
     }
 
     // Update is called once per frame
@@ -34,6 +36,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
     {
     }
 
+    
     void ReadData(string file_path, string name)
     {
         if (System.IO.File.Exists(file_path))
