@@ -87,6 +87,8 @@ public class HealthBar : MonoBehaviour
     {
         if (factory)
         {
+            if (fscript.IsDead())
+                this.gameObject.SetActive(false);
             float cur_health = fscript.GetHealth();
             healthBarSlider.value = 1 - GetHealthLost(cur_health);
             if (cur_health <= shield_health)
