@@ -30,6 +30,7 @@ public class LevelSwitch : MonoBehaviour
         {
             GlobalControl.Instance.savedScene.inCutScene = false;
         }
+        Debug.Log("FADING OUT");
         anim.SetTrigger("FadeOut");
         level = levelName;
     }

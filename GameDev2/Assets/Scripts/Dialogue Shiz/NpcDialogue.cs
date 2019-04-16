@@ -176,6 +176,8 @@ public class NpcDialogue : MonoBehaviour
                 GlobalControl.Instance.savedScene.inCutScene = true;
                 GlobalControl.Instance.savedScene.currentConversationNum = dialogueController.currentLine;
                 sceneLoaded = true;
+
+                Debug.Log("SWITCHIN LEVELS");
                 levelSwitch.FadeToLevel("ActualTechTutorial");
             }
             if (!npc_inConvo)
