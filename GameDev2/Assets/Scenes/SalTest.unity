@@ -197,6 +197,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 8568488095693421850}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &124635097 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7501577994660034943, guid: 82a554b2e5161b840a48200acaa52035,
+    type: 3}
+  m_PrefabInstance: {fileID: 2141997066}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &277781296
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,7 +540,7 @@ SpriteRenderer:
   m_SortingLayerID: -1635529235
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 36e4bd925d7da48058351e2b9613b726, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0d23b8400f5564701b16257d464e7063, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -574,7 +580,7 @@ MonoBehaviour:
   locations: 4
   attacks: 2
   maxHealth: 20
-  phase2Health: 0
+  phase2Health: 20
   minion: {fileID: 1415682612}
   heatSeeking: {fileID: 354188660}
   fireWall1: {fileID: 24925844}
@@ -594,7 +600,7 @@ Animator:
   m_GameObject: {fileID: 691585071}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5e3f269701d4244d3ab4c57019d84ddd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -616,19 +622,25 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.016436577, y: 0}
+  m_Offset: {x: -0.023721218, y: -0.013380051}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.64, y: 3.98}
+    oldSize: {x: 3.09, y: 3.25}
     newSize: {x: 1.64, y: 3.98}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.4098902, y: 3.98}
+  m_Size: {x: 1.3295746, y: 2.508225}
   m_EdgeRadius: 0
+--- !u!1 &699402733 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7501577993372943398, guid: 82a554b2e5161b840a48200acaa52035,
+    type: 3}
+  m_PrefabInstance: {fileID: 2141997066}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &768031295
 GameObject:
   m_ObjectHideFlags: 0
@@ -826,6 +838,11 @@ PrefabInstance:
         type: 3}
       propertyPath: timeToDespawn
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8568488095669054339, guid: 3f719747a1e21ec4ea6606f28ccd8ad8,
+        type: 3}
+      propertyPath: trackingTime
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f719747a1e21ec4ea6606f28ccd8ad8, type: 3}
@@ -1053,6 +1070,26 @@ PrefabInstance:
     - target: {fileID: 560668995, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 560668987, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
+      propertyPath: gameManagerObj
+      value: 
+      objectReference: {fileID: 1876704554}
+    - target: {fileID: 560668987, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
+      propertyPath: levelName
+      value: SalTest
+      objectReference: {fileID: 0}
+    - target: {fileID: 560668987, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
+      propertyPath: healthObj
+      value: 
+      objectReference: {fileID: 699402733}
+    - target: {fileID: 560668987, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
+      propertyPath: pSetObj
+      value: 
+      objectReference: {fileID: 124635097}
+    - target: {fileID: 560668987, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
+      propertyPath: floorMask.m_Bits
+      value: 1573120
       objectReference: {fileID: 0}
     - target: {fileID: 517684963, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
       propertyPath: orthographic size
@@ -1407,6 +1444,11 @@ PrefabInstance:
         type: 3}
       propertyPath: timeToDespawn
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8568488095669054339, guid: 3f719747a1e21ec4ea6606f28ccd8ad8,
+        type: 3}
+      propertyPath: trackingTime
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f719747a1e21ec4ea6606f28ccd8ad8, type: 3}
@@ -2512,6 +2554,11 @@ PrefabInstance:
         type: 3}
       propertyPath: timeToDespawn
       value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8568488095669054339, guid: 3f719747a1e21ec4ea6606f28ccd8ad8,
+        type: 3}
+      propertyPath: trackingTime
+      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f719747a1e21ec4ea6606f28ccd8ad8, type: 3}
