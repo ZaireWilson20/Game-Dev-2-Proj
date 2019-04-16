@@ -5,11 +5,20 @@ using UnityEngine.UI;
 public class HealthUI : MonoBehaviour
 {
     public GameObject[] healthSprites;
-    private int currentLife = 4;
+    public Image background;
+    private int currentLife;
 
     private void Start()
     {
         //should have five butterflies if 4 < health <= 5 
+        currentLife = GlobalControl.Instance.savedPlayer.playerHealthCap - 1;
+        for (int i = currentLife + 1; i < 8; i++)
+        {
+            healthSprites[i].SetActive(false);
+            //background.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0f, background.rectTransform.rect.width - 100);
+        }
+        background.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0f, GlobalControl.Instance.savedPlayer.playerHealthCap * 100);
+
         while (GlobalControl.Instance.savedPlayer.playerHealth - currentLife <= 0)
             loseHealth(GlobalControl.Instance.savedPlayer.playerHealth);
     }
@@ -29,11 +38,11 @@ public class HealthUI : MonoBehaviour
 
     public void gainHealth()
     {
-        if (currentLife < 4)
+        if (currentLife < GlobalControl.Instance.savedPlayer.playerHealthCap)
         {
             healthSprites[currentLife + 1].SetActive(true);
             currentLife++;
         }
-
+        background.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Left, 0f, GlobalControl.Instance.savedPlayer.playerHealthCap * 100);
     }
 }

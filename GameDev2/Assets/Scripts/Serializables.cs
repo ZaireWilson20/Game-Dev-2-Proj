@@ -6,6 +6,7 @@ using System;
 public class PlayerData
 {
     public float playerHealth = 5;
+    public int playerHealthCap = 5; //absolute max health is 8
     public int points = 0;
     public bool canSwitch = false;
     public Power mUtil;

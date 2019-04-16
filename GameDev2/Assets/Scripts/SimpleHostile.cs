@@ -379,6 +379,10 @@ public class SimpleHostile : MonoBehaviour
             velocity.x = flySpeed;
             velocity.y = 0;
             rb.velocity = velocity;
+            if (freezeTimer >= 0)
+                anim.SetBool("Frozen", true);
+            else
+                anim.SetBool("Frozen", false);
         }
 
         //Debug.Log("layer: " + gameObject.layer);
