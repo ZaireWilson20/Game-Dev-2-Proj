@@ -27,7 +27,7 @@ public class PickUp : MonoBehaviour
     {
         if (playerIn)
         {
-            if (Input.GetKeyDown(KeyCode.B))
+            if (Input.GetButtonDown("Pickup"))
             {
                 if (!isPowerUp)
                 {
