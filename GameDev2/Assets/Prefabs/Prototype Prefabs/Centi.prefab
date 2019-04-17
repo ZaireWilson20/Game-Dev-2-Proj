@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 8120299640872287958}
   - component: {fileID: 5785623502520422902}
-  - component: {fileID: 9179731954630721191}
   - component: {fileID: 1445691354628062709}
   - component: {fileID: 5144742335117451368}
   - component: {fileID: 1657709064}
+  - component: {fileID: 1783566414336626934}
   m_Layer: 14
-  m_Name: EnemyT (2)
+  m_Name: Centi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,22 +83,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!70 &9179731954630721191
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1657709058}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.20069243, y: -0.1292355}
-  m_Size: {x: 0.9378675, y: 0.6380317}
-  m_Direction: 0
 --- !u!114 &1445691354628062709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,18 +100,26 @@ MonoBehaviour:
   seekSpeed: 1.25
   attackSpeed: 2
   searchTimeout: 3
+  freezeDuration: 5
   detectRadius: 3
   knockback: 0
   startPos: {x: 0, y: 0, z: 0}
   rb: {fileID: 0}
   flashRate: 3
   invincible: 0
-  shooter: 0
+  shooter: 1
   fireCooldown: 2
   fireRate: 0.1
   shootRadius: 10
   projectile: {fileID: 0}
   shotSpray: 3
+  freezable: 1
+  isFlying: 0
+  flyingMask:
+    serializedVersion: 2
+    m_Bits: 0
+  flySpeed: 3
+  pa_script: {fileID: 0}
 --- !u!50 &5144742335117451368
 Rigidbody2D:
   serializedVersion: 4
@@ -168,3 +160,29 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &1783566414336626934
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1657709058}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.08366424, y: -0.10276653}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 0.58}
+    newSize: {x: 3.48, y: 2.99}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.8326715, y: 0.374467}
+  m_EdgeRadius: 0

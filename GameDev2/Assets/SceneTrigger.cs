@@ -32,12 +32,14 @@ public class SceneTrigger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(trigType == requirements.door)
+        if (trigType == requirements.door)
         {
-            doorController = doorObj.GetComponent<DoorController>(); 
+            doorController = doorObj.GetComponent<DoorController>();
         }
-        npc = npcObj.GetComponent<NpcDialogue>(); 
-
+        else
+        {
+            npc = npcObj.GetComponent<NpcDialogue>();
+        }
     }
 
     // Update is called once per frame
