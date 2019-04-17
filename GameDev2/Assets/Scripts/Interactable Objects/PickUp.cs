@@ -12,6 +12,7 @@ public class PickUp : MonoBehaviour
     private bool playerIn;
     public bool isKey;
     public bool isPowerUp;
+    private GainedUpgrade notif;
 
     
     // Start is called before the first frame update
@@ -19,7 +20,7 @@ public class PickUp : MonoBehaviour
     {
         playerInv = playerRef.GetComponent<PlayerInventory>();
         playerScript = playerRef.GetComponent<Player>();
-        
+        notif = FindObjectOfType<GainedUpgrade>();
     }
 
     // Update is called once per frame
@@ -92,6 +93,7 @@ public class PickUp : MonoBehaviour
 
                     if (foundItem)
                     {
+                        notif.newNotif(_name);
                         Destroy(this.gameObject);
                     }
                 }
