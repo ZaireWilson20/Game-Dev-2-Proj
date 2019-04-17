@@ -23,8 +23,6 @@ public class LevelSwitch : MonoBehaviour
     void Start()
     {
         pscript = FindObjectOfType<Player>();
-        if (pscript != null)
-            Debug.Log("Got player");
     }
 
     public void FadeToLevel(string levelName)
