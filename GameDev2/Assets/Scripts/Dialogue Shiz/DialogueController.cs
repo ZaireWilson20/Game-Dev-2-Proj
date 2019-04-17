@@ -161,7 +161,7 @@ public class DialogueController : MonoBehaviour
         int countBeforeSkip = 0; 
         foreach(char letter in sent)
         {
-            if (Input.GetButtonDown("Jump") && !doneSentence && countBeforeSkip > 2)
+            if (Input.GetButtonDown("Pickup") && !doneSentence && countBeforeSkip > 2)
             {
                 Debug.Log("hot dog");
                 break; 

@@ -165,6 +165,7 @@ public class Player : MonoBehaviour
     public GameObject gameManagerObj;
     private GameState gameManager;
     public string levelName;
+    public Vector3 spawnPosition;
 
     //  UI
     public GameObject healthObj;
@@ -213,7 +214,7 @@ public class Player : MonoBehaviour
             if (fallSpeed > 0)
                 vec = new Vector2(0, airdashSpeed * 1f);
             else
-                vec = new Vector2(0, airdashSpeed * 1f);
+                vec = new Vector2(0, airdashSpeed * -1f);
         }
         Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
@@ -299,6 +300,7 @@ public class Player : MonoBehaviour
         health_max = localPlayerData.playerHealthCap;
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
+        spawnPosition = localPlayerData.spawnPosition;
         //Debug.Log(health);
 
         controller = GetComponent<Controller2D>();
@@ -363,6 +365,8 @@ public class Player : MonoBehaviour
         pSetCont.SetSWeaponImg(tWeapon.name);
 
         rs = this.GetComponent<RopeSystem>();
+        if (spawnPosition != null)
+            transform.position = spawnPosition;
     }
 
     public void SavePlayer()
@@ -371,6 +375,7 @@ public class Player : MonoBehaviour
         localPlayerData.playerHealthCap = health_max;
         localPlayerData.points = points;
         localPlayerData.canSwitch = canSwitch;
+        localPlayerData.spawnPosition = spawnPosition;
 
         localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
         localPlayerData.mWeap = mWeapon;        localPlayerData.tWeap = tWeapon;
@@ -562,9 +567,6 @@ public class Player : MonoBehaviour
                             jumpHeight *= -1;
                             rig2D.gravityScale = fallSpeed;
                             sprite.flipY = !sprite.flipY;
-                            tWeapon = CyclePower(tWeaponDict, tWeapon);
-                            Debug.Log(tWeapon.name);
-                            pSetCont.SetSWeaponImg(tWeapon.name);
                             AGTimeLeft = AGTimer;
                         }
                     }
@@ -644,11 +646,12 @@ public class Player : MonoBehaviour
                     else if (!grounded)
                     {
                         //Fastfall when down is pressed in the air
-                        if (Input.GetAxisRaw("Vertical") < 0f)
+                        if ((Input.GetAxisRaw("Vertical") < 0f && fallSpeed > 0) || (Input.GetAxisRaw("Vertical") > 0f && fallSpeed < 0))
                         {
                             GetComponent<Rigidbody2D>().gravityScale = fastFallSpeed;
                             fastFall = true;
                         }
+
                         //Airdash when space is pressed in the air
                         if (hasAirdash && Input.GetButtonDown("Jump") && !wasSwinging)
                         {
@@ -804,53 +807,53 @@ public class Player : MonoBehaviour
             }
 
             //Certain point values give static buffs to the player, corresponding to the number of points already picked up
-            if (powerBoost/10 > 0)
+            if (powerBoost/15 > 0)
             {
                 //Increase speed
-                if (powerBoost / 10 >= 7)
+                if (powerBoost/15 >= 7)
                 {
                     speed = 8;
                     runSpeed = 16;
                 }
-                else if (powerBoost / 10 >= 4)
+                else if (powerBoost/15 >= 4)
                 {
                     speed = 7;
                     runSpeed = 14;
                 }
-                else if (powerBoost / 10 >= 1)
+                else if (powerBoost/15 >= 1)
                 {
                     speed = 6;
                     runSpeed = 12;
                 }
                 //Change health maximum
-                if (powerBoost / 10 >= 8)
+                if (powerBoost/15 >= 8)
                 {
                     health_max = 8;
                     Debug.Log("Should have 8");
                 }
-                else if (powerBoost / 10 >= 5)
+                else if (powerBoost/15 >= 5)
                 {
                     health_max = 7;
                 }
-                else if (powerBoost / 10 >= 2)
+                else if (powerBoost/15 >= 2)
                 {
                     Debug.Log("Should have 6");
                     health_max = 6;
                 }
                 //Increase airdash speed
-                if (powerBoost/10 >= 9)
+                if (powerBoost/15 >= 9)
                 {
                     airdashSpeed = 36;
                 }
-                else if (powerBoost / 10 >= 6)
+                else if (powerBoost/15 >= 6)
                 {
                     airdashSpeed = 30;
                 }
-                else if (powerBoost / 10 >= 3)
+                else if (powerBoost/15 >= 3)
                 {
                     airdashSpeed = 24;
                 }
-                Debug.Log("Power Level = " + powerBoost / 10);
+                Debug.Log("Power Level = " + powerBoost/15);
             }
 
             powerBoost = points;

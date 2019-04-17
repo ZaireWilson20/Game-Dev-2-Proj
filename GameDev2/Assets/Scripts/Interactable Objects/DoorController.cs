@@ -16,7 +16,8 @@ public class DoorController : MonoBehaviour
     public string levelGoingTo;
     public LevelSwitch levelSwitch;
     private bool searched = false;
-    public bool startActive = true; 
+    public bool startActive = true;
+    public Vector2 otherDoor;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,13 +40,13 @@ public class DoorController : MonoBehaviour
             GlobalControl.Instance.savedDoors.AddDoor(doorName, needsKey, startActive);
             gameObject.SetActive(startActive);
         }
-        if (playerInRange && Input.GetKeyDown(KeyCode.Z) && !needsKey)
+        if (playerInRange && Input.GetButtonDown("Pickup") && !needsKey)
         {
             //Debug.Log("Open Door");
             opened = true; 
             OpenDoor();
         }
-        else if(playerInRange && Input.GetKeyDown(KeyCode.Z) && needsKey)
+        else if(playerInRange && Input.GetButtonDown("Pickup") && needsKey)
         {
             if (!pa_inv.CheckInventory(keyNeeded))
             {
@@ -82,6 +83,11 @@ public class DoorController : MonoBehaviour
 
     public void OpenDoor()
     {
+        //if (Input.GetButtonDown("Pickup"))
+        //{
+        playerObj.GetComponent<Player>().spawnPosition = otherDoor;
+        Debug.Log(otherDoor);
         levelSwitch.FadeToLevel(levelGoingTo);
+        //}
     }
 }

@@ -186,7 +186,7 @@ public class NpcDialogue : MonoBehaviour
                 npc_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
             }
-            else if (Input.GetButtonDown("Jump") && npc_inConvo && dialogueController.doneSentence)
+            else if (Input.GetButtonDown("Pickup") && npc_inConvo && dialogueController.doneSentence)
             {
                 dialogueController.doneSentence = false;
                 bool inC = dialogueController.nextLine();
@@ -220,7 +220,7 @@ public class NpcDialogue : MonoBehaviour
                 npc_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
             }
-            else if (Input.GetButtonDown("Jump") && npc_inConvo && dialogueController.doneSentence) // Press Space to continue conversation
+            else if (Input.GetButtonDown("Pickup") && npc_inConvo && dialogueController.doneSentence) // Press Space to continue conversation
             {
                 dialogueController.doneSentence = false;
                 bool inC = dialogueController.nextLine();
@@ -245,7 +245,7 @@ public class NpcDialogue : MonoBehaviour
         else if (convoType == diaType.pop_up && !finReading && playConvo)
         {
            
-            if (!npc_inConvo && Input.GetButtonDown("Jump") && npc_onTrigger.dia_player_in)   //Start Convo
+            if (!npc_inConvo && Input.GetButtonDown("Pickup") && npc_onTrigger.dia_player_in)   //Start Convo
             {
 
                 Debug.Log("HOLA");
@@ -253,7 +253,7 @@ public class NpcDialogue : MonoBehaviour
                 npc_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
             }
-            else if (npc_onTrigger.dia_player_in && Input.GetButtonDown("Jump") && npc_inConvo && dialogueController.doneSentence) // Press Space to continue conversation
+            else if (npc_onTrigger.dia_player_in && Input.GetButtonDown("Pickup") && npc_inConvo && dialogueController.doneSentence) // Press Space to continue conversation
             {
                 dialogueController.doneSentence = false;
                 bool inC = dialogueController.nextLine();
