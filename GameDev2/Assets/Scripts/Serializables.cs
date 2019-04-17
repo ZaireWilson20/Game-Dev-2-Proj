@@ -19,6 +19,7 @@ public class PlayerData
     public Dictionary<string, Power> mWeaps;
     public bool reload = false;
     public bool factoryBossDefeated = false;
+    public List<InventoryItem> inventory = new List<InventoryItem>();
 }
 
 public class DialogueData

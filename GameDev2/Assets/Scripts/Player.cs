@@ -382,6 +382,7 @@ public class Player : MonoBehaviour
 
         GlobalControl.Instance.savedPlayer = localPlayerData;
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
+
     }
 
     public void SaveSceneData()

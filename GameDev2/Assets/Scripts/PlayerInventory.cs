@@ -10,7 +10,7 @@ public class PlayerInventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        completeInventory = GlobalControl.Instance.savedPlayer.inventory; 
     }
 
     // Update is called once per frame
@@ -23,10 +23,9 @@ public class PlayerInventory : MonoBehaviour
     {
         InventoryItem tempPickUp = new InventoryItem();
         tempPickUp.CopyPickUp(item);
-        Debug.Log(tempPickUp._name);
         completeInventory.Add(tempPickUp);
         _size = completeInventory.Count;
-        
+        GlobalControl.Instance.savedPlayer.inventory = completeInventory;
     }
 
     public bool CheckInventory(string name)
