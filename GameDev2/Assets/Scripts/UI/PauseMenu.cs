@@ -14,11 +14,17 @@ public class PauseMenu : MonoBehaviour
     public GameObject menu;
     public GameObject ui_Skills;
     public GameObject ui_Quit;
+    [SerializeField]
     private Button resume;
+    [SerializeField]
     private Button map;
+    [SerializeField]
     private Button inventory;
+    [SerializeField]
     private Button skills;
+    [SerializeField]
     private Button sound;
+    [SerializeField]
     private Button quit;
     public Button yesQuit;
     public Button noQuit;
@@ -38,6 +44,8 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         //gmScript = gameManager.GetComponent<Player_UI_Input>();
+        GameObject[] tempList = GameObject.FindGameObjectsWithTag("Button");
+        foreach(GameObject g in tempList) { 
         resume = GameObject.Find("Resume").GetComponent<Button>();
         resume.GetComponent<Image>().color = highlighted;
         map = GameObject.Find("MapButton").GetComponent<Button>();
@@ -50,7 +58,7 @@ public class PauseMenu : MonoBehaviour
         sound.GetComponent<Image>().color = standard;
         quit = GameObject.Find("Quit").GetComponent<Button>();
         quit.GetComponent<Image>().color = standard;
-
+            }
         //noQuit = GameObject.Find("NoQuit").GetComponent<Button>();
         //yesQuit = GameObject.Find("YesQuit").GetComponent<Button>();
         selected = resume;
