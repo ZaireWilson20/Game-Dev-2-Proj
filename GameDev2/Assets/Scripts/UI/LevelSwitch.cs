@@ -11,7 +11,7 @@ public class LevelSwitch : MonoBehaviour
     private bool movingCharacter;
     public CharacterMovement[] charactersToMove;
     private Player pscript;
-
+    private GameObject gaDestroy;
     [System.Serializable]
     public class CharacterMovement
     {
@@ -45,6 +45,18 @@ public class LevelSwitch : MonoBehaviour
     public void StartLevelTransition()
     {
         anim.SetTrigger("TranFade");
+    }
+
+    public void DestroyOnFade()
+    {
+        Destroy(gaDestroy);
+        anim.SetTrigger("FadeIn");
+    }
+
+    public void StartDestroy(GameObject gaToDestroy)
+    {
+        gaDestroy = gaToDestroy;
+        anim.SetTrigger("DestroyFade");
     }
     public void CharacterTransition()
     {

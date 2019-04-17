@@ -22,7 +22,7 @@ public class ActivateOnConvoStart : MonoBehaviour
         }
         else
         {
-            Debug.Log("Set to false");
+            //Debug.Log("Set to false");
             gameObject.SetActive(false);
 
         }

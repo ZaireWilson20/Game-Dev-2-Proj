@@ -99,6 +99,10 @@ public class NpcDialogue : MonoBehaviour
             dialogueController.currentLine = GlobalControl.Instance.savedDialogue.findCurrentLine(sceneName);
             
             hasBeenRead = GlobalControl.Instance.savedDialogue.HasBeenRead(sceneName);
+            if (hasBeenRead)
+            {
+                this.gameObject.SetActive(false);
+            }
             playConvo = GlobalControl.Instance.savedDialogue.IsOn(sceneName);
             init = false; 
         }
@@ -274,7 +278,8 @@ public class NpcDialogue : MonoBehaviour
         }
         if (hasBeenRead && destroyOnDone)
         {
-            DestroyOnConvoDone();
+            levelSwitch.StartDestroy(this.gameObject);
+            //DestroyOnConvoDone();
         }
     }
 
