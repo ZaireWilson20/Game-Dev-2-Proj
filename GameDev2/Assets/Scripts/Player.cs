@@ -213,7 +213,7 @@ public class Player : MonoBehaviour
             if (fallSpeed > 0)
                 vec = new Vector2(0, airdashSpeed * 1f);
             else
-                vec = new Vector2(0, airdashSpeed * 1f);
+                vec = new Vector2(0, airdashSpeed * -1f);
         }
         Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
@@ -563,9 +563,6 @@ public class Player : MonoBehaviour
                             jumpHeight *= -1;
                             rig2D.gravityScale = fallSpeed;
                             sprite.flipY = !sprite.flipY;
-                            tWeapon = CyclePower(tWeaponDict, tWeapon);
-                            Debug.Log(tWeapon.name);
-                            pSetCont.SetSWeaponImg(tWeapon.name);
                             AGTimeLeft = AGTimer;
                         }
                     }
@@ -645,11 +642,12 @@ public class Player : MonoBehaviour
                     else if (!grounded)
                     {
                         //Fastfall when down is pressed in the air
-                        if (Input.GetAxisRaw("Vertical") < 0f)
+                        if ((Input.GetAxisRaw("Vertical") < 0f && fallSpeed > 0) || (Input.GetAxisRaw("Vertical") > 0f && fallSpeed < 0))
                         {
                             GetComponent<Rigidbody2D>().gravityScale = fastFallSpeed;
                             fastFall = true;
                         }
+
                         //Airdash when space is pressed in the air
                         if (hasAirdash && Input.GetButtonDown("Jump") && !wasSwinging)
                         {

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3782187224003428405}
   - component: {fileID: 2498211938854334780}
   - component: {fileID: 4948827030332799017}
-  - component: {fileID: 3782187222890572410}
   m_Layer: 8
   m_Name: NormPlat (4)
   m_TagString: Untagged
@@ -108,21 +107,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 9.780001, y: 1.12}
   m_EdgeRadius: 0
---- !u!114 &3782187222890572410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517250894605420447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fe3dd31ab17e7e4a90ce65c60f41385, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target: {fileID: 3782187223739699774}
-  speed: 0
-  movingVertical: 0
 --- !u!1 &3782187223016351355
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,8 +373,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1635529235
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 14059499d17d1f34bbaa316dc84ee3e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

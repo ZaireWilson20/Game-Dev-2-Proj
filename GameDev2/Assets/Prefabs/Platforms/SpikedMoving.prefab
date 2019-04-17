@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 4756436201769906952}
   - component: {fileID: 6112554841655869953}
   - component: {fileID: 4756436200600541511}
+  - component: {fileID: 4936538562097918336}
   m_Layer: 8
   m_Name: NormPlat (4)
   m_TagString: Untagged
@@ -158,6 +159,27 @@ MonoBehaviour:
   target: {fileID: 4756436200958845187}
   speed: 1
   movingVertical: 0
+--- !u!50 &4936538562097918336
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8165837878262690978}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &5049212395635568647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -285,17 +307,17 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8424707429113664050, guid: cfd6914592179e746954410375951c8c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8424707429195660395, guid: cfd6914592179e746954410375951c8c,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8424707429210956214, guid: cfd6914592179e746954410375951c8c,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8424707429113664050, guid: cfd6914592179e746954410375951c8c,
         type: 3}
       propertyPath: m_Enabled
       value: 0
