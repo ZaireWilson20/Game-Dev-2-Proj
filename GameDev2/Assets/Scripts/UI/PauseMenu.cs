@@ -72,7 +72,7 @@ public class PauseMenu : MonoBehaviour
         buttons[2, 0] = sound;
         buttons[2, 1] = quit;
 
-        Highlight(selected);
+        //Highlight(selected);
 
         confirmButtons[0] = noQuit;
         confirmButtons[1] = yesQuit;
@@ -157,7 +157,7 @@ public class PauseMenu : MonoBehaviour
     {
         confirm = false;
         selected = resume;
-        Highlight(selected);
+        //Highlight(selected);
         ui_Inventory.SetActive(false);
         ui_Quit.SetActive(false);
         menu.SetActive(true);
@@ -166,13 +166,23 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        confirm = true;
-        ui_Quit.SetActive(true);
+        //confirm = true;
+        //ui_Quit.SetActive(true);
+        Debug.Log("leaving game...");
+        // save any game data here
+#if UNITY_EDITOR
+        // Application.Quit() does not work in the editor so
+        // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
         //menu.SetActive(false);
     }
 
     public void YesQuit()
     {
+        /*
         Debug.Log("leaving game...");
         // save any game data here
 #if UNITY_EDITOR
@@ -182,6 +192,7 @@ public class PauseMenu : MonoBehaviour
 #else
          Application.Quit();
 #endif
+*/
     }
 
     public void NoQuit()
@@ -196,7 +207,7 @@ public class PauseMenu : MonoBehaviour
         else if (!up && row < 2)
             row++;
         selected = buttons[row, column];
-        Highlight(selected);
+        //Highlight(selected);
     }
 
     void CycleRight(bool right)
@@ -206,7 +217,7 @@ public class PauseMenu : MonoBehaviour
         else if (right && column < 1)
             column++;
         selected = buttons[row, column];
-        Highlight(selected);
+        //Highlight(selected);
     }
 
     private void Update()
@@ -264,14 +275,14 @@ public class PauseMenu : MonoBehaviour
                     selected = noQuit;
                 }
             }
-            Highlight(selected);
+            //Highlight(selected);
         }
 
         timer += Time.deltaTime;
 
         if (Input.GetButtonDown("Click"))
         {
-            selected.onClick.Invoke();
+            //selected.onClick.Invoke();
         }
     }
 }
