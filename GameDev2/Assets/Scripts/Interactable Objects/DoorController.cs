@@ -10,7 +10,7 @@ public class DoorController : MonoBehaviour
     public string doorName;
     bool playerInRange;
     public bool needsKey;
-    public string keyNeeded;
+    public string[] keysNeeded;
     public GameObject notifObj;
     public bool opened; 
     public string levelGoingTo;
@@ -48,13 +48,14 @@ public class DoorController : MonoBehaviour
         }
         else if(playerInRange && Input.GetButtonDown("Pickup") && needsKey)
         {
-            if (!pa_inv.CheckInventory(keyNeeded))
-            {
-                Debug.Log("Missing " + keyNeeded);
+            bool hasKey = false; 
+            foreach (string k in keysNeeded) {
+                hasKey = pa_inv.CheckInventory(k);
+                if (!hasKey) { break; }
             }
-            else
+            if(hasKey)
             {
-                Debug.Log("Door Open, " + keyNeeded + " in inventory.");
+                //Debug.Log("Door Open, " +  + " in inventory.");
                 opened = true; 
                 OpenDoor();
             }
