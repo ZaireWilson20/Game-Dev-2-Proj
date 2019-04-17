@@ -41,7 +41,7 @@ public class DoorController : MonoBehaviour
         }
         if (playerInRange && Input.GetKeyDown(KeyCode.Z) && !needsKey)
         {
-            Debug.Log("Open Door");
+            //Debug.Log("Open Door");
             opened = true; 
             OpenDoor();
         }

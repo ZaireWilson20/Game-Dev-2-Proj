@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 9051743090948632347}
   - component: {fileID: 9051743090948632344}
   m_Layer: 0
-  m_Name: frank
+  m_Name: NPC
   m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,6 +110,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 034521664468329408e7f88383cd7864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentLine: 0
+  dialogueBox: {fileID: 0}
+  nameBox: {fileID: 0}
+  conversationUI: {fileID: 0}
+  popUpBox: {fileID: 0}
+  continueBox: {fileID: 0}
+  char1: {fileID: 0}
+  char2: {fileID: 0}
+  doneSentence: 0
+  inCutscene: 0
 --- !u!114 &9051743090948632344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,11 +132,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f820fd6e5ebdef24890bb0f33835edae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npc_convos: []
   pa_game_manager: {fileID: 0}
+  levelFader: {fileID: 0}
   npc_triggerObj: {fileID: 9051743091449933016}
   pa_playerObj: {fileID: 0}
+  sceneName: 
   npc_inConvo: 0
+  byeGuy: 0
+  hasBeenRead: 0
+  numOfConvos: 1
+  convoType: 0
+  playConvo: 1
+  startOn: 0
+  destroyOnDone: 0
 --- !u!1 &9051743091326370691
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,7 +221,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &9051743091449933016
@@ -279,3 +297,4 @@ MonoBehaviour:
   dia_player_in: 0
   dia_icon: {fileID: 9051743091326370691}
   dia_inConvo: 0
+  diaObj: {fileID: 9051743090948632341}
