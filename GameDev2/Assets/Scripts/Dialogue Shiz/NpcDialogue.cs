@@ -178,6 +178,7 @@ public class NpcDialogue : MonoBehaviour
         }
         else if (convoType == diaType.automated && !finishAuto && !finReading && !hasBeenRead && playConvo)
         {
+            
             if (dialogueController.inCutscene && !sceneLoaded)
             {
                 gameState.paused = true;
@@ -187,8 +188,9 @@ public class NpcDialogue : MonoBehaviour
                 sceneLoaded = true;
 
                 Debug.Log("SWITCHIN LEVELS");
-                levelSwitch.FadeToLevel("ActualTechTutorial");
+                //levelSwitch.FadeToLevel("ActualTechTutorial");
             }
+            
             if (!npc_inConvo)
             {
                 pa_script.pa_inConvo = true;

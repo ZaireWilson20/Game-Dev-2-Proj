@@ -94,8 +94,8 @@ public class DialogueController : MonoBehaviour
     {
         if (gameObject.name == "HubInit" && currentLine == 5)
         {
-            inCutscene = true;
-            return true; 
+            //inCutscene = true;
+            //return true; 
         }
         // If speaker's last line
         if (currentLine == totalLines)

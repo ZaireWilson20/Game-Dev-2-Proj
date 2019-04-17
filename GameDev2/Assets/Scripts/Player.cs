@@ -166,6 +166,8 @@ public class Player : MonoBehaviour
     private GameState gameManager;
     public string levelName;
     public Vector3 spawnPosition;
+    private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
+    public string pointToSpawn; 
 
     //  UI
     public GameObject healthObj;
@@ -173,7 +175,7 @@ public class Player : MonoBehaviour
     public GameObject pSetObj;
     private PowerSetController pSetCont;
     private GainedUpgrade powerNotif;
-
+    
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
     {
@@ -289,6 +291,12 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+        foreach(GameObject g in GameObject.FindGameObjectsWithTag("SpawnPoint")){
+            spawnPoints.Add(g.GetComponent<SpawnPoint>());
+        }
+        
+        
         //Debug.Log("start");
         //load player save data
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
@@ -297,11 +305,20 @@ public class Player : MonoBehaviour
             gameObject.SetActive(false);
         }
         localPlayerData = GlobalControl.Instance.savedPlayer;
+        Debug.Log(pointToSpawn);
         health = localPlayerData.playerHealth;
         health_max = localPlayerData.playerHealthCap;
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
         spawnPosition = localPlayerData.spawnPosition;
+        //pointToSpawn = localPlayerData.posToSpawn; 
+        //foreach(SpawnPoint p in spawnPoints)
+        //{
+        //    if(p._name == pointToSpawn)
+        //    {
+        //        spawnPosition = p.getPos();
+        //    }
+        //}
         //Debug.Log(health);
 
         controller = GetComponent<Controller2D>();
@@ -379,6 +396,7 @@ public class Player : MonoBehaviour
         localPlayerData.points = points;
         localPlayerData.canSwitch = canSwitch;
         localPlayerData.spawnPosition = spawnPosition;
+        localPlayerData.posToSpawn = pointToSpawn;
 
         localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
         localPlayerData.mWeap = mWeapon;        localPlayerData.tWeap = tWeapon;

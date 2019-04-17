@@ -14,14 +14,18 @@ public class DoorController : MonoBehaviour
     public GameObject notifObj;
     public bool opened; 
     public string levelGoingTo;
+    public string spawnName; 
     public LevelSwitch levelSwitch;
+    private Player player; 
     private bool searched = false;
     public bool startActive = true;
+    public string nextLevelSpawnPoint; 
     public Vector2 otherDoor;
     // Start is called before the first frame update
     void Start()
     {
         pa_inv = playerObj.GetComponent<PlayerInventory>();
+        player = playerObj.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -86,8 +90,10 @@ public class DoorController : MonoBehaviour
     {
         //if (Input.GetButtonDown("Pickup"))
         //{
-        playerObj.GetComponent<Player>().spawnPosition = otherDoor;
+        //playerObj.GetComponent<Player>().spawnPosition = otherDoor;
+        player.pointToSpawn = nextLevelSpawnPoint;
         Debug.Log(otherDoor);
+        player.SavePlayer();
         levelSwitch.FadeToLevel(levelGoingTo);
         //}
     }
