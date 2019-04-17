@@ -366,7 +366,7 @@ public class Player : MonoBehaviour
         pSetCont.SetSWeaponImg(tWeapon.name);
 
         rs = this.GetComponent<RopeSystem>();
-        if (spawnPosition != null)
+        if (!(spawnPosition.x == 8 && spawnPosition.y == 0) && !(spawnPosition.x == 0 && spawnPosition.y == 0))
             transform.position = spawnPosition;
 
         powerNotif = FindObjectOfType<GainedUpgrade>();
