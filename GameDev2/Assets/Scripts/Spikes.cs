@@ -21,14 +21,16 @@ public class Spikes : MonoBehaviour
     {
         lowPoint = lowObj.transform.position;
         highPoint = highObj.transform.position;
-        GameObject[] tempGa = GameObject.FindGameObjectsWithTag("Player");
-        foreach(GameObject ta in tempGa)
-        {
-            if(ta.gameObject.name == "Paracelsys")
-            {
-                player = ta.GetComponent<Player>(); 
-            }
-        }
+        playerObj = GameObject.FindGameObjectWithTag("Player");
+        player = playerObj.GetComponent<Player>();
+        //Debug.Log("tagged: " + tempGa.Length);
+        //foreach(GameObject ta in tempGa)
+        //{
+        //    if(ta.gameObject.name == "Paracelsys")
+        //    {
+        //        player = ta.GetComponent<Player>(); 
+        //    }
+        //}
         //player = GameObject.FindWithTag("Player").GetComponent<Player>();
         
         //player = playerObj.GetComponent<Player>();
@@ -67,7 +69,7 @@ public class Spikes : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
