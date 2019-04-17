@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1857067627}
   - component: {fileID: 1857067625}
   m_Layer: 14
-  m_Name: Enemy (8)
+  m_Name: FlowerShooter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,9 +153,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health_max: 2
   attack: 1
-  seekSpeed: 1.25
+  seekSpeed: 0
   attackSpeed: 2
   searchTimeout: 3
+  freezeDuration: 5
   detectRadius: 3
   knockback: 0
   startPos: {x: 0, y: 0, z: 0}
@@ -166,5 +167,13 @@ MonoBehaviour:
   fireCooldown: 2
   fireRate: 0.1
   shootRadius: 8
-  projectile: {fileID: 0}
+  projectile: {fileID: 7725893753316137096, guid: 0d7d702731d2c7a4789424450c41f4c1,
+    type: 3}
   shotSpray: 2
+  freezable: 1
+  isFlying: 0
+  flyingMask:
+    serializedVersion: 2
+    m_Bits: 0
+  flySpeed: 3
+  pa_script: {fileID: 0}
