@@ -806,6 +806,7 @@ public class Player : MonoBehaviour
             //Certain point values give static buffs to the player, corresponding to the number of points already picked up
             if (powerBoost/10 > 0)
             {
+                //Increase speed
                 if (powerBoost / 10 >= 7)
                 {
                     speed = 8;
@@ -821,9 +822,11 @@ public class Player : MonoBehaviour
                     speed = 6;
                     runSpeed = 12;
                 }
+                //Change health maximum
                 if (powerBoost / 10 >= 8)
                 {
                     health_max = 8;
+                    Debug.Log("Should have 8");
                 }
                 else if (powerBoost / 10 >= 5)
                 {
@@ -831,8 +834,10 @@ public class Player : MonoBehaviour
                 }
                 else if (powerBoost / 10 >= 2)
                 {
+                    Debug.Log("Should have 6");
                     health_max = 6;
                 }
+                //Increase airdash speed
                 if (powerBoost/10 >= 9)
                 {
                     airdashSpeed = 36;
@@ -863,6 +868,7 @@ public class Player : MonoBehaviour
             //mUtility.toString();
             //mWeapon.toString();
         }
+        anim.SetBool("Swinging", isSwinging);
         
     }
 
