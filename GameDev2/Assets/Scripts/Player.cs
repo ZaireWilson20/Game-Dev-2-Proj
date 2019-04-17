@@ -807,53 +807,53 @@ public class Player : MonoBehaviour
             }
 
             //Certain point values give static buffs to the player, corresponding to the number of points already picked up
-            if (powerBoost/10 > 0)
+            if (powerBoost/15 > 0)
             {
                 //Increase speed
-                if (powerBoost / 10 >= 7)
+                if (powerBoost/15 >= 7)
                 {
                     speed = 8;
                     runSpeed = 16;
                 }
-                else if (powerBoost / 10 >= 4)
+                else if (powerBoost/15 >= 4)
                 {
                     speed = 7;
                     runSpeed = 14;
                 }
-                else if (powerBoost / 10 >= 1)
+                else if (powerBoost/15 >= 1)
                 {
                     speed = 6;
                     runSpeed = 12;
                 }
                 //Change health maximum
-                if (powerBoost / 10 >= 8)
+                if (powerBoost/15 >= 8)
                 {
                     health_max = 8;
                     Debug.Log("Should have 8");
                 }
-                else if (powerBoost / 10 >= 5)
+                else if (powerBoost/15 >= 5)
                 {
                     health_max = 7;
                 }
-                else if (powerBoost / 10 >= 2)
+                else if (powerBoost/15 >= 2)
                 {
                     Debug.Log("Should have 6");
                     health_max = 6;
                 }
                 //Increase airdash speed
-                if (powerBoost/10 >= 9)
+                if (powerBoost/15 >= 9)
                 {
                     airdashSpeed = 36;
                 }
-                else if (powerBoost / 10 >= 6)
+                else if (powerBoost/15 >= 6)
                 {
                     airdashSpeed = 30;
                 }
-                else if (powerBoost / 10 >= 3)
+                else if (powerBoost/15 >= 3)
                 {
                     airdashSpeed = 24;
                 }
-                Debug.Log("Power Level = " + powerBoost / 10);
+                Debug.Log("Power Level = " + powerBoost/15);
             }
 
             powerBoost = points;
