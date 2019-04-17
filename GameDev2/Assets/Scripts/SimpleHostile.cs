@@ -114,7 +114,7 @@ public class SimpleHostile : MonoBehaviour
     {
         GameObject contact = collision.gameObject;
         //Debug.Log("layer: " + gameObject.layer);
-        Debug.Log("grounded: " + pa_script.grounded);
+        //Debug.Log("grounded: " + pa_script.grounded);
         //if (contact.layer != 8 && contact.layer != 0)
         //    Debug.Log(contact.tag);
         //Debug.Log(collision.gameObject);
