@@ -165,6 +165,7 @@ public class Player : MonoBehaviour
     public GameObject gameManagerObj;
     private GameState gameManager;
     public string levelName;
+    public Vector3 spawnPosition;
 
     //  UI
     public GameObject healthObj;
@@ -299,6 +300,7 @@ public class Player : MonoBehaviour
         health_max = localPlayerData.playerHealthCap;
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
+        spawnPosition = localPlayerData.spawnPosition;
         //Debug.Log(health);
 
         controller = GetComponent<Controller2D>();
@@ -363,6 +365,8 @@ public class Player : MonoBehaviour
         pSetCont.SetSWeaponImg(tWeapon.name);
 
         rs = this.GetComponent<RopeSystem>();
+        if (spawnPosition != null)
+            transform.position = spawnPosition;
     }
 
     public void SavePlayer()
@@ -371,6 +375,7 @@ public class Player : MonoBehaviour
         localPlayerData.playerHealthCap = health_max;
         localPlayerData.points = points;
         localPlayerData.canSwitch = canSwitch;
+        localPlayerData.spawnPosition = spawnPosition;
 
         localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
         localPlayerData.mWeap = mWeapon;        localPlayerData.tWeap = tWeapon;

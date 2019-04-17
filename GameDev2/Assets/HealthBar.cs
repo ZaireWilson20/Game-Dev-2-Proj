@@ -8,6 +8,7 @@ public class HealthBar : MonoBehaviour
 
     public GameObject boss;
     private FactoryBoss fscript;
+    private SalBoss salscript;
     private bool factory = true;
     public Slider healthBarSlider;
     public Image shieldZone;
@@ -29,7 +30,7 @@ public class HealthBar : MonoBehaviour
             fscript = boss.GetComponent<FactoryBoss>();
             health_max = fscript.health_max;
             shield_health = fscript.shield_health;
-        
+
         } else
         {
             factory = false;
