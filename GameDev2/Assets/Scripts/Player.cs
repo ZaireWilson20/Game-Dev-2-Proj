@@ -172,6 +172,7 @@ public class Player : MonoBehaviour
     private HealthUI hiScript;
     public GameObject pSetObj;
     private PowerSetController pSetCont;
+    private GainedUpgrade powerNotif;
 
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
@@ -367,6 +368,8 @@ public class Player : MonoBehaviour
         rs = this.GetComponent<RopeSystem>();
         if (spawnPosition != null)
             transform.position = spawnPosition;
+
+        powerNotif = FindObjectOfType<GainedUpgrade>();
     }
 
     public void SavePlayer()
@@ -937,6 +940,7 @@ public class Player : MonoBehaviour
 
     public bool ActivatePower(Power NewPower)
     {
+        powerNotif.newNotif(NewPower.name);
         return NewPower.active = true;
     }
 
