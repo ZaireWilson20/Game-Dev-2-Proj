@@ -875,6 +875,21 @@ public class Player : MonoBehaviour
             //mUtility.toString();
             //mWeapon.toString();
         }
+        if (Math.Abs(rig2D.velocity.y) > terminalVel)
+        {
+            if (rig2D.velocity.y > 0)
+                rig2D.velocity = new Vector2(rig2D.velocity.x, terminalVel);
+            else
+                rig2D.velocity = new Vector2(rig2D.velocity.x, -terminalVel);
+        }
+        if (Math.Abs(rig2D.velocity.x) > terminalVel)
+        {
+            if (rig2D.velocity.x > 0)
+                rig2D.velocity = new Vector2(terminalVel, rig2D.velocity.y);
+            else
+                rig2D.velocity = new Vector2(-terminalVel, rig2D.velocity.y);
+
+        }
         anim.SetBool("Swinging", isSwinging);
         
     }
