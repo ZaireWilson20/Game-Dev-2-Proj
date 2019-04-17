@@ -40,6 +40,11 @@ public class SalBoss : MonoBehaviour
 
     private SpriteRenderer spr;
     public Animator anim;
+    public float GetHealth()
+    {
+        return health;
+    }
+
     // Start is called before the first frame update
     void Start()
     {

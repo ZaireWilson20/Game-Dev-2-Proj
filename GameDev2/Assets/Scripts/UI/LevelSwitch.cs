@@ -10,6 +10,7 @@ public class LevelSwitch : MonoBehaviour
     public bool endingCutScene;
     private bool movingCharacter;
     public CharacterMovement[] charactersToMove;
+    private Player pscript;
 
     [System.Serializable]
     public class CharacterMovement
@@ -21,7 +22,9 @@ public class LevelSwitch : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        pscript = FindObjectOfType<Player>();
+        if (pscript != null)
+            Debug.Log("Got player");
     }
 
     public void FadeToLevel(string levelName)
@@ -37,6 +40,7 @@ public class LevelSwitch : MonoBehaviour
 
     public void LoadOnFadeComplete()
     {
+        pscript.SavePlayer();
         SceneManager.LoadScene(level, LoadSceneMode.Single);
     }
 

@@ -9,6 +9,7 @@ public class PlayerData
     public int playerHealthCap = 5; //absolute max health is 8
     public int points = 0;
     public bool canSwitch = false;
+    public Vector3 spawnPosition = new Vector3(0, 0, 0);
     public Power mUtil;
     public Power tUtil;
     public Power mWeap;
