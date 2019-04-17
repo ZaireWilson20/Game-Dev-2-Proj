@@ -90,6 +90,7 @@ public class RopeSystem : MonoBehaviour
         //Debug.Log(aimDirection);
         if (Input.GetButtonDown("Utility") && player.powerset && player.tUtility.name == "grapple")
         {
+            player.anim.SetTrigger("Grapple");
             // 2
             ropeRenderer.enabled = true;
             var hit = Physics2D.Raycast(playerPosition, aimDirection, ropeMaxCastDistance, ropeLayerMask);
@@ -104,14 +105,12 @@ public class RopeSystem : MonoBehaviour
             // 3
             if (player.isSwinging)
             {
-                player.anim.SetTrigger("OffGrapple");
                 ResetRope();
                 input = false;
             }
             else  if (hit.collider != null)
             {
-                player.anim.SetTrigger("Grapple");
-
+                player.anim.SetTrigger("OffGrapple");
                 input = false;
                 player.hasAirdash = true;
                 ropeAttached = true;
@@ -129,6 +128,7 @@ public class RopeSystem : MonoBehaviour
         }
         else if (input)
         {
+            player.anim.SetTrigger("Grapple");
             if (!ropeAttached)
             {
                 // 2
@@ -141,7 +141,6 @@ public class RopeSystem : MonoBehaviour
                 // 3
                 if (hit.collider != null)
                 {
-                    player.anim.SetTrigger("Grapple");
 
                     ropeAttached = true;
                     if (!ropePositions.Contains(hit.point))
@@ -158,6 +157,7 @@ public class RopeSystem : MonoBehaviour
                 // 5
                 else
                 {
+                    player.anim.SetTrigger("OffGrapple");
                     ropeRenderer.enabled = false;
                     ropeAttached = false;
                     ropeJoint.enabled = false;
@@ -169,7 +169,6 @@ public class RopeSystem : MonoBehaviour
         }
         else if (Input.GetButtonDown("Jump") && ropeAttached)
         {
-            player.anim.SetTrigger("OffGrapple");
             ResetRope();
         }
     }
@@ -186,6 +185,7 @@ public class RopeSystem : MonoBehaviour
         ropeRenderer.SetPosition(1, transform.position);
         ropePositions.Clear();
         ropeHingeAnchorSprite.enabled = false;
+        player.anim.SetTrigger("OffGrapple");
     }
 
     private void UpdateRopePositions()
