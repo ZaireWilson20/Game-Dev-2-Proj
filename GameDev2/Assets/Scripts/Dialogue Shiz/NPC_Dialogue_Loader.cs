@@ -48,7 +48,7 @@ public class NPC_Dialogue_Loader : MonoBehaviour
         }
         else
         {
-            Debug.Log("Can't read file data");
+            Debug.Log("Can't read file data: " + file_path);
         }
     }
 

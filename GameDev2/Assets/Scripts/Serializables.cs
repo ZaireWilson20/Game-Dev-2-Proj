@@ -136,8 +136,11 @@ public class DialogueData
             {
                 Debug.Log("Set " + sceneName + " to " + state);
                 conversationData[i].on = state;
+                return;
             }
         }
+        data tempData = new data(0, sceneName, false);
+        conversationData.Add(tempData);
     }
 
 }

@@ -123,7 +123,7 @@ public class DialogueController : MonoBehaviour
     private void setSpeaker(string speaker)
     {
 
-        Debug.Log("Current Speaker: " + speaker);
+        //Debug.Log("Current Speaker: " + speaker);
 
         if (speaker == firstSpeakerName)
         {
@@ -151,7 +151,7 @@ public class DialogueController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not Working");
+            //Debug.Log("Not Working");
         }
     }
 
@@ -163,7 +163,7 @@ public class DialogueController : MonoBehaviour
         {
             if (Input.GetButtonDown("Pickup") && !doneSentence && countBeforeSkip > 2)
             {
-                Debug.Log("hot dog");
+                //Debug.Log("hot dog");
                 break; 
             }
             dialogue.text += letter;
@@ -173,6 +173,6 @@ public class DialogueController : MonoBehaviour
         dialogue.text = sent; 
         doneSentence = true;
         continueBox.SetActive(true);
-        Debug.Log("done sentence");
+        //Debug.Log("done sentence");
     }
 }

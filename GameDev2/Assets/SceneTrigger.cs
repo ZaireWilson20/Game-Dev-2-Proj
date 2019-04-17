@@ -65,18 +65,21 @@ public class SceneTrigger : MonoBehaviour
             {
                 foreach(GameObject c in convosInSceneToActivate)
                 {
-                    
+                    Debug.Log("Set " + c.name);
                     c.SetActive(true);
+                    //TriggerScene(c.GetComponent<SceneTrigger>());
                 }
                 foreach(ConversationTrigger c in convosToActivate)
                 {
                     Debug.Log("setting " + c.sceneName + " to true");
                     GlobalControl.Instance.savedDialogue.SetState(c.sceneName, true);
+                    
                 }
             }
         }
         else if(trigType == requirements.other && npc.hasBeenRead)
         {
+            TriggerScene();
             foreach (GameObject c in convosInSceneToActivate)
             {
 
@@ -98,6 +101,10 @@ public class SceneTrigger : MonoBehaviour
         }
     }
 
+    public void TriggerScene(SceneTrigger st)
+    {
+        GlobalControl.Instance.savedScene.AddTrigger(st);
+    }
     public bool Triggered()
     {
         return sceneTrigger;

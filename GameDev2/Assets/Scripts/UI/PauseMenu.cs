@@ -62,7 +62,7 @@ public class PauseMenu : MonoBehaviour
         //noQuit = GameObject.Find("NoQuit").GetComponent<Button>();
         //yesQuit = GameObject.Find("YesQuit").GetComponent<Button>();
         selected = resume;
-        Debug.Log("resume button: " + resume.gameObject.name);
+        //Debug.Log("resume button: " + resume.gameObject.name);
        
 
         buttons[0, 0] = resume;
@@ -93,15 +93,15 @@ public class PauseMenu : MonoBehaviour
 
     void Highlight(Button b)
     {
-        Debug.Log(b.gameObject.name);
+        //Debug.Log(b.gameObject.name);
         if (!confirm)
         {
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 2; j++)
                 {
-                    Debug.Log("(" + i + ", " + j + ")");
-                    Debug.Log("button: " + buttons[i, j].gameObject.name);
+                    //Debug.Log("(" + i + ", " + j + ")");
+                    //Debug.Log("button: " + buttons[i, j].gameObject.name);
                     if (buttons[i, j] == b)
                         buttons[i, j].GetComponent<Image>().color = highlighted;
                     else

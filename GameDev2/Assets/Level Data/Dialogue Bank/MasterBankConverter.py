@@ -32,15 +32,16 @@ for a in masterBank[1:len(masterBank)]:
                 tempSequence = []
                 tempMood = []
                 #print(dialogue)
-                with open(dialogue + '.tsv', 'r') as csvfile:
-                    tempReader = csv.reader(csvfile, delimiter='\t', quotechar="|")
-                    for row in tempReader:
-                        print(row)
-                        tempDialogue.append(row[1])
-                        tempSequence.append(row[0])
-                        tempMood.append(row[2])
-                    allDialogue.append(tempDialogue)
-                    speakerSequence.append(tempSequence)
+                if dialogue != "Hub3":
+                    with open(dialogue + '.tsv', 'r') as csvfile:
+                        tempReader = csv.reader(csvfile, delimiter='\t', quotechar="|")
+                        for row in tempReader:
+                            print(row)
+                            allDialogue.append(row[1])
+                            speakerSequence.append(row[0])
+                            tempMood.append(row[2])
+                        #allDialogue.append(tempDialogue)
+                        #speakerSequence.append(tempSequence)
             with open(jsonName + '.json', 'w') as outfile:
                 data = {}
                 data['allDialogue'] = allDialogue

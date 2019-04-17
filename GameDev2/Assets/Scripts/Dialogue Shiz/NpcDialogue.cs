@@ -9,7 +9,7 @@ public class NpcDialogue : MonoBehaviour
 {
 
     private DialogueController npc_dialogue_cont;
-    private DialogueData localData = new DialogueData(); 
+    private DialogueData localData = new DialogueData();
     // Dialogue Container
     [SerializeField]
     private DialogueObj npc_convos;
@@ -29,11 +29,11 @@ public class NpcDialogue : MonoBehaviour
     [SerializeField]
     GameObject pa_playerObj;
     Player pa_script;
-    public string sceneName; 
+    public string sceneName;
     bool npc_manager_done;
     public bool npc_inConvo = false;
     DialogueController dialogueController;
-    private SceneTrigger npcTrigger; 
+    private SceneTrigger npcTrigger;
     //public bool automatedConvo;
     private bool finReading = true;
     private bool finishAuto = false;
@@ -41,16 +41,18 @@ public class NpcDialogue : MonoBehaviour
     public bool byeGuy;
     //public bool triggeredConvo;
     public bool hasBeenRead;
-    bool sceneLoaded = false; 
-    private bool nextConvo = true; 
+    bool sceneLoaded = false;
+    private bool nextConvo = true;
     private int convoNumber = 1;
     public int numOfConvos = 1;
     public diaType convoType;
     public bool playConvo = true;
     public bool startOn;
     private bool init;
-    public bool destroyOnDone; 
-
+    public bool destroyOnDone;
+    public bool waitingOn;
+    public GameObject npcWaitingOn;
+    public NpcDialogue npcWO;
 
     public enum diaType { automated, triggered, restriction, pop_up, other };
 
@@ -89,22 +91,21 @@ public class NpcDialogue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         dialogueController = GetComponent<DialogueController>();
         if (GlobalControl.Instance.savedDialogue.InList(sceneName))
         {
-            
+
             GlobalControl.Instance.savedScene.inCutScene = false;
             //GlobalControl.Instance.savedScene.currentConversation = null;
             dialogueController.currentLine = GlobalControl.Instance.savedDialogue.findCurrentLine(sceneName);
-            
+
             hasBeenRead = GlobalControl.Instance.savedDialogue.HasBeenRead(sceneName);
             if (hasBeenRead)
             {
                 this.gameObject.SetActive(false);
             }
             playConvo = GlobalControl.Instance.savedDialogue.IsOn(sceneName);
-            init = false; 
+            init = false;
         }
         else
         {
@@ -121,7 +122,7 @@ public class NpcDialogue : MonoBehaviour
         {
             npc_onTrigger = npc_triggerObj.GetComponent<Dialogue_Trigger>();
         }
-            //pa_playerObj = GameObject.FindGameObjectWithTag("Player");
+        //pa_playerObj = GameObject.FindGameObjectWithTag("Player");
         pa_script = pa_playerObj.GetComponent<Player>();
         levelSwitch = levelFader.GetComponent<LevelSwitch>();
         if (init)
@@ -135,16 +136,20 @@ public class NpcDialogue : MonoBehaviour
     void Update()
     {
         playConvo = GlobalControl.Instance.savedDialogue.IsOn(sceneName);
- 
+
         //gameObject.SetActive(playConvo);
         if (pa_dialogue.pa_finished_reading && finReading)
         {
             npc_convos = pa_dialogue.GetConversation(transform.name);
-            
+
             finReading = false;
             nextConvo = false;
         }
 
+        if (sceneName == "Castle5")
+        {
+            Debug.Log("Triiger Found: " + GlobalControl.Instance.savedScene.findTrigger(sceneName));
+        }
 
         if (convoType == diaType.other && !finReading)
         {
@@ -175,7 +180,7 @@ public class NpcDialogue : MonoBehaviour
         {
             if (dialogueController.inCutscene && !sceneLoaded)
             {
-                
+                gameState.paused = true;
                 GlobalControl.Instance.savedDialogue.SaveDialogue(sceneName, dialogueController.currentLine, hasBeenRead);
                 GlobalControl.Instance.savedScene.inCutScene = true;
                 GlobalControl.Instance.savedScene.currentConversationNum = dialogueController.currentLine;
@@ -199,6 +204,7 @@ public class NpcDialogue : MonoBehaviour
                 //npc_onTrigger.dia_inConvo = inC;
                 if (!npc_inConvo)   //  Finish convo and save info
                 {
+                    gameState.paused = false;
                     finishAuto = true;
                     hasBeenRead = true;
                     Debug.Log(sceneName + " has been read");
@@ -207,8 +213,9 @@ public class NpcDialogue : MonoBehaviour
                 }
             }
         }
-        else if (convoType == diaType.triggered && GlobalControl.Instance.savedScene.findTrigger(sceneName) && !finReading && !hasBeenRead && playConvo)
+        else if (convoType == diaType.triggered && (GlobalControl.Instance.savedScene.findTrigger(sceneName)) && !finReading && !hasBeenRead && playConvo)
         {
+            gameState.paused = true; 
             if (dialogueController.inCutscene && !sceneLoaded)
             {
                 GlobalControl.Instance.savedDialogue.SaveDialogue(sceneName, dialogueController.currentLine, hasBeenRead);
@@ -233,6 +240,7 @@ public class NpcDialogue : MonoBehaviour
                 //npc_onTrigger.dia_inConvo = inC;
                 if (!npc_inConvo)
                 {
+                    gameState.paused = false;
                     if(gameObject.name == "Castle2")
                     {
                         Debug.Log("Level Trans");
@@ -248,10 +256,9 @@ public class NpcDialogue : MonoBehaviour
         }
         else if (convoType == diaType.pop_up && !finReading && playConvo)
         {
-           
             if (!npc_inConvo && Input.GetButtonDown("Pickup") && npc_onTrigger.dia_player_in)   //Start Convo
             {
-
+                gameState.paused = true;
                 Debug.Log("HOLA");
                 pa_script.pa_inConvo = true;
                 npc_inConvo = true;
@@ -266,6 +273,7 @@ public class NpcDialogue : MonoBehaviour
                 //npc_onTrigger.dia_inConvo = inC;
                 if (!npc_inConvo)
                 {
+                    gameState.paused = false;
                     finishAuto = true;
                     //hasBeenRead = true;
                     GlobalControl.Instance.savedDialogue.SaveDialogue(sceneName, dialogueController.currentLine, hasBeenRead);
