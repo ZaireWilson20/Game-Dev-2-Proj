@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 998501248941474296}
   - component: {fileID: 3971820785236441715}
   - component: {fileID: 3537158285424945763}
+  - component: {fileID: 4413624424514934862}
   m_Layer: 13
   m_Name: Paracelsys
   m_TagString: Player
@@ -322,7 +323,6 @@ MonoBehaviour:
   groundedDist: 0.5
   flashRate: 3
   alive: 0
-  health_max: 5
   attack: 1
   knockback: 15
   fireDelta: 1
@@ -350,6 +350,7 @@ MonoBehaviour:
   reflectCooldown: 4
   AGTimer: 1
   points: 0
+  canSwitch: 0
   floorMask:
     serializedVersion: 2
     m_Bits: 1573120
@@ -360,6 +361,8 @@ MonoBehaviour:
   doneShooting: 0
   gameManagerObj: {fileID: 0}
   levelName: 
+  spawnPosition: {x: 0, y: 0, z: 0}
+  pointToSpawn: 
   healthObj: {fileID: 0}
   pSetObj: {fileID: 0}
 --- !u!95 &3971820785236441715
@@ -391,6 +394,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d4189d30df1f8742a2c0c6c8fa861a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4413624424514934862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 316723194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61d66421a01ad44ba4e5fb9e3dde81d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1290081198

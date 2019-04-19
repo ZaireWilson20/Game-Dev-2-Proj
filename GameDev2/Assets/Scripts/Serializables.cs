@@ -10,6 +10,7 @@ public class PlayerData
     public int points = 0;
     public bool canSwitch = false;
     public Vector3 spawnPosition = new Vector3(8, 0, 0);
+    public string posToSpawn = "CenterHub"; 
     public Power mUtil;
     public Power tUtil;
     public Power mWeap;
