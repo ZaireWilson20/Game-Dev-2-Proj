@@ -196,11 +196,11 @@ public class SimpleHostile : MonoBehaviour
         //check if player in line of sight
         if (hit.collider == null)
         {
-           // Debug.Log("null");
+            Debug.Log("null");
             return false;
         }
 
-        //Debug.Log(hit.collider.gameObject);
+        Debug.Log(hit.collider.gameObject);
         if (hit.collider.tag.Equals("Player"))
         {
             return true;

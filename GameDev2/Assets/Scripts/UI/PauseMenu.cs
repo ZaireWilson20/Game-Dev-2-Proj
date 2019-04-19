@@ -31,7 +31,7 @@ public class PauseMenu : MonoBehaviour
     private bool confirm = false;
     private Button[] confirmButtons = new Button[2];
     private Button selected;
-    //public GameObject gameManager;
+    //private GameObject manager;
     //private Player_UI_Input gmScript;
 
     public float CycleDelay = 0.0f;     //time between button cycling
@@ -43,9 +43,18 @@ public class PauseMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //manager = GameObject.Find("Game Manager-224");
+        //if (manager == null)
+        //{
+        //    Debug.LogError("manager not working :>");
+        //}
+        //else
+        //{
+        //    Debug.LogError(manager.name);
+        //}
         //gmScript = gameManager.GetComponent<Player_UI_Input>();
-        GameObject[] tempList = GameObject.FindGameObjectsWithTag("Button");
-        foreach(GameObject g in tempList) { 
+        //GameObject[] tempList = GameObject.FindGameObjectsWithTag("Button");
+        //foreach(GameObject g in tempList) { 
         resume = GameObject.Find("Resume").GetComponent<Button>();
         resume.GetComponent<Image>().color = highlighted;
         map = GameObject.Find("MapButton").GetComponent<Button>();
@@ -58,12 +67,12 @@ public class PauseMenu : MonoBehaviour
         sound.GetComponent<Image>().color = standard;
         quit = GameObject.Find("Quit").GetComponent<Button>();
         quit.GetComponent<Image>().color = standard;
-            }
+        //    }
         //noQuit = GameObject.Find("NoQuit").GetComponent<Button>();
         //yesQuit = GameObject.Find("YesQuit").GetComponent<Button>();
         selected = resume;
         //Debug.Log("resume button: " + resume.gameObject.name);
-       
+
 
         buttons[0, 0] = resume;
         buttons[0, 1] = map;
@@ -72,10 +81,12 @@ public class PauseMenu : MonoBehaviour
         buttons[2, 0] = sound;
         buttons[2, 1] = quit;
 
-        //Highlight(selected);
+        Highlight(selected);
 
         confirmButtons[0] = noQuit;
         confirmButtons[1] = yesQuit;
+
+        //printButtons();
     }
 
 //    public void QuitGame()
@@ -91,6 +102,21 @@ public class PauseMenu : MonoBehaviour
 //#endif
 //    }
 
+    void printButtons()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                if (buttons[i, j] != null)
+                    Debug.LogError(buttons[i, j].gameObject.name);
+                else
+                    Debug.LogError("there should be a button here");
+            }
+            Debug.LogError("------------");
+        }
+    }
+
     void Highlight(Button b)
     {
         //Debug.Log(b.gameObject.name);
@@ -103,9 +129,14 @@ public class PauseMenu : MonoBehaviour
                     //Debug.Log("(" + i + ", " + j + ")");
                     //Debug.Log("button: " + buttons[i, j].gameObject.name);
                     if (buttons[i, j] == b)
-                        buttons[i, j].GetComponent<Image>().color = highlighted;
-                    else
-                        buttons[i, j].GetComponent<Image>().color = standard;
+                    {
+                        //buttons[i, j].GetComponent<Image>().color = highlighted;
+                        buttons[i, j].GetComponent<Image>().enabled = false;
+                    } else
+                    {
+                        //buttons[i, j].GetComponent<Image>().color = standard;
+                        buttons[i, j].GetComponent<Image>().enabled = true;
+                    }
                 }
             }
         } else
@@ -148,10 +179,18 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
-    //public void ResumeGame()
-    //{
-    //    gmScript.ResumeGame();
-    //}
+    public void ResumeGame()
+    {
+        //if (manager == null)
+        //{
+        //    Debug.LogError("manager not working :>");
+        //}
+        //else
+        //{
+        //    Debug.LogError(manager.name);
+        //}
+        GameObject.Find("Game Manager-224").GetComponent<Player_UI_Input>().ResumeGame();
+    }
 
     public void backToMenu()
     {
@@ -207,7 +246,7 @@ public class PauseMenu : MonoBehaviour
         else if (!up && row < 2)
             row++;
         selected = buttons[row, column];
-        //Highlight(selected);
+        Highlight(selected);
     }
 
     void CycleRight(bool right)
@@ -217,7 +256,7 @@ public class PauseMenu : MonoBehaviour
         else if (right && column < 1)
             column++;
         selected = buttons[row, column];
-        //Highlight(selected);
+        Highlight(selected);
     }
 
     private void Update()
@@ -278,11 +317,13 @@ public class PauseMenu : MonoBehaviour
             //Highlight(selected);
         }
 
+        //Debug.Log(selected.gameObject.name);
+
         timer += Time.deltaTime;
 
         if (Input.GetButtonDown("Click"))
         {
-            //selected.onClick.Invoke();
+            selected.onClick.Invoke();
         }
     }
 }
