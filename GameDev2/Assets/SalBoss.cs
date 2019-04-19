@@ -22,6 +22,7 @@ public class SalBoss : MonoBehaviour
 
     public float timeToAttack = 2f;
     public float timeToTeleport = 1f;
+    private float maxTimeToTP;
     private float timeSinceLastAttack = 0;
     private float numTeleports = 0;
     private float timeSinceLastTeleport = 0;
@@ -49,6 +50,7 @@ public class SalBoss : MonoBehaviour
     void Start()
     {
         health = maxHealth;
+        maxTimeToTP = timeToTeleport;
         //phase2Health = maxHealth / 2;
         spr = GetComponent<SpriteRenderer>();
         Random.InitState((int)(1000*Random.value));
@@ -67,7 +69,7 @@ public class SalBoss : MonoBehaviour
             if (health <= phase2Health)
             {
                 Debug.Log("Phase 2 Start");
-                timeToTeleport = timeToTeleport / 2;
+                timeToTeleport = maxTimeToTP / 2;
                 attacks = 3;
             }
             if (health <= 0)
@@ -134,8 +136,8 @@ public class SalBoss : MonoBehaviour
             Location.x = 7.9f;
             Location.y = 8;
         }
-        anim.SetTrigger("TPIn");
-        animTime = tpOut;
+        //anim.SetTrigger("TPIn");
+        //animTime = tpOut;
         return Location;
     }
 
@@ -253,8 +255,11 @@ public class SalBoss : MonoBehaviour
                     timeSinceLastAttack = timeToAttack;
                 }
                 timeSinceLastTeleport -= Time.deltaTime;
-                if (timeSinceLastTeleport < .2f)
+                if (timeSinceLastTeleport < .4f)
+                {
                     anim.SetTrigger("TPOut");
+                    animTime = .3f;
+                }
             }
         }
         else //Boss defeat behavior
