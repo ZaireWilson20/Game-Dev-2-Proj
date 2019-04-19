@@ -90,8 +90,8 @@ public class DoorController : MonoBehaviour
     {
         //if (Input.GetButtonDown("Pickup"))
         //{
-        //playerObj.GetComponent<Player>().spawnPosition = otherDoor;
-        player.pointToSpawn = nextLevelSpawnPoint;
+        playerObj.GetComponent<Player>().spawnPosition = otherDoor;
+        //player.pointToSpawn = nextLevelSpawnPoint;
         Debug.Log(otherDoor);
         player.SavePlayer();
         levelSwitch.FadeToLevel(levelGoingTo);
