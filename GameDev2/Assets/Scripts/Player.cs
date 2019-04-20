@@ -167,7 +167,8 @@ public class Player : MonoBehaviour
     public string levelName;
     public Vector3 spawnPosition;
     private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
-    public string pointToSpawn; 
+    public string pointToSpawn;
+    public List<GameObject> pointpickups = new List<GameObject>();
 
     //  UI
     public GameObject healthObj;
@@ -311,6 +312,7 @@ public class Player : MonoBehaviour
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
         spawnPosition = localPlayerData.spawnPosition;
+        pointpickups = localPlayerData.pointpickups;
         //pointToSpawn = localPlayerData.posToSpawn; 
         //foreach(SpawnPoint p in spawnPoints)
         //{
@@ -377,6 +379,12 @@ public class Player : MonoBehaviour
             mPowerDict = GlobalControl.Instance.savedPlayer.mUtils;
         }
 
+        for (int i = 0; i < pointpickups.Count; ++i)
+        {
+            if (pointpickups[i] != null)
+                pointpickups[i].SetActive(false);
+        }
+
         pSetCont.SetMPowerImg(mUtility.name);
         pSetCont.SetMWeaponImg(mWeapon.name);
         pSetCont.SetSPowerImg(tUtility.name);
@@ -415,8 +423,18 @@ public class Player : MonoBehaviour
     {
         //save important scene details before leaving
         localScene.lastScene = SceneManager.GetActiveScene().name;
-
+        SavePickupData();
+        Debug.Log("Saved scene");
         GlobalControl.Instance.savedScene = localScene;
+    }
+
+    public void SavePickupData()
+    {
+        for (int i = 0; i < pointpickups.Count; ++i)
+        {
+            Debug.Log(pointpickups[i].activeSelf);
+        }
+        GlobalControl.Instance.savedPlayer.pointpickups = pointpickups;
     }
 
     // Update is called once per frame
@@ -512,10 +530,12 @@ public class Player : MonoBehaviour
                 if (directionalInput.x > 0)
                 {
                     sprite.flipX = true;
+                    facingRight = true;
                 }
                 else if (directionalInput.x < 0)
                 {
                     sprite.flipX = false;
+                    facingRight = false;
                 }
 
                 //While the player is swinging, limit their abilities to just grapple control
@@ -634,7 +654,7 @@ public class Player : MonoBehaviour
                         //Run when holding P
                         if (Input.GetButton("Run"))
                         {
-                            anim.SetBool("Running", true);
+                            //anim.SetBool("Running", true);
                             if (speed < runSpeed)
                             {
                                 temp = speed;
@@ -909,7 +929,10 @@ public class Player : MonoBehaviour
 
         }
         anim.SetBool("Swinging", isSwinging);
-        
+        if (Mathf.Abs(directionalInput.x * speed) > runSpeed)
+            anim.SetBool("Running", true);
+        else
+            anim.SetBool("Running", false);
     }
 
     //private void OnCollisionEnter2D(Collision2D collision)
@@ -924,13 +947,15 @@ public class Player : MonoBehaviour
     public bool AutomatedWalkToPosition(Vector3 pos)
     {
         if(this.transform.position.x < pos.x) {
-            sprite.flipX = true; 
+            sprite.flipX = true;
+            facingRight = true;
             directionalInput = new Vector3(1, 0, 0);            
             
         }
         else if(this.transform.position.x > pos.x)
         {
             sprite.flipX = false;
+            facingRight = false;
             directionalInput = new Vector3(-1, 0, 0);
             
         }

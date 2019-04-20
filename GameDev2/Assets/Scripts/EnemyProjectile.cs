@@ -48,13 +48,14 @@ public class EnemyProjectile : MonoBehaviour
             //Debug.Log(lastDir);
 
             pscript.takeDamage(damage, direction);
-
+            Destroy(this.gameObject);
         }
 
         if (contact.layer == 14)
         {
             SimpleHostile hscript = contact.GetComponent<SimpleHostile>();
             hscript.takeDamage(damage, direction);
+            Destroy(this.gameObject);
         }
 
         if (contact.layer == 18)

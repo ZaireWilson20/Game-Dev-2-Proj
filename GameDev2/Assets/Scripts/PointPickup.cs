@@ -7,9 +7,12 @@ public class PointPickup : MonoBehaviour
     private Player player;
     private GainedUpgrade upNotif;
     public int PickupValue = 1;
+    private bool pickedup = false;
     // Start is called before the first frame update
     void Start()
     {
+        if (pickedup)
+            this.gameObject.SetActive(false);
         upNotif = FindObjectOfType<GainedUpgrade>();
     }
 
@@ -41,7 +44,9 @@ public class PointPickup : MonoBehaviour
             }
             player.points += PickupValue;
             Debug.Log(player.points);
-            Destroy(this.gameObject);
+            pickedup = true;
+            player.pointpickups.Add(this.gameObject);
+            this.gameObject.SetActive(false);
         }
     }
 }
