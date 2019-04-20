@@ -25,11 +25,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 214152966525355092}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -399.99997, y: -225.1462, z: 0}
-  m_LocalScale: {x: 1.1695906, y: 1.1695906, z: 1.1695906}
+  m_LocalPosition: {x: -155.6647, y: -200.57256, z: 0}
+  m_LocalScale: {x: 0.45859948, y: 1.0853199, z: 2.0350811}
   m_Children: []
-  m_Father: {fileID: 7501577992922472351}
-  m_RootOrder: 10
+  m_Father: {fileID: 7501577993954707666}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &793619623017131815
 MonoBehaviour:
@@ -55,9 +55,10 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 7501577994330851196}
   noQuit: {fileID: 7501577993543655110}
-  CycleDelay: 0.05
-  standard: {r: 0.5294118, g: 0.5411765, b: 0.5411765, a: 0}
-  highlighted: {r: 0.4156863, g: 0.13725491, b: 0.1254902, a: 0}
+  gameManager: {fileID: 681062664, guid: 8c352836bfa48b74aabb39edbc7ccb7b, type: 3}
+  CycleDelay: 0.2
+  standard: {r: 0.9579922, g: 0.9811321, b: 0.9811321, a: 0}
+  highlighted: {r: 0.05660379, g: 0.004087972, b: 0.0018689941, a: 0}
 --- !u!1 &813695020888589006
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,7 +239,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7501577992922472351}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1386,7 +1387,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7501577992922472351}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1771,7 +1772,7 @@ RectTransform:
   m_Children:
   - {fileID: 4510901682339683654}
   m_Father: {fileID: 7501577993954707666}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1917,7 +1918,6 @@ RectTransform:
   - {fileID: 7501577994749642309}
   - {fileID: 7501577995000227062}
   - {fileID: 7501577993351678018}
-  - {fileID: 5241980469298555979}
   - {fileID: 7501577993943784005}
   - {fileID: 1395604583227170998}
   - {fileID: 8879993714623488265}
@@ -2746,7 +2746,7 @@ RectTransform:
   m_Children:
   - {fileID: 7501577994838461741}
   m_Father: {fileID: 7501577993954707666}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2867,6 +2867,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
@@ -3528,6 +3529,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
@@ -3548,7 +3550,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7501577993305806430
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4000,6 +4002,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
@@ -4157,6 +4160,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
@@ -4564,7 +4568,7 @@ RectTransform:
   m_Children:
   - {fileID: 7501577993151639959}
   m_Father: {fileID: 7501577993954707666}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4685,6 +4689,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
@@ -5769,7 +5774,7 @@ RectTransform:
   - {fileID: 7501577993543655096}
   - {fileID: 7501577994330851198}
   m_Father: {fileID: 7501577992922472351}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6003,6 +6008,7 @@ RectTransform:
   m_LocalScale: {x: 2.550353, y: 1.0776459, z: 0.5747145}
   m_Children:
   - {fileID: 7642750802994646270}
+  - {fileID: 5241980469298555979}
   - {fileID: 7501577993166263572}
   - {fileID: 7501577994874372782}
   - {fileID: 7501577993700178596}
@@ -6248,7 +6254,7 @@ RectTransform:
   m_Children:
   - {fileID: 7501577993103552172}
   m_Father: {fileID: 7501577993954707666}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6729,6 +6735,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
@@ -6840,7 +6847,7 @@ RectTransform:
   m_Children:
   - {fileID: 7501577992996979786}
   m_Father: {fileID: 7501577993954707666}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6961,6 +6968,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
@@ -7873,7 +7881,7 @@ RectTransform:
   m_Children:
   - {fileID: 7501577993267132989}
   m_Father: {fileID: 7501577993954707666}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -7994,6 +8002,7 @@ MonoBehaviour:
   quit: {fileID: 0}
   yesQuit: {fileID: 0}
   noQuit: {fileID: 0}
+  gameManager: {fileID: 0}
   CycleDelay: 0
   standard: {r: 0, g: 0, b: 0, a: 0}
   highlighted: {r: 0, g: 0, b: 0, a: 0}
