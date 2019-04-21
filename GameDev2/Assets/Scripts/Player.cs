@@ -664,7 +664,7 @@ public class Player : MonoBehaviour
                         }
                         else
                         {
-                            anim.SetBool("Running", false);
+                            //anim.SetBool("Running", false);
                             if (speed > runSpeed)
                             {
                                 temp = speed;
@@ -672,6 +672,10 @@ public class Player : MonoBehaviour
                                 runSpeed = temp;
                             }
                         }
+                        if (Mathf.Abs(directionalInput.x * speed) > runSpeed)
+                            anim.SetBool("Running", true);
+                        else
+                            anim.SetBool("Running", false);
                         //Jump when space is pressed
                         if (Input.GetButtonDown("Jump"))
                         {
@@ -929,10 +933,6 @@ public class Player : MonoBehaviour
 
         }
         anim.SetBool("Swinging", isSwinging);
-        if (Mathf.Abs(directionalInput.x * speed) > runSpeed)
-            anim.SetBool("Running", true);
-        else
-            anim.SetBool("Running", false);
     }
 
     //private void OnCollisionEnter2D(Collision2D collision)
