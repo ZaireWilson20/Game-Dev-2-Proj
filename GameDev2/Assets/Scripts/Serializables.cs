@@ -135,7 +135,7 @@ public class DialogueData
         {
             if (conversationData[i]._name == sceneName)
             {
-                Debug.Log("Set " + sceneName + " to " + state);
+                //Debug.Log("Set " + sceneName + " to " + state);
                 conversationData[i].on = state;
                 return;
             }
@@ -188,6 +188,7 @@ public class DoorData
         public bool unlocked;
         public string _name;
         public bool _active;
+        public bool barrierOpened = false; 
     }
     public List<DoorsState> doors = new List<DoorsState>(); 
     public void SetDoorState(string doorName, bool state)
@@ -251,6 +252,29 @@ public class DoorData
             if (d._name == doorName)
             {
                 return d._active;
+            }
+        }
+        return false; 
+    }
+
+    public void SetBarrierOpen(string doorName)
+    {
+        foreach (DoorsState d in doors)
+        {
+            if (d._name == doorName)
+            {
+                d.barrierOpened = true;
+            }
+        }
+    }
+
+    public bool GetBarrierOpen(string doorName)
+    {
+        foreach (DoorsState d in doors)
+        {
+            if (d._name == doorName)
+            {
+                return d.barrierOpened;
             }
         }
         return false; 

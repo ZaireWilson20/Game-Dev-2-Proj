@@ -7,6 +7,7 @@ public class PlayerInventory : MonoBehaviour
 
     public List<InventoryItem> completeInventory = new List<InventoryItem>();
     public int _size = 0; 
+    
     // Start is called before the first frame update
     void Start()
     {

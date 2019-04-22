@@ -710,10 +710,21 @@ public class Player : MonoBehaviour
                     }
 
                     //TELEPORT LOGIC
+                    
                     if (timeSinceLastTp > tpCooldown && !powerset)
                     {
+                        if (Input.GetButton("Run"))
+                        {
+                            Debug.Log(mUtility.name);
+                            if (Input.GetButtonDown("Utility"))
+                            {
+                                Debug.Log("Pressing Teleport button while running");
+                            }
+                        }
+                        //Debug.Log("in dis bitch");
                         if (Input.GetButtonDown("Utility") && mUtility.name == "teleport")
                         {
+                            Debug.Log("TELEPORTING");
                             //Handle teleport
                             float angle = tpDirection();
                             //Debug.Log(angle);
