@@ -364,6 +364,66 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7501577993372943396, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: background
+      value: 
+      objectReference: {fileID: 2005793905}
+    - target: {fileID: 7501577994401447109, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
+    - target: {fileID: 7501577993700178595, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
+    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
+    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1828598571}
+    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: resume
+      value: 
+      objectReference: {fileID: 954003273}
+    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 1941395585}
+    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: inventory
+      value: 
+      objectReference: {fileID: 1774510206}
+    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: skills
+      value: 
+      objectReference: {fileID: 389406191}
+    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: sound
+      value: 
+      objectReference: {fileID: 1708524967}
+    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: quit
+      value: 
+      objectReference: {fileID: 129993515}
+    - target: {fileID: 6362392577844072633, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7501577994942423766, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -482,41 +542,6 @@ PrefabInstance:
     - target: {fileID: 7460849834174640625, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: resume
-      value: 
-      objectReference: {fileID: 954003273}
-    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: map
-      value: 
-      objectReference: {fileID: 1941395585}
-    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: inventory
-      value: 
-      objectReference: {fileID: 1774510206}
-    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: skills
-      value: 
-      objectReference: {fileID: 389406191}
-    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: sound
-      value: 
-      objectReference: {fileID: 1708524967}
-    - target: {fileID: 793619623017131815, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: quit
-      value: 
-      objectReference: {fileID: 129993515}
-    - target: {fileID: 6362392577844072633, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -3153,6 +3178,11 @@ PrefabInstance:
         type: 3}
       propertyPath: otherDoor.y
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 3492399625510985572, guid: 8031265919a0ce144810472045e9b521,
+        type: 3}
+      propertyPath: needsKey
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8031265919a0ce144810472045e9b521, type: 3}

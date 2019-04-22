@@ -189,11 +189,14 @@ public class SimpleHostile : MonoBehaviour
         Vector2 dest = player.transform.position;
         Vector2 angle = dest - origin;
         angle.Normalize();
-        int layerMask = ~(LayerMask.GetMask("Hostile"));
+        int layerMask = ~(LayerMask.GetMask("Hostile")) + ~(LayerMask.GetMask("Map"));
+        
         RaycastHit2D hit = Physics2D.Raycast(origin, angle, shootRadius, layerMask);
         Debug.DrawLine(new Vector2(transform.position.x, transform.position.y), hit.point);
 
+        //Debug.Log("Hostile hitting layer: " + hit.collider.gameObject.layer);
         //check if player in line of sight
+        
         if (hit.collider == null)
         {
             Debug.Log("null");
@@ -321,6 +324,7 @@ public class SimpleHostile : MonoBehaviour
                     {
                         nextFire = fireTime + fireRate;
                         newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+                        Debug.Log("Flower Fired");
                         //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
                         //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
                         newProjectile.SetActive(true);
@@ -340,7 +344,7 @@ public class SimpleHostile : MonoBehaviour
             }
 
             //travel towards destination if not within 0.1 of target
-            if (!frozen && Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead && !pa_script.pa_inConvo)
+            if (!frozen && Mathf.Abs(transform.position.x - destination.x) > 0.1f && !dead)
             {
                 //Debug.Log("moving");
                 lastDir = direction;
