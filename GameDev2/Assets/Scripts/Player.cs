@@ -312,7 +312,7 @@ public class Player : MonoBehaviour
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
         spawnPosition = localPlayerData.spawnPosition;
-        pointpickups = localPlayerData.pointpickups;
+        //pointpickups = localPlayerData.pointpickups;
         //pointToSpawn = localPlayerData.posToSpawn; 
         //foreach(SpawnPoint p in spawnPoints)
         //{
@@ -379,11 +379,11 @@ public class Player : MonoBehaviour
             mPowerDict = GlobalControl.Instance.savedPlayer.mUtils;
         }
 
-        for (int i = 0; i < pointpickups.Count; ++i)
-        {
-            if (pointpickups[i] != null)
-                pointpickups[i].SetActive(false);
-        }
+        //for (int i = 0; i < pointpickups.Count; ++i)
+        //{
+        //    if (pointpickups[i] != null)
+        //        pointpickups[i].SetActive(false);
+        //}
 
         pSetCont.SetMPowerImg(mUtility.name);
         pSetCont.SetMWeaponImg(mWeapon.name);
