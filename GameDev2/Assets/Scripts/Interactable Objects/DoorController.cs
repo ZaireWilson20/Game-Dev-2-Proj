@@ -8,8 +8,9 @@ public class DoorController : MonoBehaviour
     public GameObject playerObj;
     PlayerInventory pa_inv;
     public string doorName;
-    bool playerInRange;
+    public bool playerInRange;
     public bool needsKey;
+    public bool isBarrier; 
     public string[] keysNeeded;
     public GameObject notifObj;
     public bool opened; 
@@ -21,11 +22,13 @@ public class DoorController : MonoBehaviour
     public bool startActive = true;
     public string nextLevelSpawnPoint; 
     public Vector2 otherDoor;
+    Animator anim; 
     // Start is called before the first frame update
     void Start()
     {
         pa_inv = playerObj.GetComponent<PlayerInventory>();
         player = playerObj.GetComponent<Player>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -36,6 +39,10 @@ public class DoorController : MonoBehaviour
             
             needsKey = GlobalControl.Instance.savedDoors.GetUnlocked(doorName);
             gameObject.SetActive(GlobalControl.Instance.savedDoors.GetActive(doorName));
+            if (isBarrier)
+            {
+                opened = GlobalControl.Instance.savedDoors.GetBarrierOpen(doorName);
+            }
         }
         else
         {
@@ -44,13 +51,13 @@ public class DoorController : MonoBehaviour
             GlobalControl.Instance.savedDoors.AddDoor(doorName, needsKey, startActive);
             gameObject.SetActive(startActive);
         }
-        if (playerInRange && Input.GetButtonDown("Pickup") && !needsKey)
+        if (playerInRange && Input.GetButtonDown("Pickup") && !needsKey && !isBarrier)
         {
             //Debug.Log("Open Door");
             opened = true; 
             OpenDoor();
         }
-        else if(playerInRange && Input.GetButtonDown("Pickup") && needsKey)
+        else if(playerInRange && Input.GetButtonDown("Pickup") && needsKey && !isBarrier)
         {
             bool hasKey = false; 
             foreach (string k in keysNeeded) {
@@ -64,13 +71,36 @@ public class DoorController : MonoBehaviour
                 OpenDoor();
             }
         }
+        else if(isBarrier && opened)
+        {
+            anim.SetTrigger("BarrierOpened");
+        }
+        else if(playerInRange && Input.GetButtonDown("Pickup") && needsKey && isBarrier)
+        {
+            bool hasKey = false;
+            foreach (string k in keysNeeded)
+            {
+                hasKey = pa_inv.CheckInventory(k);
+                if (!hasKey) {
+                    Debug.Log("No Key");
+                    break; }
+            }
+            if (hasKey)
+            {
+                //Debug.Log("Door Open, " +  + " in inventory.");
+                opened = true;
+                anim.SetTrigger("OpenBarrier");
+                GlobalControl.Instance.savedDoors.SetBarrierOpen(doorName);
+            }
+        }
+
     }
 
 
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.tag == "Player" && !isBarrier)
         {
             playerInRange = true;
             notifObj.SetActive(true);
@@ -79,7 +109,7 @@ public class DoorController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(collision.tag == "Player")
+        if(collision.tag == "Player" && !isBarrier)
         {
             playerInRange = false;
             notifObj.SetActive(false);
