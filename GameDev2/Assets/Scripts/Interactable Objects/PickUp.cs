@@ -127,6 +127,10 @@ public class PickUp : MonoBehaviour
         }
     }
 
+    public void SavePickup()
+    {
+
+    }
     //public void Copy(PickUp)
     //{
 

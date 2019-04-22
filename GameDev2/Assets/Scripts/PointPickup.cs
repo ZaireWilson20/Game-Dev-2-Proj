@@ -49,4 +49,9 @@ public class PointPickup : MonoBehaviour
             this.gameObject.SetActive(false);
         }
     }
+
+    public void SavePointPickup()
+    {
+
+    }
 }

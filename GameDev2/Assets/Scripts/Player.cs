@@ -423,7 +423,7 @@ public class Player : MonoBehaviour
     {
         //save important scene details before leaving
         localScene.lastScene = SceneManager.GetActiveScene().name;
-        SavePickupData();
+        //SavePickupData();
         Debug.Log("Saved scene");
         GlobalControl.Instance.savedScene = localScene;
     }
