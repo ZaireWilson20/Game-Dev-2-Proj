@@ -135,7 +135,7 @@ public class DialogueData
         {
             if (conversationData[i]._name == sceneName)
             {
-                Debug.Log("Set " + sceneName + " to " + state);
+                //Debug.Log("Set " + sceneName + " to " + state);
                 conversationData[i].on = state;
                 return;
             }
