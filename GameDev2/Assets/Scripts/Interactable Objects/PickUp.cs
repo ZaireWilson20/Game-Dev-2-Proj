@@ -13,6 +13,7 @@ public class PickUp : MonoBehaviour
     public bool isKey;
     public bool isPowerUp;
     private GainedUpgrade notif;
+    private bool pickedup = false;
 
     
     // Start is called before the first frame update
@@ -21,6 +22,8 @@ public class PickUp : MonoBehaviour
         playerInv = playerRef.GetComponent<PlayerInventory>();
         playerScript = playerRef.GetComponent<Player>();
         notif = FindObjectOfType<GainedUpgrade>();
+        if (pickedup)
+            this.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -34,7 +37,8 @@ public class PickUp : MonoBehaviour
                 {
                     Debug.Log("I'm picking up shit");
                     playerInv.AddToInv(this.GetComponent<PickUp>());
-                    Destroy(this.gameObject);
+                    pickedup = true;
+                    this.gameObject.SetActive(false);
                 }
                 else
                 {
@@ -94,7 +98,8 @@ public class PickUp : MonoBehaviour
                     if (foundItem)
                     {
                         notif.newNotif(_name);
-                        Destroy(this.gameObject);
+                        pickedup = true;
+                        this.gameObject.SetActive(false);
                     }
                 }
             }
@@ -122,6 +127,10 @@ public class PickUp : MonoBehaviour
         }
     }
 
+    public void SavePickup()
+    {
+
+    }
     //public void Copy(PickUp)
     //{
 

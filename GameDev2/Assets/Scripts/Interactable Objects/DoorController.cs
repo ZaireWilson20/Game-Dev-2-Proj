@@ -124,6 +124,7 @@ public class DoorController : MonoBehaviour
         //player.pointToSpawn = nextLevelSpawnPoint;
         Debug.Log(otherDoor);
         player.SavePlayer();
+        player.SaveSceneData();
         levelSwitch.FadeToLevel(levelGoingTo);
         //}
     }

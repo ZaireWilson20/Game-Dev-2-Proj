@@ -190,7 +190,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pa_playerRef: {fileID: 560668984}
-  pa_DeadZone: {fileID: 0}
 --- !u!114 &517684960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,16 +559,16 @@ MonoBehaviour:
   hasAirdash: 0
   isSwinging: 0
   ropeHook: {x: 0, y: 0}
-  swingForce: 4
+  swingForce: 8
   tpDistance: 3
-  tpCooldown: 1
+  tpCooldown: 0.5
   reflectCooldown: 4
-  AGTimer: 0
+  AGTimer: 1
   points: 0
   canSwitch: 0
   floorMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1573120
   powerset: 0
   velocity: {x: 0, y: 0, z: 0}
   pa_inConvo: 0
@@ -577,6 +576,9 @@ MonoBehaviour:
   doneShooting: 0
   gameManagerObj: {fileID: 0}
   levelName: Hub
+  spawnPosition: {x: 0, y: 0, z: 0}
+  pointToSpawn: 
+  pointpickups: []
   healthObj: {fileID: 0}
   pSetObj: {fileID: 0}
 --- !u!95 &560668986
@@ -622,7 +624,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8453036f8ec6546ae1afca1ed4d4b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  completeInventory: []
   _size: 0
 --- !u!1 &635132162
 GameObject:

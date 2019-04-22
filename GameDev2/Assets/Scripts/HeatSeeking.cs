@@ -22,6 +22,7 @@ public class HeatSeeking : EnemyProjectile
             Debug.Log("hit!");
             Player pscript = contact.GetComponent<Player>();
             pscript.takeDamage(damage, direction);
+            Destroy(this.gameObject);
         }
 
         if (contact.layer == 8 || contact.layer == 18)

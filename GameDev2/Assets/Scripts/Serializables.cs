@@ -7,6 +7,7 @@ public class PlayerData
 {
     public float playerHealth = 5;
     public int playerHealthCap = 5; //absolute max health is 8
+    public List<GameObject> pointpickups = new List<GameObject>();
     public int points = 0;
     public bool canSwitch = false;
     public Vector3 spawnPosition = new Vector3(8, 0, 0);
@@ -280,4 +281,3 @@ public class DoorData
         return false; 
     }
 }
-
