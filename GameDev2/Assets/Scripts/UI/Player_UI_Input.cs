@@ -10,7 +10,7 @@ public class Player_UI_Input : MonoBehaviour
     public GameObject invObj;
 
     //  Game Manager
-    public GameObject gameManagerObj;
+    //private GameObject gameManagerObj;
     private GameState gameManager;
 
 
@@ -29,7 +29,7 @@ public class Player_UI_Input : MonoBehaviour
         menu.SetActive(false);
         map.SetActive(false);
         invObj.SetActive(false);
-        gameManager = gameManagerObj.GetComponent<GameState>();
+        gameManager = gameObject.GetComponent<GameState>();
     }
 
     // Update is called once per frame
