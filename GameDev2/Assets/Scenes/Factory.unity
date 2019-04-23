@@ -42799,7 +42799,7 @@ PrefabInstance:
     - target: {fileID: 7501577992922472339, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 856098561649505939, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
@@ -64929,13 +64929,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2394122839336951497, guid: 83c7f728ce5013948877e0181ca20bb6,
         type: 3}
+      propertyPath: keysNeeded.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2394122839336951497, guid: 83c7f728ce5013948877e0181ca20bb6,
+        type: 3}
       propertyPath: playerObj
       value: 
       objectReference: {fileID: 2048567560}
     - target: {fileID: 2394122839336951497, guid: 83c7f728ce5013948877e0181ca20bb6,
         type: 3}
       propertyPath: needsKey
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2394122839336951497, guid: 83c7f728ce5013948877e0181ca20bb6,
         type: 3}
@@ -64971,6 +64976,11 @@ PrefabInstance:
         type: 3}
       propertyPath: otherDoor.y
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2394122839336951497, guid: 83c7f728ce5013948877e0181ca20bb6,
+        type: 3}
+      propertyPath: keysNeeded.Array.data[0]
+      value: ToCastlePart1
       objectReference: {fileID: 0}
     - target: {fileID: 7386237033091418727, guid: 83c7f728ce5013948877e0181ca20bb6,
         type: 3}
