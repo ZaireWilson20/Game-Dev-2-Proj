@@ -189,7 +189,7 @@ public class SimpleHostile : MonoBehaviour
         Vector2 dest = player.transform.position;
         Vector2 angle = dest - origin;
         angle.Normalize();
-        int layerMask = ~(LayerMask.GetMask("Hostile")) + ~(LayerMask.GetMask("Map"));
+        int layerMask = ~(LayerMask.GetMask("Hostile")) + ~(LayerMask.GetMask("Map")) + ~(LayerMask.GetMask("Reflect"));
         
         RaycastHit2D hit = Physics2D.Raycast(origin, angle, shootRadius, layerMask);
         Debug.DrawLine(new Vector2(transform.position.x, transform.position.y), hit.point);
