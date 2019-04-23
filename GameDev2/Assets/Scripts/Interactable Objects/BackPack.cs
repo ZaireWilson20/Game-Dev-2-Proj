@@ -8,8 +8,15 @@ public class BackPack : MonoBehaviour
     public Image[] allItems;
     public GameObject p_inventory;
     private PlayerInventory invScript;
-    private int count; 
-    
+    private int count;
+    public GameObject menu;
+
+    private void Close()
+    {
+        menu.SetActive(true);
+        menu.GetComponentInChildren<PauseMenu>().backToMenu();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +32,11 @@ public class BackPack : MonoBehaviour
             allItems[count - 1].gameObject.SetActive(true);
             allItems[count - 1].sprite = invScript.completeInventory[invScript._size - 1].invSprite;          
         }
-      
+
+        if (Input.GetButtonDown("Click"))
+        {
+            Close();
+        }
+
     }
 }
