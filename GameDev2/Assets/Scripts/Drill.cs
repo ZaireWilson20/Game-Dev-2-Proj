@@ -57,6 +57,10 @@ public class Drill : Projectile
             base.Update();
 
         }
+        if (rb.velocity.x < 0f)
+            this.sprite.flipX = false;
+        else
+            this.sprite.flipX = true;
         //Debug.Log(velocity);
         if (health <= 0)
         {

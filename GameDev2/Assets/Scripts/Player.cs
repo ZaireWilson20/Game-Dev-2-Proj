@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
             else
                 vec = new Vector2(0, airdashSpeed * -1f);
         }
-        Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
+        //Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
     }
 
@@ -306,7 +306,7 @@ public class Player : MonoBehaviour
             gameObject.SetActive(false);
         }
         localPlayerData = GlobalControl.Instance.savedPlayer;
-        Debug.Log(pointToSpawn);
+        //Debug.Log(pointToSpawn);
         health = localPlayerData.playerHealth;
         health_max = localPlayerData.playerHealthCap;
         points = localPlayerData.points;
@@ -681,7 +681,7 @@ public class Player : MonoBehaviour
                         {
                             rig2D.velocity = new Vector2(rig2D.velocity.x, jumpHeight);
                             jumping = true;
-                            Debug.Log("I jumped");
+                            //Debug.Log("I jumped");
                         }
                         else if (Input.GetButtonUp("Jump"))
                         {
@@ -706,7 +706,7 @@ public class Player : MonoBehaviour
                             airdashTime = .3f;
                             this.airdashDirection = calculateAirdashVector();
                             anim.SetTrigger("AirDash");
-                            Debug.Log("Air Dashing");
+                           //Debug.Log("Air Dashing");
                         }
                     }
 
@@ -739,10 +739,10 @@ public class Player : MonoBehaviour
                     {
                         if (Input.GetButton("Run"))
                         {
-                            Debug.Log(mUtility.name);
+                            //Debug.Log(mUtility.name);
                             if (Input.GetButtonDown("Utility"))
                             {
-                                Debug.Log("Pressing Teleport button while running");
+                                //Debug.Log("Pressing Teleport button while running");
                             }
                         }
                         //Debug.Log("in dis bitch");
