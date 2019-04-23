@@ -36,6 +36,8 @@ public class PointPickup : MonoBehaviour
                 else if (((player.points + PickupValue) / 15) % 3 == 2)
                 {
                     upNotif.newNotif("health");
+                    GlobalControl.Instance.savedPlayer.playerHealthCap++;
+                    player.GetComponent<Player>().IncreaseHealth();
                 }
                 else if (((player.points + PickupValue) / 15) % 3 == 1)
                 {
