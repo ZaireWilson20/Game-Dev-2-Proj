@@ -14,14 +14,20 @@ public class PickUp : MonoBehaviour
     public bool isPowerUp;
     private GainedUpgrade notif;
     private bool pickedup = false;
-
-    
+    public bool isMagicKey;
+    Animator anim; 
     // Start is called before the first frame update
     void Start()
     {
+        if (isKey)
+        {
+            anim = GetComponent<Animator>();
+            anim.SetBool("MagicKey", isMagicKey);
+        }
         playerInv = playerRef.GetComponent<PlayerInventory>();
         playerScript = playerRef.GetComponent<Player>();
         notif = FindObjectOfType<GainedUpgrade>();
+
         if (pickedup)
             this.gameObject.SetActive(false);
     }
