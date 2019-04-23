@@ -281,3 +281,28 @@ public class DoorData
         return false; 
     }
 }
+
+public class PickupData
+{
+    public List<PickUp> powersAndKeys = new List<PickUp>();
+    public List<PointPickup> pointPickups = new List<PointPickup>();
+    public PowerSwitchPickup powerSwitch;
+
+    public bool InPickupList(PickUp pickup)
+    {
+        foreach (PickUp p in powersAndKeys)
+            if (pickup._name == p._name)
+                return true;
+        return false;
+    }
+
+    public bool InPointList(PointPickup pointpickup)
+    {
+        foreach (PointPickup p in pointPickups)
+            if (pointpickup.name == p.name)
+            {
+                return true;
+            }
+        return false;
+    }
+}

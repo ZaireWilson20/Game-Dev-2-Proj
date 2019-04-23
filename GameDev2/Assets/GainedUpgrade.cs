@@ -8,6 +8,11 @@ public class GainedUpgrade : MonoBehaviour
     private float notifTimer = 0f;
     public TMP_Text text;
 
+    public void Start()
+    {
+        text.gameObject.SetActive(false);
+    }
+
     public void newNotif(string name)
     {
         text.SetText("Gained " + name + " power");

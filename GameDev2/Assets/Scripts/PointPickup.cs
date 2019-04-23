@@ -11,6 +11,8 @@ public class PointPickup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (GlobalControl.Instance.savedPickups.InPointList(this))
+            ;
         if (pickedup)
             this.gameObject.SetActive(false);
         upNotif = FindObjectOfType<GainedUpgrade>();
