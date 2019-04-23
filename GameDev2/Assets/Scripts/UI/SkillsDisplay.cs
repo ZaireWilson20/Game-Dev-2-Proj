@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SkillsDisplay : MonoBehaviour
 {
     private GameObject playerObj;
+    public GameObject menu;
     private Player playerScript;
     int sci_amount_active = 0;
     int mag_amount_active = 0;
@@ -17,6 +18,12 @@ public class SkillsDisplay : MonoBehaviour
     {
         playerObj = GameObject.FindGameObjectWithTag("Player");
         playerScript = playerObj.GetComponent<Player>();
+    }
+
+    private void Close()
+    {
+        menu.SetActive(true);
+        menu.GetComponentInChildren<PauseMenu>().backToMenu();
     }
 
     // Update is called once per frame
@@ -87,6 +94,10 @@ public class SkillsDisplay : MonoBehaviour
                 }
                 mag_amount_active++;
             }
+        }
+        if (Input.GetButtonDown("Click"))
+        {
+            Close();
         }
     }
 }
