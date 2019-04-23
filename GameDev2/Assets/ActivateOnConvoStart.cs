@@ -16,15 +16,6 @@ public class ActivateOnConvoStart : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (npc.playConvo)
-        {
-            gameObject.SetActive(true);
-        }
-        else
-        {
-            //Debug.Log("Set to false");
-            gameObject.SetActive(false);
 
-        }
     }
 }

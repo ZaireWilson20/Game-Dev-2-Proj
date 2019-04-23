@@ -52,9 +52,9 @@ public class NpcDialogue : MonoBehaviour
     public bool destroyOnDone;
     public bool waitingOn;
     public GameObject npcWaitingOn;
-    public NpcDialogue npcWO;
+    private NpcDialogue npcWO;
 
-    public enum diaType { automated, triggered, restriction, pop_up, other };
+    public enum diaType { automated, triggered, restriction, pop_up, collision, prevConvoTrig, other };
 
     public void CopySaved(NpcDialogue other)
     {
@@ -92,6 +92,10 @@ public class NpcDialogue : MonoBehaviour
     void Start()
     {
         dialogueController = GetComponent<DialogueController>();
+        if(convoType == diaType.prevConvoTrig)
+        {
+            npcWO = npcWaitingOn.GetComponent<NpcDialogue>();
+        }
         if (GlobalControl.Instance.savedDialogue.InList(sceneName))
         {
 
@@ -283,10 +287,69 @@ public class NpcDialogue : MonoBehaviour
                 }
             }
         }
-        else
+        else if(convoType == diaType.collision && GetComponent<SceneTrigger>().playerCollided && !finReading && !hasBeenRead) //Dialogue through collisions
         {
+            if (!npc_inConvo)   //Start Convo
+            {
+                pa_script.pa_inConvo = true;
+                npc_inConvo = true;
+                dialogueController.DisplayText(npc_convos);
+            }
+            else if (Input.GetButtonDown("Pickup") && npc_inConvo && dialogueController.doneSentence) // Press Space to continue conversation
+            {
+                dialogueController.doneSentence = false;
+                bool inC = dialogueController.nextLine();
+                pa_script.pa_inConvo = inC;
+                npc_inConvo = inC;
+                //npc_onTrigger.dia_inConvo = inC;
+                if (!npc_inConvo)
+                {
+                    gameState.paused = false;
+                    if (gameObject.name == "Castle2")
+                    {
+                        Debug.Log("Level Trans");
+                        levelSwitch.MoveCharacterInScene();
+                    }
+
+                    finishAuto = true;
+                    hasBeenRead = true;
+                    GlobalControl.Instance.savedDialogue.SaveDialogue(sceneName, dialogueController.currentLine, hasBeenRead);
+                    //GlobalControl.Instance.savedDialogue = localData;
+                }
+            }
         }
-        if (hasBeenRead && destroyOnDone)
+        else if(convoType == diaType.prevConvoTrig && npcWO.hasBeenRead && !finReading && !hasBeenRead)
+        {
+            if (!npc_inConvo)   //Start Convo
+            {
+                pa_script.pa_inConvo = true;
+                npc_inConvo = true;
+                dialogueController.DisplayText(npc_convos);
+            }
+            else if (Input.GetButtonDown("Pickup") && npc_inConvo && dialogueController.doneSentence) // Press Space to continue conversation
+            {
+                dialogueController.doneSentence = false;
+                bool inC = dialogueController.nextLine();
+                pa_script.pa_inConvo = inC;
+                npc_inConvo = inC;
+                //npc_onTrigger.dia_inConvo = inC;
+                if (!npc_inConvo)
+                {
+                    gameState.paused = false;
+                    if (gameObject.name == "Castle2")
+                    {
+                        Debug.Log("Level Trans");
+                        levelSwitch.MoveCharacterInScene();
+                    }
+
+                    finishAuto = true;
+                    hasBeenRead = true;
+                    GlobalControl.Instance.savedDialogue.SaveDialogue(sceneName, dialogueController.currentLine, hasBeenRead);
+                    //GlobalControl.Instance.savedDialogue = localData;
+                }
+            }
+        }
+        if (hasBeenRead && destroyOnDone && GetComponent<SceneTrigger>().scenesActivated)
         {
             levelSwitch.StartDestroy(this.gameObject);
             //DestroyOnConvoDone();

@@ -15,7 +15,7 @@ public class SceneTrigger : MonoBehaviour
     private Player playerScript; 
     public bool turnsOffScenes;
     public bool turnOnScenes;
-    private bool playerCollided;
+    public bool playerCollided;
     public GameObject[] convosInSceneToActivate; 
     
 
@@ -28,7 +28,8 @@ public class SceneTrigger : MonoBehaviour
     public ConversationTrigger turnOffConvo;
     public ConversationTrigger[] convosToActivate;
     public GameObject npcObj;
-    private NpcDialogue npc; 
+    private NpcDialogue npc;
+    public bool scenesActivated = false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -79,7 +80,7 @@ public class SceneTrigger : MonoBehaviour
         }
         else if(trigType == requirements.other && npc.hasBeenRead)
         {
-            TriggerScene();
+            //TriggerScene();
             foreach (GameObject c in convosInSceneToActivate)
             {
 
@@ -90,7 +91,9 @@ public class SceneTrigger : MonoBehaviour
                 Debug.Log("setting " + c.sceneName + " to true");
                 GlobalControl.Instance.savedDialogue.SetState(c.sceneName, true);
             }
+            scenesActivated = true;
         }
+        
     }
 
     public void TriggerScene()
