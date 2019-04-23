@@ -34,11 +34,11 @@ public class PauseMenu : MonoBehaviour
     //private GameObject manager;
     //private Player_UI_Input gmScript;
 
-    public float CycleDelay = 0.0f;     //time between button cycling
+    public float CycleDelay = 0.2f;     //time between button cycling
     private float timer = 0.0f;
 
-    public Color standard;
-    public Color highlighted;
+    public Sprite standard;
+    public Sprite highlighted;
 
     // Start is called before the first frame update
     void Start()
@@ -56,17 +56,17 @@ public class PauseMenu : MonoBehaviour
         //GameObject[] tempList = GameObject.FindGameObjectsWithTag("Button");
         //foreach(GameObject g in tempList) { 
         resume = GameObject.Find("Resume").GetComponent<Button>();
-        resume.GetComponent<Image>().color = highlighted;
+        //resume.GetComponent<Image>().sprite = highlighted;
         map = GameObject.Find("MapButton").GetComponent<Button>();
-        map.GetComponent<Image>().color = standard;
+        //map.GetComponent<Image>().sprite = standard;
         inventory = GameObject.Find("InventoryPause").GetComponent<Button>();
-        inventory.GetComponent<Image>().color = standard;
+        //inventory.GetComponent<Image>().sprite = standard;
         skills = GameObject.Find("Skills").GetComponent<Button>();
-        skills.GetComponent<Image>().color = standard;
+        //skills.GetComponent<Image>().sprite = standard;
         sound = GameObject.Find("Sound").GetComponent<Button>();
-        sound.GetComponent<Image>().color = standard;
+        //sound.GetComponent<Image>().sprite = standard;
         quit = GameObject.Find("Quit").GetComponent<Button>();
-        quit.GetComponent<Image>().color = standard;
+        //quit.GetComponent<Image>().sprite = standard;
         //    }
         //noQuit = GameObject.Find("NoQuit").GetComponent<Button>();
         //yesQuit = GameObject.Find("YesQuit").GetComponent<Button>();
@@ -126,16 +126,16 @@ public class PauseMenu : MonoBehaviour
             {
                 for (int j = 0; j < 2; j++)
                 {
-                    //Debug.Log("(" + i + ", " + j + ")");
-                    //Debug.Log("button: " + buttons[i, j].gameObject.name);
+                    Debug.Log("(" + i + ", " + j + ")");
+                    Debug.Log("button: " + buttons[i, j].gameObject.name);
                     if (buttons[i, j] == b)
                     {
                         //buttons[i, j].GetComponent<Image>().color = highlighted;
-                        buttons[i, j].GetComponent<Image>().enabled = false;
+                        buttons[i, j].GetComponent<Image>().sprite = highlighted;
                     } else
                     {
                         //buttons[i, j].GetComponent<Image>().color = standard;
-                        buttons[i, j].GetComponent<Image>().enabled = true;
+                        buttons[i, j].GetComponent<Image>().sprite = standard;
                     }
                 }
             }
@@ -144,17 +144,20 @@ public class PauseMenu : MonoBehaviour
             foreach (Button btn in confirmButtons)
             {
                 if (btn == b)
-                    btn.GetComponent<Image>().color = highlighted;
+                    btn.GetComponent<Image>().sprite = highlighted;
                 else
-                    btn.GetComponent<Image>().color = standard;
+                    btn.GetComponent<Image>().sprite = standard;
             }
         }
+        Debug.Log("selected: " + selected.gameObject.name);
 
     }
 
     public void activateInv()
     {
         Debug.Log("Pressed Inv");
+        //Debug.Log("activeself: " + ui_Inventory.activeSelf);
+        //Debug.Log("activehierarchy: " + ui_Inventory.activeInHierarchy);
         if (ui_Inventory.activeSelf)
         {
             ui_Inventory.SetActive(false);
@@ -196,7 +199,7 @@ public class PauseMenu : MonoBehaviour
     {
         confirm = false;
         selected = resume;
-        //Highlight(selected);
+        Highlight(selected);
         ui_Inventory.SetActive(false);
         ui_Quit.SetActive(false);
         menu.SetActive(true);

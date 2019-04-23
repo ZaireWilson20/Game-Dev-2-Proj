@@ -18,21 +18,21 @@ public class MenuButtons : MonoBehaviour
     public float CycleDelay = 0.0f;     //time between button cycling
     private float timer = 0.0f;
 
-    public Color standard;
-    public Color highlighted;
+    public Sprite standard;
+    public Sprite highlighted;
 
     //Start is called before the first frame update
     void Start()
     {
         //collect the buttons
         play = GameObject.Find("PlayButton").GetComponent<Button>();
-        play.GetComponent<Image>().color= highlighted;
+        play.GetComponent<Image>().sprite= highlighted;
         quit = GameObject.Find("QuitButton").GetComponent<Button>();
-        quit.GetComponent<Image>().color = standard;
+        quit.GetComponent<Image>().sprite = standard;
         options = GameObject.Find("OptionsButton").GetComponent<Button>();
-        options.GetComponent<Image>().color = standard;
+        options.GetComponent<Image>().sprite = standard;
         controls = GameObject.Find("ControlsButton").GetComponent<Button>();
-        controls.GetComponent<Image>().color = standard;
+        controls.GetComponent<Image>().sprite = standard;
         selected = play;
 
         //compile vertical ordering of buttons
@@ -73,9 +73,9 @@ public class MenuButtons : MonoBehaviour
         foreach(Button btn in vertCycle) 
         {
             if (btn == b)
-                btn.GetComponent<Image>().color = highlighted;
+                btn.GetComponent<Image>().sprite = highlighted;
             else
-                btn.GetComponent<Image>().color = standard;
+                btn.GetComponent<Image>().sprite = standard;
         }
     }
 

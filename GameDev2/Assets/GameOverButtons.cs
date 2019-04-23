@@ -59,7 +59,7 @@ public class GameOverButtons : MonoBehaviour
     public void LoadTitleScreen()
     {
         Debug.Log("load title screen");
-        SceneManager.LoadScene("TitleScreen", LoadSceneMode.Single);
+        SceneManager.LoadScene("TitleScreenNew", LoadSceneMode.Single);
     }
 
     void Highlight(Button b)

@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class SkillsDisplay : MonoBehaviour
 {
-    public GameObject playerObj;
-    Player playerScript;
+    private GameObject playerObj;
+    private Player playerScript;
     int sci_amount_active = 0;
     int mag_amount_active = 0;
     public GameObject[] magicPowers;
@@ -15,6 +15,7 @@ public class SkillsDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerObj = GameObject.FindGameObjectWithTag("Player");
         playerScript = playerObj.GetComponent<Player>();
     }
 
