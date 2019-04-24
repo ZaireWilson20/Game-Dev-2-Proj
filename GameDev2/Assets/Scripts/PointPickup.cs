@@ -39,17 +39,18 @@ public class PointPickup : MonoBehaviour
             {
                 if (((player.points+PickupValue)/15)%3 == 0)
                 {
-                    upNotif.newNotif("airdash");
+                    upNotif.newNotif("Increased airdash distance");
                 }
                 else if (((player.points + PickupValue) / 15) % 3 == 2)
                 {
-                    upNotif.newNotif("health");
+                    upNotif.newNotif("Increase health");
                     GlobalControl.Instance.savedPlayer.playerHealthCap++;
                     player.GetComponent<Player>().IncreaseHealth();
+                    player.SetHealthMax();
                 }
                 else if (((player.points + PickupValue) / 15) % 3 == 1)
                 {
-                    upNotif.newNotif("speed");
+                    upNotif.newNotif("Speed boost");
                 }
             }
             player.points += PickupValue;
