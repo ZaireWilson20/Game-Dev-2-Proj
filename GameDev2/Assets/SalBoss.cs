@@ -42,7 +42,8 @@ public class SalBoss : MonoBehaviour
     private SpriteRenderer spr;
     public Animator anim;
 
-    public NpcDialogue npcDialogueToTurnOn; 
+    public NpcDialogue npcDialogueToTurnOn;
+    public bool startBoss; 
 
     public float GetHealth()
     {
@@ -118,6 +119,7 @@ public class SalBoss : MonoBehaviour
 
     Vector2 teleportToLocation(int Loc)
     {
+        Debug.Log("teleporting");
         Vector2 Location = new Vector2();
         if (Loc == 1)
         {
@@ -147,154 +149,162 @@ public class SalBoss : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (flash)
-        {
-            if (flashCt < flashRate)
-            {
-                flashCt++;
-            }
-            else
-            {
-                invincible = false;
-                flash = false;
-                spr.enabled = true;
-            }
-        }
 
-        //currentLocation = chooseLocation();
-        //lastAttack = chooseAttack();
-
-        //Behavior process
-        //Phase 1
-        //  1. After some time since the last attack action, teleport
-        //  2. After some time since the last teleport action, attack
-        //Phase 2
-        //  1. If teleport other than last happened, wait then teleport
-        //  2. If last teleport happened, attack
-        //  3. If attacked last, begin teleporting
-        if (!dead)
+        if (!startBoss)
         {
-            if (timeSinceLastAttack < 0f)
-            {
-                //Teleport when appropriate
-                if (timeSinceLastTeleport < 0f)
-                {
-                    currentLocation = chooseLocation();
-                    transform.position = teleportToLocation(currentLocation);
-                    timeSinceLastTeleport = timeToTeleport;
-                    numTeleports++;
-                }
-                //Phase 1 Attack/Teleport Pattern
-                if (numTeleports == 1 && phase2Health < health)
-                {
-                    numTeleports = 0;
-                    lastAttack = chooseAttack();
-                    if (lastAttack == 1)
-                    {
-                        currentLocation = chooseLocation();
-                        transform.position = teleportToLocation(currentLocation);
-                        newProjectile = Instantiate(heatSeeking, transform.position, transform.rotation) as GameObject;
-                        newProjectile.SetActive(true);
-                        Debug.Log("Heat seeking");
-                        anim.SetTrigger("Shoot");
-                    }
-                    if (lastAttack == 2)
-                    {
-                        currentLocation = 4;
-                        transform.position = teleportToLocation(4);
-                        Vector2 spawnPos = new Vector2();
-                        if ((int)(Random.value * 2) == 1) spawnPos.x = -4;
-                        else spawnPos.x = 20;
-                        spawnPos.y = -1.4f;
-                        newEnemy = Instantiate(minion, spawnPos, transform.rotation) as GameObject;
-                        newEnemy.SetActive(true);
-                        anim.SetTrigger("Summon");
-                        Debug.Log("Summon guy");
-                    }
-                    timeSinceLastAttack = timeToAttack;
-                } //Phase 2 Attack/Teleport Pattern
-                else if (numTeleports == 3 && phase2Health >= health)
-                {
-                    numTeleports = 0;
-                    lastAttack = chooseAttack();
-                    if (lastAttack == 1)
-                    {
-                        currentLocation = chooseLocation();
-                        transform.position = teleportToLocation(currentLocation);
-                        newProjectile = Instantiate(heatSeeking, transform.position, transform.rotation) as GameObject;
-                        newProjectile.SetActive(true);
-                        anim.SetTrigger("Shoot");
-                        Debug.Log("Heat seeking");
-                    }
-                    if (lastAttack == 2)
-                    {
-                        currentLocation = 4;
-                        transform.position = teleportToLocation(4);
-                        Vector2 spawnPos = new Vector2();
-                        if ((int)(Random.value * 2) == 1) spawnPos.x = -4;
-                        else spawnPos.x = 20;
-                        spawnPos.y = -1.4f;
-                        newEnemy = Instantiate(minion, spawnPos, transform.rotation) as GameObject;
-                        newEnemy.SetActive(true);
-                        anim.SetTrigger("Summon");
-                        Debug.Log("Summon guy");
-                    }
-                    if (lastAttack == 3)
-                    {
-                        currentLocation = 4;
-                        transform.position = teleportToLocation(4);
-                        newProjectile = Instantiate(fireWall1, transform.position, fireWall1.transform.rotation) as GameObject;
-                        newProjectile.SetActive(true);
-                        newProjectile = Instantiate(fireWall2, transform.position, fireWall2.transform.rotation) as GameObject;
-                        newProjectile.SetActive(true);
-                        newProjectile = Instantiate(fireWall3, transform.position, fireWall3.transform.rotation) as GameObject;
-                        newProjectile.SetActive(true);
-                        animTime = fireWallSummon;
-                        anim.SetTrigger("Summon");
-                        Debug.Log("Fire Cage");
-                    }
-                    numTeleports += (int)(Random.value * 3);
-                    Debug.Log("TP Before next attack: " + (3 - numTeleports));
-                    timeSinceLastAttack = timeToAttack;
-                }
-                timeSinceLastTeleport -= Time.deltaTime;
-                if (timeSinceLastTeleport < .4f)
-                {
-                    anim.SetTrigger("TPOut");
-                    animTime = .3f;
-                }
-            }
-        }
-        else //Boss defeat behavior
-        {
-            //ReadyDialogue();
-            GetComponent<BoxCollider2D>().isTrigger = true;
-            DestroySpawns();
-        }
-        timeSinceLastAttack -= Time.deltaTime;
-        animTime -= Time.deltaTime;
-        anim.SetFloat("AnimTime", animTime);
-        if (animTime < 0f)
-        {
-            anim.SetBool("Idle", true);
+            transform.position = new Vector3(7.897f, -1.22f);
         }
         else
         {
-            anim.SetBool("Idle", false);
-        }
-        //Want to have 3 attacks chosen using attack codes
-        //1 = Heat-seeking shot
-        //2 = Summon enemy
-        //3 = Bullet rain
-        
+            if (flash)
+            {
+                if (flashCt < flashRate)
+                {
+                    flashCt++;
+                }
+                else
+                {
+                    invincible = false;
+                    flash = false;
+                    spr.enabled = true;
+                }
+            }
 
-        //Want to base movement around teleporting between 4 different locations, chooses between them randomly while moving
-        //Teleports 1 time before attacking, then teleports and attacks in phase 1
-        //Teleports 1-3 times before attacking, then teleports and attacks in phase 2
-        //Always teleports to location 4 for attacks 2 and 3
-        //LOCATION KEY:
-        //     [4]
-        //  [2][1][3]
+            //currentLocation = chooseLocation();
+            //lastAttack = chooseAttack();
+
+            //Behavior process
+            //Phase 1
+            //  1. After some time since the last attack action, teleport
+            //  2. After some time since the last teleport action, attack
+            //Phase 2
+            //  1. If teleport other than last happened, wait then teleport
+            //  2. If last teleport happened, attack
+            //  3. If attacked last, begin teleporting
+            if (!dead)
+            {
+                if (timeSinceLastAttack < 0f)
+                {
+                    //Teleport when appropriate
+                    if (timeSinceLastTeleport < 0f)
+                    {
+                        currentLocation = chooseLocation();
+                        transform.position = teleportToLocation(currentLocation);
+                        timeSinceLastTeleport = timeToTeleport;
+                        numTeleports++;
+                    }
+                    //Phase 1 Attack/Teleport Pattern
+                    if (numTeleports == 1 && phase2Health < health)
+                    {
+                        numTeleports = 0;
+                        lastAttack = chooseAttack();
+                        if (lastAttack == 1)
+                        {
+                            currentLocation = chooseLocation();
+                            transform.position = teleportToLocation(currentLocation);
+                            newProjectile = Instantiate(heatSeeking, transform.position, transform.rotation) as GameObject;
+                            newProjectile.SetActive(true);
+                            Debug.Log("Heat seeking");
+                            anim.SetTrigger("Shoot");
+                        }
+                        if (lastAttack == 2)
+                        {
+                            currentLocation = 4;
+                            transform.position = teleportToLocation(4);
+                            Vector2 spawnPos = new Vector2();
+                            if ((int)(Random.value * 2) == 1) spawnPos.x = -4;
+                            else spawnPos.x = 20;
+                            spawnPos.y = -1.4f;
+                            newEnemy = Instantiate(minion, spawnPos, transform.rotation) as GameObject;
+                            newEnemy.SetActive(true);
+                            anim.SetTrigger("Summon");
+                            Debug.Log("Summon guy");
+                        }
+                        timeSinceLastAttack = timeToAttack;
+                    } //Phase 2 Attack/Teleport Pattern
+                    else if (numTeleports == 3 && phase2Health >= health)
+                    {
+                        numTeleports = 0;
+                        lastAttack = chooseAttack();
+                        if (lastAttack == 1)
+                        {
+                            currentLocation = chooseLocation();
+                            transform.position = teleportToLocation(currentLocation);
+                            newProjectile = Instantiate(heatSeeking, transform.position, transform.rotation) as GameObject;
+                            newProjectile.SetActive(true);
+                            anim.SetTrigger("Shoot");
+                            Debug.Log("Heat seeking");
+                        }
+                        if (lastAttack == 2)
+                        {
+                            currentLocation = 4;
+                            transform.position = teleportToLocation(4);
+                            Vector2 spawnPos = new Vector2();
+                            if ((int)(Random.value * 2) == 1) spawnPos.x = -4;
+                            else spawnPos.x = 20;
+                            spawnPos.y = -1.4f;
+                            newEnemy = Instantiate(minion, spawnPos, transform.rotation) as GameObject;
+                            newEnemy.SetActive(true);
+                            anim.SetTrigger("Summon");
+                            Debug.Log("Summon guy");
+                        }
+                        if (lastAttack == 3)
+                        {
+                            currentLocation = 4;
+                            transform.position = teleportToLocation(4);
+                            newProjectile = Instantiate(fireWall1, transform.position, fireWall1.transform.rotation) as GameObject;
+                            newProjectile.SetActive(true);
+                            newProjectile = Instantiate(fireWall2, transform.position, fireWall2.transform.rotation) as GameObject;
+                            newProjectile.SetActive(true);
+                            newProjectile = Instantiate(fireWall3, transform.position, fireWall3.transform.rotation) as GameObject;
+                            newProjectile.SetActive(true);
+                            animTime = fireWallSummon;
+                            anim.SetTrigger("Summon");
+                            Debug.Log("Fire Cage");
+                        }
+                        numTeleports += (int)(Random.value * 3);
+                        Debug.Log("TP Before next attack: " + (3 - numTeleports));
+                        timeSinceLastAttack = timeToAttack;
+                    }
+                    timeSinceLastTeleport -= Time.deltaTime;
+                    if (timeSinceLastTeleport < .4f)
+                    {
+                        anim.SetTrigger("TPOut");
+                        animTime = .3f;
+                    }
+                }
+            }
+            else //Boss defeat behavior
+            {
+                //ReadyDialogue();
+                GetComponent<BoxCollider2D>().isTrigger = true;
+                DestroySpawns();
+            }
+            timeSinceLastAttack -= Time.deltaTime;
+            animTime -= Time.deltaTime;
+            anim.SetFloat("AnimTime", animTime);
+            if (animTime < 0f)
+            {
+                anim.SetBool("Idle", true);
+            }
+            else
+            {
+                anim.SetBool("Idle", false);
+            }
+            //Want to have 3 attacks chosen using attack codes
+            //1 = Heat-seeking shot
+            //2 = Summon enemy
+            //3 = Bullet rain
+
+
+            //Want to base movement around teleporting between 4 different locations, chooses between them randomly while moving
+            //Teleports 1 time before attacking, then teleports and attacks in phase 1
+            //Teleports 1-3 times before attacking, then teleports and attacks in phase 2
+            //Always teleports to location 4 for attacks 2 and 3
+            //LOCATION KEY:
+            //     [4]
+            //  [2][1][3]
+        }
 
     }
 

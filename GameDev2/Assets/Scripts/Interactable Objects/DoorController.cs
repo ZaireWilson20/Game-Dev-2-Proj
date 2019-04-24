@@ -29,14 +29,9 @@ public class DoorController : MonoBehaviour
         pa_inv = playerObj.GetComponent<PlayerInventory>();
         player = playerObj.GetComponent<Player>();
         anim = GetComponent<Animator>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         if (GlobalControl.Instance.savedDoors.InList(doorName))
         {
-            
+            Debug.Log(doorName + " is in list");
             needsKey = GlobalControl.Instance.savedDoors.GetUnlocked(doorName);
             gameObject.SetActive(GlobalControl.Instance.savedDoors.GetActive(doorName));
             if (isBarrier)
@@ -46,14 +41,20 @@ public class DoorController : MonoBehaviour
         }
         else
         {
-            //Debug.Log("Found door in list");
-            
+            Debug.Log(doorName + " not in list");
+
             GlobalControl.Instance.savedDoors.AddDoor(doorName, needsKey, startActive);
             gameObject.SetActive(startActive);
         }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
         if (playerInRange && Input.GetButtonDown("Pickup") && !needsKey && !isBarrier)
         {
-            //Debug.Log("Open Door");
+            Debug.Log("No key needed");
             opened = true; 
             OpenDoor();
         }
@@ -62,6 +63,7 @@ public class DoorController : MonoBehaviour
             bool hasKey = false; 
             foreach (string k in keysNeeded) {
                 hasKey = pa_inv.CheckInventory(k);
+                Debug.Log("Has key: " + k + ": " + hasKey);
                 if (!hasKey) { break; }
             }
             if(hasKey)
