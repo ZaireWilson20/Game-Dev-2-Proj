@@ -53,7 +53,11 @@ public class NpcDialogue : MonoBehaviour
     public bool waitingOn;
     public GameObject npcWaitingOn;
     private NpcDialogue npcWO;
-    public bool ready; 
+    public NpcDialogue npcToReady;
+    public bool needToReadyNext; 
+    public bool ready;
+    public bool needToReadyBoss;
+    public SalBoss salBoss;
 
     public enum diaType { automated, triggered, restriction, pop_up, collision, prevConvoTrig, EventWait, other };
 
@@ -386,6 +390,13 @@ public class NpcDialogue : MonoBehaviour
                     //GlobalControl.Instance.savedDialogue = localData;
                 }
             }
+        }
+        if (hasBeenRead && needToReadyNext) {
+            npcToReady.ready = true;
+        }
+        if(hasBeenRead && needToReadyBoss)
+        {
+            salBoss.startBoss = true; 
         }
         if (hasBeenRead && destroyOnDone && GetComponent<SceneTrigger>().scenesActivated)
         {
