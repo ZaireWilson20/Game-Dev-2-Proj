@@ -53,12 +53,6 @@ public class DoorController : MonoBehaviour
             GlobalControl.Instance.savedDoors.AddDoor(doorName, needsKey, startActive);
             gameObject.SetActive(startActive);
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
         if (playerInRange && Input.GetButtonDown("Pickup") && !needsKey && !isBarrier)
         {
             Debug.Log("No key needed");
