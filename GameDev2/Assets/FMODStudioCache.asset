@@ -24,11 +24,14 @@ MonoBehaviour:
   - {fileID: 114890184556071632}
   - {fileID: 114104937454666206}
   - {fileID: 114781899955336248}
+  - {fileID: 114945147815412060}
+  - {fileID: 114219763241991330}
+  - {fileID: 114080803077189204}
   MasterBanks:
   - {fileID: 114037023509671258}
   StringsBanks:
   - {fileID: 114058578975793514}
-  stringsBankWriteTime: 636916745919678196
+  stringsBankWriteTime: 636916761927465826
   cacheVersion: 3
 --- !u!114 &114014074949074540
 MonoBehaviour:
@@ -67,11 +70,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\Zaire\Documents\Game Dev 2\Game-Dev-2-Proj\FMOD Proj\Build\Desktop\Master
     Bank.bank
-  lastModified: 636916745919598334
+  lastModified: 636916761927366084
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 332640
+    Value: 3543424
   Exists: 1
 --- !u!114 &114039361300628618
 MonoBehaviour:
@@ -133,12 +136,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: C:\Users\Zaire\Documents\Game Dev 2\Game-Dev-2-Proj\FMOD Proj\Build\Desktop\Master
     Bank.strings.bank
-  lastModified: 636916745919678196
+  lastModified: 636916761927465826
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1022
+    Value: 1162
   Exists: 1
+--- !u!114 &114080803077189204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/MantisBackground
+  guid: 1b491e9b7c4b60429326504ddfd952a4
+  Banks:
+  - {fileID: 114037023509671258}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 50712
 --- !u!114 &114103551541752280
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,6 +407,29 @@ MonoBehaviour:
   - Name: Desktop
     Value: 28672
   Exists: 1
+--- !u!114 &114219763241991330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FactoryBackground
+  guid: 9354b9e07aedb348ae7711642bf6a4d9
+  Banks:
+  - {fileID: 114037023509671258}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 132413
 --- !u!114 &114308041261730348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -839,8 +888,7 @@ MonoBehaviour:
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
-  Parameters:
-  - {fileID: 114822463661587326}
+  Parameters: []
   MinDistance: 0
   MaxDistance: 0
   Length: 16551
@@ -1352,6 +1400,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 332
+--- !u!114 &114945147815412060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/SalBackground
+  guid: fd54f60b56e1c34e94f996359350317e
+  Banks:
+  - {fileID: 114037023509671258}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 78000
 --- !u!114 &114970761690345616
 MonoBehaviour:
   m_ObjectHideFlags: 0
