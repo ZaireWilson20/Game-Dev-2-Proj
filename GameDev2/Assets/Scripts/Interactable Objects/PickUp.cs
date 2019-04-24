@@ -29,7 +29,7 @@ public class PickUp : MonoBehaviour
         if (isKey)
         {
             anim = GetComponent<Animator>();
-            anim.SetBool("MagicKey", isMagicKey);
+            //anim.SetBool("MagicKey", isMagicKey);
         }
         playerInv = playerRef.GetComponent<PlayerInventory>();
         playerScript = playerRef.GetComponent<Player>();
@@ -49,7 +49,7 @@ public class PickUp : MonoBehaviour
                 if (!isPowerUp)
                 {
                     Debug.Log("I'm picking up shit");
-                    playerInv.AddToInv(this.GetComponent<PickUp>());
+                    playerInv.AddToInv(this);
                     pickedup = true;
                     this.gameObject.SetActive(false);
                 }
