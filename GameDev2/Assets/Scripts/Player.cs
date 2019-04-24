@@ -575,19 +575,6 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetButtonDown("Swap"))
-                    {
-                        if (powerset)
-                        {
-                            tUtility = CyclePower(tPowerDict, tUtility);
-                            pSetCont.SetSPowerImg(tUtility.name);
-                        }
-                        else
-                        {
-                            mUtility = CyclePower(mPowerDict, mUtility);
-                            pSetCont.SetMPowerImg(mUtility.name);
-                        }
-                    }
                     if (Input.GetButtonDown("SwitchWep"))
                     {
                         if (powerset)
@@ -603,7 +590,7 @@ public class Player : MonoBehaviour
                         }
                     }
                     //ANTI-GRAVITY LOGIC
-                    if ((Input.GetButtonDown("Utility") || Input.GetKeyDown(KeyCode.Alpha3)) && tUtility.name == "anti-grav" && powerset)
+                    if ((Input.GetButtonDown("Utility2") || Input.GetKeyDown(KeyCode.Alpha3)) && tPowerDict["anti-grav"].active && powerset)
                     {
                         if (AGTimeLeft <= 0)
                         {
@@ -619,7 +606,7 @@ public class Player : MonoBehaviour
                     }
                     AGTimeLeft -= Time.deltaTime;
                     //REFLECT WALL LOGIC
-                    if (Input.GetButtonDown("Utility") && mUtility.name == "reflect" && !powerset)
+                    if (Input.GetButtonDown("Utility2") && mPowerDict["reflect"].active && !powerset)
                     {
                         if (refMax <= 0)
                         {
