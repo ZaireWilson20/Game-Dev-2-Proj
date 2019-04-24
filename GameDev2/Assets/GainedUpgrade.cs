@@ -5,7 +5,7 @@ using TMPro;
 
 public class GainedUpgrade : MonoBehaviour
 {
-    private float notifTimer = 0f;
+    private float notifTimer = -1f;
     public TMP_Text text;
 
     public void Start()

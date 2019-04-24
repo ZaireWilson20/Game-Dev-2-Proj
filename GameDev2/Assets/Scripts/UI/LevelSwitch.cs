@@ -38,7 +38,8 @@ public class LevelSwitch : MonoBehaviour
 
     public void LoadOnFadeComplete()
     {
-        pscript.SavePlayer();
+        if (pscript != null)
+            pscript.SavePlayer();
         SceneManager.LoadScene(level, LoadSceneMode.Single);
     }
 
