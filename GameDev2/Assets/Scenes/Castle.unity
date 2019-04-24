@@ -27297,7 +27297,7 @@ Transform:
   m_LocalScale: {x: 2.08, y: 2.02, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 29
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &761845723
 GameObject:
@@ -54442,22 +54442,22 @@ PrefabInstance:
       objectReference: {fileID: 1056048878}
     - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 92891366}
-    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
+      propertyPath: m_AnchoredPosition.x
+      value: 1.7999268
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577993372943396, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
-      propertyPath: gameManager
+      propertyPath: background
       value: 
-      objectReference: {fileID: 92891366}
-    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
+      objectReference: {fileID: 198458681}
+    - target: {fileID: 7181101446632538281, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 92891366}
-    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
+      propertyPath: m_AnchoredPosition.x
+      value: -1.5600586
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577994660034941, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
-      propertyPath: gameManager
+      propertyPath: playerObj
       value: 
       objectReference: {fileID: 92891366}
     - target: {fileID: 7501577993305806430, guid: 82a554b2e5161b840a48200acaa52035,
@@ -54487,13 +54487,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7501577994422589618, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 1.8000488
-      objectReference: {fileID: 0}
-    - target: {fileID: 7501577994012619974, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 1.7999268
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6362392577844072633, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
@@ -54666,6 +54661,51 @@ PrefabInstance:
       propertyPath: noQuit
       value: 
       objectReference: {fileID: 1056048878}
+    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 92891366}
+    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 92891366}
+    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 92891366}
+    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 92891366}
+    - target: {fileID: 7501577993905546887, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577993905546887, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 991501888943891906, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_inputSource
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 991501888943891906, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 991501888943891906, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7501577994401447109, guid: 82a554b2e5161b840a48200acaa52035, type: 3}
     - {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035, type: 3}
