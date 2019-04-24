@@ -30,7 +30,7 @@ public class PowerSetController : MonoBehaviour
 #if UNITY_EDITOR
         m_weaponImg = (Sprite)AssetDatabase.LoadAssetAtPath(path + _name + ".png", typeof(Sprite));
 #else
-            m_weaponImg = Resources.Load<Sprite>(_name);
+            m_weaponImg = Resources.Load<Sprite>("Sprites/Power_Icons/" + _name);
 #endif
     }
 
@@ -39,7 +39,7 @@ public class PowerSetController : MonoBehaviour
 #if UNITY_EDITOR
         m_powerImg = (Sprite)AssetDatabase.LoadAssetAtPath(path + _name + ".png", typeof(Sprite));
 #else
-            m_powerImg = Resources.Load<Sprite>(_name);
+            m_powerImg = Resources.Load<Sprite>("Sprites/Power_Icons/"  + _name);
 #endif
     }
 
@@ -48,7 +48,7 @@ public class PowerSetController : MonoBehaviour
 #if UNITY_EDITOR
         s_weaponImg = (Sprite)AssetDatabase.LoadAssetAtPath(path + _name + ".png", typeof(Sprite));
 #else
-            s_weaponImg = Resources.Load<Sprite>(_name);
+            s_weaponImg = Resources.Load<Sprite>("Sprites/Power_Icons/"  + _name);
 #endif
     }
 
@@ -57,7 +57,7 @@ public class PowerSetController : MonoBehaviour
 #if UNITY_EDITOR
         s_powerImg = (Sprite)AssetDatabase.LoadAssetAtPath(path + _name + ".png", typeof(Sprite));
 #else
-            s_powerImg = Resources.Load<Sprite>(_name);
+            s_powerImg = Resources.Load<Sprite>("Sprites/Power_Icons/"  + _name);
 #endif
     }
 

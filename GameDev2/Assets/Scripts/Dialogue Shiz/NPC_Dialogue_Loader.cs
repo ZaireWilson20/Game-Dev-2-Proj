@@ -22,8 +22,20 @@ public class NPC_Dialogue_Loader : MonoBehaviour
             //npcDia = ga.GetComponent<NpcDialogue>();
             foreach (string s in convosInScene)
             {
-                path = "Assets/Level Data/Dialogue Bank/" + s + fileName;
-                ReadData(path, s);
+#if UNITY_EDITOR
+            path = "Level Data/Dialogue Bank/" + s;
+            //string path2 = "Level Data/Dialogue Bank/" + s;
+            //TextAsset tarFile = Resources.Load<TextAsset>(path2);
+            
+            //DialogueObj tempData = JsonUtility.FromJson<DialogueObj>(tarFile.text);
+
+            //Debug.Log(tempData.fsSprite);
+#else
+            path = "Level Data/Dialogue Bank/" + s; 
+#endif
+
+
+            ReadData(path, s);
             }
         int count = 0; 
 
@@ -39,17 +51,17 @@ public class NPC_Dialogue_Loader : MonoBehaviour
     
     void ReadData(string file_path, string name)
     {
-        if (System.IO.File.Exists(file_path))
-        {
+        ///if (System.IO.File.Exists(file_path))
+        //{
             TextAsset targetFile = Resources.Load<TextAsset>(file_path);
-            string content = System.IO.File.ReadAllText(file_path);
-            diaData = JsonUtility.FromJson<DialogueObj>(content);
+            //string content = System.IO.File.ReadAllText(file_path);
+            diaData = JsonUtility.FromJson<DialogueObj>(targetFile.text);
             pa_npc_to_dia.Add(name, diaData);
-        }
-        else
-        {
-            Debug.Log("Can't read file data: " + file_path);
-        }
+        //}
+        //else
+        //{
+            //Debug.Log("Can't read file data: " + file_path);
+        //}
     }
 
     public DialogueObj GetConversation(string name)

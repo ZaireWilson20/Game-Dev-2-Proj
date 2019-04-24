@@ -61,8 +61,8 @@ public class DialogueController : MonoBehaviour
         char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + lines.ssSprite + "Neutral" + fileName, typeof(Sprite));
 
 #else
-        char1.sprite = Resources.Load<Sprite>(lines.fsSprite + lines.mood[currentLine]);
-        char2.sprite = Resources.Load<Sprite>(lines.ssSprite + lines.mood[currentLine]);
+        char1.sprite = Resources.Load<Sprite>("Sprites/Portraits/" + diaObj.fsSprite + "Neutral");
+        char2.sprite = Resources.Load<Sprite>("Sprites/Portraits/" + diaObj.ssSprite + "Neutral");
 #endif
         //char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.fsSprite + lines.mood[currentLine] + fileName, typeof(Sprite)); 
         //char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
@@ -131,7 +131,7 @@ public class DialogueController : MonoBehaviour
 #if UNITY_EDITOR
             char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
 #else
-            char1.sprite = Resources.Load<Sprite>(diaObj.fsSprite + diaObj.mood[currentLine]);
+            char1.sprite = Resources.Load<Sprite>("Sprites/Portraits/" + diaObj.fsSprite + diaObj.mood[currentLine]);
 #endif
             //            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
 
@@ -154,7 +154,7 @@ public class DialogueController : MonoBehaviour
 #if UNITY_EDITOR
             char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
 #else
-            char2.sprite = Resources.Load<Sprite>(diaObj.ssSprite + diaObj.mood[currentLine]);
+            char2.sprite = Resources.Load<Sprite>("Sprites/Portraits/" + diaObj.ssSprite + diaObj.mood[currentLine]);
 #endif
             //            char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
             if (char2.sprite == null)

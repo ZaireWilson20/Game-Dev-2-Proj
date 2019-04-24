@@ -463,7 +463,7 @@ public class Player : MonoBehaviour
 #if UNITY_EDITOR
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/tempController/ParaScience.controller", typeof(RuntimeAnimatorController));
 #else
-            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("ParaScience");
+            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Sprites/ParacelsysMAGIC/tempController/ParaScience");
 #endif
         }
         else
@@ -479,7 +479,7 @@ public class Player : MonoBehaviour
             // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
             anim.runtimeAnimatorController = (RuntimeAnimatorController)AssetDatabase.LoadAssetAtPath("Assets/Sprites/ParacelsysMAGIC/updatedFullController.controller", typeof(RuntimeAnimatorController));
 #else
-            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("updatedFullController");
+            anim.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Sprites/ParacelsysMAGIC/updatedFullController");
 #endif
 
         }
