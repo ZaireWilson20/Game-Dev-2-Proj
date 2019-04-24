@@ -575,7 +575,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    if (Input.GetButtonDown("SwitchWep"))
+                    if (Input.GetButtonDown("SwitchWep") || Input.GetButtonDown("Swap"))
                     {
                         if (powerset)
                         {
@@ -861,24 +861,24 @@ public class Player : MonoBehaviour
                 //Increase speed
                 if (powerBoost/15 >= 7)
                 {
-                    speed = 8;
-                    runSpeed = 16;
+                    speed = 9;
+                    runSpeed = 18;
                 }
                 else if (powerBoost/15 >= 4)
                 {
-                    speed = 7;
-                    runSpeed = 14;
+                    speed = 8;
+                    runSpeed = 16;
                 }
                 else if (powerBoost/15 >= 1)
                 {
-                    speed = 6;
-                    runSpeed = 12;
+                    speed = 7;
+                    runSpeed = 14;
                 }
                 //Change health maximum
                 if (powerBoost/15 >= 8)
                 {
                     health_max = 8;
-                    Debug.Log("Should have 8");
+                    //Debug.Log("Should have 8");
                 }
                 else if (powerBoost/15 >= 5)
                 {
@@ -886,7 +886,7 @@ public class Player : MonoBehaviour
                 }
                 else if (powerBoost/15 >= 2)
                 {
-                    Debug.Log("Should have 6");
+                    //Debug.Log("Should have 6");
                     health_max = 6;
                 }
                 //Increase airdash speed
@@ -902,12 +902,12 @@ public class Player : MonoBehaviour
                 {
                     airdashSpeed = 24;
                 }
-                Debug.Log("Power Level = " + powerBoost/15);
+                //Debug.Log("Power Level = " + powerBoost/15);
             }
 
             powerBoost = points;
             //Add all powers cheat code
-            if (Input.GetKeyDown(KeyCode.Y))
+            if (Input.GetKeyDown(KeyCode.Y) && Input.GetKey(KeyCode.H))
             {
                 mPowerDict[reflector.name].active = true;
                 mWeaponDict[freeze.name].active = true;
