@@ -574,6 +574,11 @@ PrefabInstance:
       propertyPath: convoType
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: npc_inConvo
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 9051743090948632342, guid: 67d7f3d0343f8394dbe1098a0d8cef4e, type: 3}
     - {fileID: 9051743090948632343, guid: 67d7f3d0343f8394dbe1098a0d8cef4e, type: 3}
@@ -1494,7 +1499,7 @@ PrefabInstance:
       objectReference: {fileID: 1876704554}
     - target: {fileID: 560668987, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
       propertyPath: levelName
-      value: SalTest
+      value: GameOver
       objectReference: {fileID: 0}
     - target: {fileID: 560668987, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
       propertyPath: healthObj
@@ -2730,8 +2735,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc6288061023c624c9d2bae767552bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelToFadeTo: GameOver
+  levelToFadeTo: EndGame
   levelSwitch: {fileID: 572578674}
+  endGame: 0
+  switchTime: 10
 --- !u!114 &2119199538 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
@@ -2772,21 +2779,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 856098561649505939, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7501577994942423767, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7501577994942423767, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 7501577992922472351, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
@@ -2892,6 +2884,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 856098561649505939, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577994942423767, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577994942423767, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 7501577992996979785, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
