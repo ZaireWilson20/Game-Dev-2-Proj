@@ -58,7 +58,8 @@ public class NpcDialogue : MonoBehaviour
     public bool ready;
     public bool needToReadyBoss;
     public SalBoss salBoss;
-
+    public GameObject spriteToActivate;
+    public bool activateSprite; 
     public enum diaType { automated, triggered, restriction, pop_up, collision, prevConvoTrig, EventWait, other };
 
     public void CopySaved(NpcDialogue other)
@@ -202,6 +203,11 @@ public class NpcDialogue : MonoBehaviour
             
             if (!npc_inConvo)
             {
+                if (spriteToActivate)
+                {
+                    spriteToActivate.SetActive(true);
+
+                }
                 pa_script.pa_inConvo = true;
                 npc_inConvo = true;
                 dialogueController.DisplayText(npc_convos);
