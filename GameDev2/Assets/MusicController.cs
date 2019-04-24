@@ -6,13 +6,13 @@ public class MusicController : MonoBehaviour
 {
     public string music = "event:/CastleBackground";
 
-    FMOD.Studio.EventInstance musicEv; 
+    public FMOD.Studio.EventInstance musicEv; 
     // Start is called before the first frame update
     void Start()
     {
 
-        musicEv = FMODUnity.RuntimeManager.CreateInstance(music);
-        musicEv.start();
+        //musicEv = FMODUnity.RuntimeManager.CreateInstance(music);
+        //musicEv.start();
         
     }
 
@@ -24,7 +24,8 @@ public class MusicController : MonoBehaviour
 
     public void ChangeSong(string song)
     {
-        musicEv.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        musicEv = FMODUnity.RuntimeManager.CreateInstance("event:/" + song);
+        //musicEv.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        musicEv.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        musicEv = FMODUnity.RuntimeManager.CreateInstance(song);
     }
 }

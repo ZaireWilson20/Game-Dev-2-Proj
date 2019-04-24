@@ -16,6 +16,7 @@ public class BossLoad : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Slash))
         {
+            this.gameObject.GetComponent<Player>().spawnPosition = new Vector2(0, 0);
             SceneManager.LoadScene("BossTest");
         }
     }
