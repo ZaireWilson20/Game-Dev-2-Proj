@@ -301,8 +301,10 @@ public class Player : MonoBehaviour
         foreach(GameObject g in GameObject.FindGameObjectsWithTag("SpawnPoint")){
             spawnPoints.Add(g.GetComponent<SpawnPoint>());
         }
-        
-        
+
+        FindObjectOfType<MusicController>().musicEv = FMODUnity.RuntimeManager.CreateInstance(FindObjectOfType<MusicController>().music);
+        Debug.Log(FindObjectOfType<MusicController>().music);
+        FindObjectOfType<MusicController>().musicEv.start();
         //Debug.Log("start");
         //load player save data
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
@@ -420,6 +422,7 @@ public class Player : MonoBehaviour
         localPlayerData.reload = true;
 
         GlobalControl.Instance.savedPlayer = localPlayerData;
+        FindObjectOfType<MusicController>().musicEv.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         //Debug.Log("global" + GlobalControl.Instance.savedPlayer.playerHealth);
 
     }
