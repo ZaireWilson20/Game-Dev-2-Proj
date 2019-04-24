@@ -57,8 +57,8 @@ public class DialogueController : MonoBehaviour
 
         //  Set Dialogue sprites for both characters in scene
 #if UNITY_EDITOR
-        char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + lines.fsSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
-        char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
+        char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + lines.fsSprite + "Neutral" + fileName, typeof(Sprite));
+        char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + lines.ssSprite + "Neutral" + fileName, typeof(Sprite));
 
 #else
         char1.sprite = Resources.Load<Sprite>(lines.fsSprite + lines.mood[currentLine]);

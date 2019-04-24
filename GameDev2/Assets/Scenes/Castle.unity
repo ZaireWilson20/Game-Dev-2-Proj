@@ -4371,7 +4371,7 @@ Transform:
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 32
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &143014775
 GameObject:
@@ -7019,7 +7019,7 @@ PrefabInstance:
     - target: {fileID: 9051743090948632341, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9051743090948632341, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
@@ -7144,7 +7144,7 @@ PrefabInstance:
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: convoType
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
@@ -7159,8 +7159,13 @@ PrefabInstance:
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: playConvo
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: npcWaitingOn
+      value: 
+      objectReference: {fileID: 261341724}
     - target: {fileID: 9051743091449933016, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: m_Layer
@@ -7182,19 +7187,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 218723465}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &218723468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 218723466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6258d48434c8e6d4c8a0de144e30a84f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainDialogueObj: {fileID: 218723466}
 --- !u!114 &218723469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7213,11 +7205,13 @@ MonoBehaviour:
   doorObj: {fileID: 0}
   turnsOffScenes: 0
   turnOnScenes: 0
+  playerCollided: 0
   convosInSceneToActivate: []
   turnOffConvo:
     sceneName: 
   convosToActivate: []
   npcObj: {fileID: 261341724}
+  scenesActivated: 0
 --- !u!61 &218723470
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -8024,7 +8018,7 @@ PrefabInstance:
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: convoType
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
@@ -8034,6 +8028,16 @@ PrefabInstance:
     - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
         type: 3}
       propertyPath: byeGuy
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: waitingOn
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9051743090948632344, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
+        type: 3}
+      propertyPath: playConvo
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9051743091449933016, guid: 67d7f3d0343f8394dbe1098a0d8cef4e,
@@ -8107,6 +8111,7 @@ MonoBehaviour:
   doorObj: {fileID: 0}
   turnsOffScenes: 0
   turnOnScenes: 1
+  playerCollided: 0
   convosInSceneToActivate:
   - {fileID: 218723466}
   turnOffConvo:
@@ -8114,6 +8119,7 @@ MonoBehaviour:
   convosToActivate:
   - sceneName: Castle5B
   npcObj: {fileID: 381892044}
+  scenesActivated: 0
 --- !u!114 &261341728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12130,13 +12136,14 @@ MonoBehaviour:
   doorObj: {fileID: 0}
   turnsOffScenes: 0
   turnOnScenes: 1
+  playerCollided: 0
   convosInSceneToActivate:
   - {fileID: 261341724}
   turnOffConvo:
     sceneName: 
-  convosToActivate:
-  - sceneName: Castle5
+  convosToActivate: []
   npcObj: {fileID: 381892044}
+  scenesActivated: 0
 --- !u!1 &389068118
 GameObject:
   m_ObjectHideFlags: 0
@@ -36884,12 +36891,14 @@ MonoBehaviour:
   doorObj: {fileID: 0}
   turnsOffScenes: 0
   turnOnScenes: 1
+  playerCollided: 0
   convosInSceneToActivate:
   - {fileID: 1698479743}
   turnOffConvo:
     sceneName: 
   convosToActivate: []
   npcObj: {fileID: 1134977076}
+  scenesActivated: 0
 --- !u!1 &1137428370
 GameObject:
   m_ObjectHideFlags: 0
@@ -37640,6 +37649,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1001 &1151887091
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 700785635, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_Name
+      value: MagKey
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 6.617614
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -54.925705
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.19319
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785640, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 700785637, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
+      propertyPath: playerRef
+      value: 
+      objectReference: {fileID: 2143140565}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3c4237cd9d95e0c4cb88ae8fc6b37eb7, type: 3}
 --- !u!1 &1156836680
 GameObject:
   m_ObjectHideFlags: 0
@@ -50754,6 +50824,7 @@ MonoBehaviour:
   doorObj: {fileID: 0}
   turnsOffScenes: 0
   turnOnScenes: 1
+  playerCollided: 0
   convosInSceneToActivate: []
   turnOffConvo:
     sceneName: 

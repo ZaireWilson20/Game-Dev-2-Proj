@@ -57,6 +57,9 @@ public class FactoryBoss : MonoBehaviour
     private Vector2 storeVel;
     private bool justPaused = false;
 
+
+    public NpcDialogue npcDialogueToTurnOn;
+    private bool diaTurnedOn = false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -209,6 +212,7 @@ public class FactoryBoss : MonoBehaviour
         GlobalControl.Instance.savedPlayer.factoryBossDefeated = true;
         //gameObject.SetActive(false);
         exitDoor.SetActive(true);
+        ReadyDialogue();
     }
 
     public void EndSwipe()
@@ -337,4 +341,14 @@ public class FactoryBoss : MonoBehaviour
             specTime += Time.deltaTime;
         }
     }
+
+    public void ReadyDialogue()
+    {
+        if (!diaTurnedOn)
+        {
+            npcDialogueToTurnOn.ready = true;
+            diaTurnedOn = true;
+        }
+    }
+
 }
