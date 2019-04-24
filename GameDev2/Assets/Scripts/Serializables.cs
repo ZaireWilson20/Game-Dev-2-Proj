@@ -281,3 +281,26 @@ public class DoorData
         return false; 
     }
 }
+
+public class PickupData
+{
+    public Hashtable pickupTable = new Hashtable();
+    //public List<String> powersAndKeys = new List<String>();
+    //public List<String> pointPickups = new List<String>();
+    //public PowerSwitchPickup powerSwitch;
+
+    public bool InTable(PickUp pickup)
+    {
+        return pickupTable.ContainsKey(pickup._name);
+    }
+
+    public bool InTable(PointPickup pickup)
+    {
+        return pickupTable.ContainsKey(pickup.id);
+    }
+
+    public bool InTable(PowerSwitchPickup pickup)
+    {
+        return pickupTable.ContainsKey("power switch");
+    }
+}
