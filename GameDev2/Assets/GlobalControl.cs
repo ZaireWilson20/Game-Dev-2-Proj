@@ -11,6 +11,7 @@ public class GlobalControl : MonoBehaviour
     public DialogueData savedDialogue = new DialogueData();
     public SceneData savedScene = new SceneData();
     public DoorData savedDoors = new DoorData();
+    public PickupData savedPickups = new PickupData();
     
     void Awake()
     {

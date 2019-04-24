@@ -19,6 +19,13 @@ public class PickUp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (GlobalControl.Instance.savedPickups.InTable(this))
+            pickedup = (bool) GlobalControl.Instance.savedPickups.pickupTable[_name];
+        else
+        {
+            Debug.Log("Added obj");
+            GlobalControl.Instance.savedPickups.pickupTable.Add(_name, pickedup);
+        }
         if (isKey)
         {
             anim = GetComponent<Animator>();
@@ -108,6 +115,7 @@ public class PickUp : MonoBehaviour
                         this.gameObject.SetActive(false);
                     }
                 }
+                GlobalControl.Instance.savedPickups.pickupTable[_name] = pickedup;
             }
         }
     }
@@ -132,13 +140,4 @@ public class PickUp : MonoBehaviour
             playerIn = false; 
         }
     }
-
-    public void SavePickup()
-    {
-
-    }
-    //public void Copy(PickUp)
-    //{
-
-    //}
 }
