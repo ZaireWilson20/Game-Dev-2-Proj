@@ -41,6 +41,9 @@ public class SalBoss : MonoBehaviour
 
     private SpriteRenderer spr;
     public Animator anim;
+
+    public NpcDialogue npcDialogueToTurnOn; 
+
     public float GetHealth()
     {
         return health;
@@ -264,8 +267,9 @@ public class SalBoss : MonoBehaviour
         }
         else //Boss defeat behavior
         {
-            
-
+            //ReadyDialogue();
+            GetComponent<BoxCollider2D>().isTrigger = true;
+            DestroySpawns();
         }
         timeSinceLastAttack -= Time.deltaTime;
         animTime -= Time.deltaTime;
@@ -292,5 +296,25 @@ public class SalBoss : MonoBehaviour
         //     [4]
         //  [2][1][3]
 
+    }
+
+    public void ReadyDialogue()
+    {
+        npcDialogueToTurnOn.ready = true; 
+    }
+    
+    private void DestroySpawns()
+    {
+        GameObject[] enemiesInScene = GameObject.FindGameObjectsWithTag("Enemy");
+        foreach (GameObject en in enemiesInScene)
+        {
+            Destroy(en);
+        }
+    }
+
+    public bool GetDead()
+    {
+
+        return dead; 
     }
 }

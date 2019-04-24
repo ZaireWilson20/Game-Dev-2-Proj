@@ -17,11 +17,18 @@ public class PlayerInventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            foreach (InventoryItem item in completeInventory)
+            {
+                Debug.Log("Player has: " + item._name);
+            }
+        }
     }
 
     public void AddToInv(PickUp item)
     {
+        Debug.Log(item._name);
         InventoryItem tempPickUp = new InventoryItem();
         tempPickUp.CopyPickUp(item);
         completeInventory.Add(tempPickUp);
@@ -31,6 +38,7 @@ public class PlayerInventory : MonoBehaviour
 
     public bool CheckInventory(string name)
     {
+        
         foreach(InventoryItem item in completeInventory)
         {
             if(name == item._name)

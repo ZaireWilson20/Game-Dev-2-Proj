@@ -14,7 +14,8 @@ public class PickUp : MonoBehaviour
     public bool isPowerUp;
     private GainedUpgrade notif;
     private bool pickedup = false;
-    
+    public bool isMagicKey;
+    Animator anim; 
     // Start is called before the first frame update
     void Start()
     {
@@ -25,9 +26,15 @@ public class PickUp : MonoBehaviour
             Debug.Log("Added obj");
             GlobalControl.Instance.savedPickups.pickupTable.Add(_name, pickedup);
         }
+        if (isKey)
+        {
+            anim = GetComponent<Animator>();
+            //anim.SetBool("MagicKey", isMagicKey);
+        }
         playerInv = playerRef.GetComponent<PlayerInventory>();
         playerScript = playerRef.GetComponent<Player>();
         notif = FindObjectOfType<GainedUpgrade>();
+
         if (pickedup)
             this.gameObject.SetActive(false);
     }
@@ -42,7 +49,7 @@ public class PickUp : MonoBehaviour
                 if (!isPowerUp)
                 {
                     Debug.Log("I'm picking up shit");
-                    playerInv.AddToInv(this.GetComponent<PickUp>());
+                    playerInv.AddToInv(this);
                     pickedup = true;
                     this.gameObject.SetActive(false);
                 }

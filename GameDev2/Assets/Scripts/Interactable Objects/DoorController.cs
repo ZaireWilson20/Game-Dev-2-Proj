@@ -81,6 +81,7 @@ public class DoorController : MonoBehaviour
             foreach (string k in keysNeeded)
             {
                 hasKey = pa_inv.CheckInventory(k);
+                Debug.Log("Player has: " + k + ": " + hasKey);
                 if (!hasKey) {
                     Debug.Log("No Key");
                     break; }
