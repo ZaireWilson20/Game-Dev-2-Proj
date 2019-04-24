@@ -14,11 +14,17 @@ public class PickUp : MonoBehaviour
     public bool isPowerUp;
     private GainedUpgrade notif;
     private bool pickedup = false;
-
     
     // Start is called before the first frame update
     void Start()
     {
+        if (GlobalControl.Instance.savedPickups.InTable(this))
+            pickedup = (bool) GlobalControl.Instance.savedPickups.pickupTable[_name];
+        else
+        {
+            Debug.Log("Added obj");
+            GlobalControl.Instance.savedPickups.pickupTable.Add(_name, pickedup);
+        }
         playerInv = playerRef.GetComponent<PlayerInventory>();
         playerScript = playerRef.GetComponent<Player>();
         notif = FindObjectOfType<GainedUpgrade>();
@@ -102,6 +108,7 @@ public class PickUp : MonoBehaviour
                         this.gameObject.SetActive(false);
                     }
                 }
+                GlobalControl.Instance.savedPickups.pickupTable[_name] = pickedup;
             }
         }
     }
@@ -126,13 +133,4 @@ public class PickUp : MonoBehaviour
             playerIn = false; 
         }
     }
-
-    public void SavePickup()
-    {
-
-    }
-    //public void Copy(PickUp)
-    //{
-
-    //}
 }

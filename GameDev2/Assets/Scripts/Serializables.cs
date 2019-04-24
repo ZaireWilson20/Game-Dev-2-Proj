@@ -284,25 +284,23 @@ public class DoorData
 
 public class PickupData
 {
-    public List<PickUp> powersAndKeys = new List<PickUp>();
-    public List<PointPickup> pointPickups = new List<PointPickup>();
-    public PowerSwitchPickup powerSwitch;
+    public Hashtable pickupTable = new Hashtable();
+    //public List<String> powersAndKeys = new List<String>();
+    //public List<String> pointPickups = new List<String>();
+    //public PowerSwitchPickup powerSwitch;
 
-    public bool InPickupList(PickUp pickup)
+    public bool InTable(PickUp pickup)
     {
-        foreach (PickUp p in powersAndKeys)
-            if (pickup._name == p._name)
-                return true;
-        return false;
+        return pickupTable.ContainsKey(pickup._name);
     }
 
-    public bool InPointList(PointPickup pointpickup)
+    public bool InTable(PointPickup pickup)
     {
-        foreach (PointPickup p in pointPickups)
-            if (pointpickup.name == p.name)
-            {
-                return true;
-            }
-        return false;
+        return pickupTable.ContainsKey(pickup.id);
+    }
+
+    public bool InTable(PowerSwitchPickup pickup)
+    {
+        return pickupTable.ContainsKey("power switch");
     }
 }

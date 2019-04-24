@@ -12,7 +12,13 @@ public class PowerSwitchPickup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PickedUp = GlobalControl.Instance.savedPickups.powerSwitch.PickedUp;
+        if (GlobalControl.Instance.savedPickups.InTable(this))
+            PickedUp = (bool)GlobalControl.Instance.savedPickups.pickupTable["power switch"];
+        else
+        {
+            //Debug.Log("Added a point");
+            GlobalControl.Instance.savedPickups.pickupTable.Add("power switch", PickedUp);
+        }
         player = FindObjectOfType<Player>();
         notif = FindObjectOfType<GainedUpgrade>();
         if (PickedUp)
@@ -26,7 +32,7 @@ public class PowerSwitchPickup : MonoBehaviour
             if (Input.GetButtonDown("Pickup"))
             {
                 player.canSwitch = true;
-                GlobalControl.Instance.savedPickups.powerSwitch.PickedUp = true;
+                GlobalControl.Instance.savedPickups.pickupTable["power switch"] = true;
                 Debug.Log("Can now switch sides");
                 Destroy(this.gameObject);
                 notif.newNotif("switch side");
