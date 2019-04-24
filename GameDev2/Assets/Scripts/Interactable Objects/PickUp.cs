@@ -23,7 +23,7 @@ public class PickUp : MonoBehaviour
             pickedup = (bool) GlobalControl.Instance.savedPickups.pickupTable[_name];
         else
         {
-            Debug.Log("Added obj");
+            //Debug.Log("Added obj");
             GlobalControl.Instance.savedPickups.pickupTable.Add(_name, pickedup);
         }
         if (isKey)
@@ -52,10 +52,14 @@ public class PickUp : MonoBehaviour
                     playerInv.AddToInv(this);
                     pickedup = true;
                     this.gameObject.SetActive(false);
+                    if (isMagicKey)
+                        notif.newNotif("Found castle key");
+                    else
+                        notif.newNotif("Found factory key");
                 }
                 else
                 {
-                    Debug.Log("I'm powering up!");
+                    //Debug.Log("I'm powering up!");
                     bool foundItem = false;
                     foreach(KeyValuePair<string,Power> pow in playerScript.tPowerDict)
                     {
@@ -110,7 +114,7 @@ public class PickUp : MonoBehaviour
 
                     if (foundItem)
                     {
-                        notif.newNotif(_name);
+                        notif.newNotif("Gained " + _name + " power");
                         pickedup = true;
                         this.gameObject.SetActive(false);
                     }
@@ -125,7 +129,7 @@ public class PickUp : MonoBehaviour
         if(collision.gameObject.tag == "Player")
         {
             notifObj.SetActive(true);
-            Debug.Log("in here");
+            //Debug.Log("in here");
             playerIn = true; 
             
         }

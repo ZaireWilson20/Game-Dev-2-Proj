@@ -177,6 +177,11 @@ public class Player : MonoBehaviour
     private PowerSetController pSetCont;
     private GainedUpgrade powerNotif;
     
+    public void SetHealthMax()
+    {
+        health = health_max;
+    }
+    
     //Calculate airdash direction here
     Vector3 calculateAirdashVector()
     {
