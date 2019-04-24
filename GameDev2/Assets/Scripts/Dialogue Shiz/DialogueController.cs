@@ -68,7 +68,7 @@ public class DialogueController : MonoBehaviour
         //char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path + lines.ssSprite + lines.mood[currentLine] + fileName, typeof(Sprite));
         firstSpeakerName = lines.firstSpeaker;
         secondSpeakerName = lines.secondSpeaker;
-
+        
         continueBox.SetActive(false);
         conversationUI.SetActive(true);
         allLines = lines.allDialogue;
@@ -133,7 +133,8 @@ public class DialogueController : MonoBehaviour
 #else
             char1.sprite = Resources.Load<Sprite>(diaObj.fsSprite + diaObj.mood[currentLine]);
 #endif
-//            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+            //            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, 1f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, .5f);
         }
