@@ -22,13 +22,15 @@ public class DoorController : MonoBehaviour
     public bool startActive = true;
     public string nextLevelSpawnPoint; 
     public Vector2 otherDoor;
-    Animator anim; 
+    Animator anim;
+    GainedUpgrade notif;
     // Start is called before the first frame update
     void Start()
     {
         pa_inv = playerObj.GetComponent<PlayerInventory>();
         player = playerObj.GetComponent<Player>();
         anim = GetComponent<Animator>();
+        notif = FindObjectOfType<GainedUpgrade>();
     }
 
     // Update is called once per frame
@@ -84,12 +86,14 @@ public class DoorController : MonoBehaviour
                 Debug.Log("Player has: " + k + ": " + hasKey);
                 if (!hasKey) {
                     Debug.Log("No Key");
+                    notif.newNotif("Missing key");
                     break; }
             }
             if (hasKey)
             {
                 //Debug.Log("Door Open, " +  + " in inventory.");
                 opened = true;
+                notifObj.SetActive(false);
                 anim.SetTrigger("OpenBarrier");
                 GlobalControl.Instance.savedDoors.SetBarrierOpen(doorName);
             }

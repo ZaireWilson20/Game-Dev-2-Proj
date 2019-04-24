@@ -15,7 +15,7 @@ public class GainedUpgrade : MonoBehaviour
 
     public void newNotif(string name)
     {
-        text.SetText("Gained " + name + " power");
+        text.SetText(name);
         Debug.Log("Called new notif");
         notifTimer = 2f;
     }
