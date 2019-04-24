@@ -15,6 +15,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject ui_Skills;
     public GameObject ui_Quit;
     public GameObject ui_Controls;
+    public GameObject ui_Map;
     [SerializeField]
     private Button resume;
     [SerializeField]
@@ -127,8 +128,8 @@ public class PauseMenu : MonoBehaviour
         {
             for (int j = 0; j < 2; j++)
             {
-                Debug.Log("(" + i + ", " + j + ")");
-                Debug.Log("button: " + buttons[i, j].gameObject.name);
+                //Debug.Log("(" + i + ", " + j + ")");
+                //Debug.Log("button: " + buttons[i, j].gameObject.name);
                 if (buttons[i, j] == b)
                 {
                     //buttons[i, j].GetComponent<Image>().color = highlighted;
@@ -200,6 +201,18 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void activateMap()
+    {
+        if (ui_Map.activeSelf)
+        {
+            ui_Map.SetActive(false);
+        } else
+        {
+            ui_Map.SetActive(true);
+            menu.SetActive(false);
+        }
+    }
+
     public void backToMenu()
     {
         //confirm = false;
@@ -211,6 +224,7 @@ public class PauseMenu : MonoBehaviour
         ui_Quit.SetActive(false);
         ui_Skills.SetActive(false);
         ui_Controls.SetActive(false);
+        ui_Map.SetActive(false);
     }
 
     public void QuitGame()
