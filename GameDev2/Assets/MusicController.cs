@@ -10,7 +10,7 @@ public class MusicController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        musicEv = FMODUnity.RuntimeManager.CreateInstance("event:/CastleBackground");
+        musicEv = FMODUnity.RuntimeManager.CreateInstance(music);
         musicEv.start();
         
     }
