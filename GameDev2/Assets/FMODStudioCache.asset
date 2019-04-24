@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114518861786987742}
-  - {fileID: 114227665872206106}
+  - {fileID: 114640940076180578}
+  - {fileID: 114756361223961018}
   EditorEvents:
   - {fileID: 114426329713378136}
   - {fileID: 114085971114155920}
@@ -29,9 +29,11 @@ MonoBehaviour:
   - {fileID: 114763730039530482}
   MasterBanks:
   - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   StringsBanks:
   - {fileID: 114518861786987742}
-  stringsBankWriteTime: 636917073137955527
+  - {fileID: 114640940076180578}
+  stringsBankWriteTime: 636917114858112904
   cacheVersion: 3
 --- !u!114 &114006892192557860
 MonoBehaviour:
@@ -226,7 +228,7 @@ MonoBehaviour:
   Path: event:/Boom Shot
   guid: 4ae6a297c1a46440b89d6b177d691b9c
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -249,7 +251,7 @@ MonoBehaviour:
   Path: event:/Player Hurt
   guid: 7ffc214c2cc5b4439798eefa706db48b
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -430,12 +432,11 @@ MonoBehaviour:
   Path: event:/CastleBackground
   guid: 7f522ad00c287e46b8769f254d64c35c
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 0
-  Parameters:
-  - {fileID: 114835803551349652}
+  Parameters: []
   MinDistance: 0
   MaxDistance: 0
   Length: 16551
@@ -475,16 +476,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: event:/MantisBackground
-  guid: d5377f5e983f6a4fb42a6fa073521cfe
+  guid: 1b491e9b7c4b60429326504ddfd952a4
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
-  Length: 51712
+  Length: 50712
 --- !u!114 &114168191664917962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -519,7 +520,7 @@ MonoBehaviour:
   Path: event:/Jump Land
   guid: f304b3a4ab89754980b9157ff2413f28
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -542,7 +543,7 @@ MonoBehaviour:
   Path: event:/Tele
   guid: ffe6d5caa370984388be17cb8df41571
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -650,7 +651,7 @@ MonoBehaviour:
   FileSizes:
   - Name: 
     Value: 3543264
-  Exists: 1
+  Exists: 0
 --- !u!114 &114245565349082740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,7 +667,7 @@ MonoBehaviour:
   Path: event:/SalBackground
   guid: fd54f60b56e1c34e94f996359350317e
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -967,7 +968,7 @@ MonoBehaviour:
   Path: event:/Walk
   guid: 1484428672e01d4db21a87b7a746ca64
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1100,7 +1101,7 @@ MonoBehaviour:
   FileSizes:
   - Name: 
     Value: 1162
-  Exists: 1
+  Exists: 0
 --- !u!114 &114533137004220918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1162,7 +1163,7 @@ MonoBehaviour:
   Path: event:/Jump
   guid: 9ea138762a1c2448b5482a456ebfa09f
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1412,6 +1413,26 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 1685
+--- !u!114 &114640940076180578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\franca5\Documents\Game Projects\Game-Dev-2-Proj\FMOD Proj\Build\Desktop\Master
+    Bank.strings.bank
+  lastModified: 636917114858112904
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 1162
+  Exists: 1
 --- !u!114 &114644182111774480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1578,7 +1599,7 @@ MonoBehaviour:
   Path: event:/Tox Shot
   guid: f3c09f7d69e0d64aa090feff1cfb9bbc
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1651,6 +1672,26 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 464
+--- !u!114 &114756361223961018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: C:\Users\franca5\Documents\Game Projects\Game-Dev-2-Proj\FMOD Proj\Build\Desktop\Master
+    Bank.bank
+  lastModified: 636917114858028037
+  LoadResult: 0
+  FileSizes:
+  - Name: Desktop
+    Value: 3543424
+  Exists: 1
 --- !u!114 &114763730039530482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1664,12 +1705,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: event:/FactoryBackground
-  guid: 67bdb9706a6c424a9c03a5729b641102
+  guid: 9354b9e07aedb348ae7711642bf6a4d9
   Banks:
-  - {fileID: 114227665872206106}
+  - {fileID: 114756361223961018}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
