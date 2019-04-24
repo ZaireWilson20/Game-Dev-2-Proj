@@ -14,6 +14,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject menu;
     public GameObject ui_Skills;
     public GameObject ui_Quit;
+    public GameObject ui_Controls;
     [SerializeField]
     private Button resume;
     [SerializeField]
@@ -23,7 +24,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField]
     private Button skills;
     [SerializeField]
-    private Button sound;
+    private Button controls;
     [SerializeField]
     private Button quit;
     //public Button yesQuit;
@@ -63,7 +64,7 @@ public class PauseMenu : MonoBehaviour
         //inventory.GetComponent<Image>().sprite = standard;
         skills = GameObject.Find("Skills").GetComponent<Button>();
         //skills.GetComponent<Image>().sprite = standard;
-        sound = GameObject.Find("Sound").GetComponent<Button>();
+        controls = GameObject.Find("Controls").GetComponent<Button>();
         //sound.GetComponent<Image>().sprite = standard;
         quit = GameObject.Find("Quit").GetComponent<Button>();
         //quit.GetComponent<Image>().sprite = standard;
@@ -78,7 +79,7 @@ public class PauseMenu : MonoBehaviour
         buttons[0, 1] = map;
         buttons[1, 0] = inventory;
         buttons[1, 1] = skills;
-        buttons[2, 0] = sound;
+        buttons[2, 0] = controls;
         buttons[2, 1] = quit;
 
         Highlight(selected);
@@ -187,6 +188,18 @@ public class PauseMenu : MonoBehaviour
         GameObject.Find("Game Manager-224").GetComponent<Player_UI_Input>().ResumeGame();
     }
 
+    public void activateControls()
+    {
+        if (ui_Controls.activeSelf)
+        {
+            ui_Controls.SetActive(false);
+        } else
+        {
+            ui_Controls.SetActive(true);
+            menu.SetActive(false);
+        }
+    }
+
     public void backToMenu()
     {
         //confirm = false;
@@ -197,6 +210,7 @@ public class PauseMenu : MonoBehaviour
         ui_Inventory.SetActive(false);
         ui_Quit.SetActive(false);
         ui_Skills.SetActive(false);
+        ui_Controls.SetActive(false);
     }
 
     public void QuitGame()

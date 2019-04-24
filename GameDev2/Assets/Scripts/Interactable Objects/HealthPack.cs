@@ -6,7 +6,8 @@ public class HealthPack : MonoBehaviour
 {
     private Player player;
     bool playerOver;
-    Animator anim; 
+    Animator anim;
+    public GameObject notif;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class HealthPack : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         anim.SetBool("PlayerOver", true);
+        notif.SetActive(true);
         if(collision.tag == "Player")
         {
             playerOver = true; 
@@ -42,6 +44,7 @@ public class HealthPack : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        notif.SetActive(false);
         anim.SetBool("PlayerOver", false);
         playerOver = false; 
     }

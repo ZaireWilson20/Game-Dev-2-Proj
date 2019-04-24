@@ -49,7 +49,7 @@ public class PickUp : MonoBehaviour
                 if (!isPowerUp)
                 {
                     Debug.Log("I'm picking up shit");
-                    playerInv.AddToInv(this.GetComponent<PickUp>());
+                    playerInv.AddToInv(this);
                     pickedup = true;
                     this.gameObject.SetActive(false);
                 }
