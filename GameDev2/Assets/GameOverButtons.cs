@@ -18,21 +18,21 @@ public class GameOverButtons : MonoBehaviour
     public float CycleDelay = 0.0f;     //time between button cycling
     private float timer = 0.0f;
 
-    public Color standard;
-    public Color highlighted;
+    public Sprite standard;
+    public Sprite highlighted;
 
     //Start is called before the first frame update
     void Start()
     {
         //collect the buttons
         tryAgain = GameObject.Find("TryAgainButton").GetComponent<Button>();
-        tryAgain.GetComponent<Image>().color = highlighted;
+        tryAgain.GetComponent<Image>().sprite = highlighted;
         titleScreen = GameObject.Find("TitleButton").GetComponent<Button>();
-        titleScreen.GetComponent<Image>().color = standard;
+        titleScreen.GetComponent<Image>().sprite = standard;
         //options = GameObject.Find("OptionsButton").GetComponent<Button>();
-        //options.GetComponent<Image>().color = standard;
+        //options.GetComponent<Image>().sprite = standard;
         //controls = GameObject.Find("ControlsButton").GetComponent<Button>();
-        //controls.GetComponent<Image>().color = standard;
+        //controls.GetComponent<Image>().sprite = standard;
         selected = tryAgain;
 
         //compile vertical ordering of buttons
@@ -67,9 +67,9 @@ public class GameOverButtons : MonoBehaviour
         foreach (Button btn in vertCycle)
         {
             if (btn == b)
-                btn.GetComponent<Image>().color = highlighted;
+                btn.GetComponent<Image>().sprite = highlighted;
             else
-                btn.GetComponent<Image>().color = standard;
+                btn.GetComponent<Image>().sprite = standard;
         }
     }
 
