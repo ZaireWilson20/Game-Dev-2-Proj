@@ -33,9 +33,9 @@ public class PowerSwitchPickup : MonoBehaviour
             {
                 player.canSwitch = true;
                 GlobalControl.Instance.savedPickups.pickupTable["power switch"] = true;
-                Debug.Log("Can now switch sides");
+                //Debug.Log("Can now switch sides");
                 Destroy(this.gameObject);
-                notif.newNotif("switch side");
+                notif.newNotif("Gained mode swap, use Z to swap between magic and science");
             }
     }
 
