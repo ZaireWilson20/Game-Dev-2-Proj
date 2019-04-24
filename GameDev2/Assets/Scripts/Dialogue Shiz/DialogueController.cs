@@ -135,8 +135,18 @@ public class DialogueController : MonoBehaviour
 #endif
             //            char1.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.fsSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
 
+            if(char1.sprite == null)
+            {
+                char1.gameObject.SetActive(false);
+            }
+            else
+            {
+                char1.gameObject.SetActive(true);
+            }
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, 1f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, .5f);
+
+           
         }
         else if (speaker == secondSpeakerName)
         {
@@ -146,7 +156,15 @@ public class DialogueController : MonoBehaviour
 #else
             char2.sprite = Resources.Load<Sprite>(diaObj.ssSprite + diaObj.mood[currentLine]);
 #endif
-//            char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+            //            char2.sprite = (Sprite)AssetDatabase.LoadAssetAtPath(path1 + diaObj.ssSprite + diaObj.mood[currentLine] + fileName, typeof(Sprite));
+            if (char2.sprite == null)
+            {
+                char2.gameObject.SetActive(false);
+            }
+            else
+            {
+                char2.gameObject.SetActive(true);
+            }
             char1.color = new Color(char1.color.r, char1.color.g, char1.color.b, .5f);
             char2.color = new Color(char2.color.r, char2.color.g, char2.color.b, 1f);
         }
