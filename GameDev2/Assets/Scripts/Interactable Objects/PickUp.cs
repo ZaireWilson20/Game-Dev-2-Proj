@@ -67,6 +67,7 @@ public class PickUp : MonoBehaviour
                         {
                             pow.Value.setActive();
                             foundItem = true;
+                            notif.newNotif("Gained " + _name + " power, press B in science mode");
                             continue;
                         }
                     }
@@ -79,6 +80,7 @@ public class PickUp : MonoBehaviour
                             {
                                 pow.Value.setActive();
                                 foundItem = true;
+                                notif.newNotif("Gained " + _name + " weapon, use DPAD in science mode to swap to drill");
                                 continue;
                             }
                         }
@@ -94,6 +96,7 @@ public class PickUp : MonoBehaviour
                                 Debug.Log(pow.Key);
                                 pow.ToString();
                                 foundItem = true;
+                                notif.newNotif("Gained " + _name + " weapon, use DPAD in magic mode to swap to freeze");
                                 continue;
                             }
                         }
@@ -107,6 +110,7 @@ public class PickUp : MonoBehaviour
                             {
                                 pow.Value.setActive();
                                 foundItem = true;
+                                notif.newNotif("Gained " + _name + " power, press B in magic mode");
                                 continue;
                             }
                         }
@@ -114,7 +118,6 @@ public class PickUp : MonoBehaviour
 
                     if (foundItem)
                     {
-                        notif.newNotif("Gained " + _name + " power");
                         pickedup = true;
                         this.gameObject.SetActive(false);
                     }
