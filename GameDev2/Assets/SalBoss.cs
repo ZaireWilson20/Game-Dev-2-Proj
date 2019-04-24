@@ -150,7 +150,7 @@ public class SalBoss : MonoBehaviour
     void Update()
     {
 
-        if (!startBoss)
+        if (!GlobalControl.Instance.savedScene.playBoss)
         {
             transform.position = new Vector3(7.897f, -1.22f);
         }

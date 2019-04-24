@@ -152,6 +152,7 @@ public class SceneData
     public String lastScene = "Hub";
     public bool inCutScene = false;
     public int currentConversationNum = 0;
+    public bool playBoss = false; 
     public List<SceneTrigger> sceneTriggers = new List<SceneTrigger>();
 
     public void AddTrigger(SceneTrigger tempTrig)
