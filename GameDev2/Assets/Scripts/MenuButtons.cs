@@ -10,6 +10,7 @@ public class MenuButtons : MonoBehaviour
     Button[] vertCycle = new Button[4];
     Button[] horizCycle = new Button[4];
     Button play, quit, options, controls, selected;
+    public GameObject ui_Controls;
     int vertIndex = 0;
     int horizIndex = 0;
     int debug_ct = 0;
@@ -47,6 +48,11 @@ public class MenuButtons : MonoBehaviour
         //horizCycle[2] = quit;
         //horizCycle[3] = controls;
 
+    }
+
+    public void activateControls()
+    {
+        SceneManager.LoadScene("ControlsScreen", LoadSceneMode.Single);
     }
 
     public void LoadNextScene()
