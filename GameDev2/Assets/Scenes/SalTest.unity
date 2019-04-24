@@ -871,6 +871,7 @@ GameObject:
   - component: {fileID: 691585076}
   - component: {fileID: 691585075}
   - component: {fileID: 691585074}
+  - component: {fileID: 691585077}
   m_Layer: 14
   m_Name: SAL
   m_TagString: Sal
@@ -954,7 +955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   locations: 4
   attacks: 2
-  maxHealth: 30
+  maxHealth: 1
   phase2Health: 15
   minion: {fileID: 1415682612}
   heatSeeking: {fileID: 354188660}
@@ -1012,6 +1013,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.9815812, y: 2.508225}
   m_EdgeRadius: 0
+--- !u!114 &691585077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691585071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e235936794e5d4cbdb9017bc96fe36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  music: event:/SalBackground
 --- !u!1 &699402733 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7501577993372943398, guid: 82a554b2e5161b840a48200acaa52035,
@@ -1520,6 +1534,11 @@ PrefabInstance:
     - target: {fileID: 517684963, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}
       propertyPath: orthographic size
       value: 10.12857
+      objectReference: {fileID: 0}
+    - target: {fileID: 103854374182888801, guid: 3e2bcb725e085d6478b6f1ebde97d55e,
+        type: 3}
+      propertyPath: music
+      value: event:/SalBackground
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e2bcb725e085d6478b6f1ebde97d55e, type: 3}

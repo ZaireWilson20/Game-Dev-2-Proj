@@ -2471,6 +2471,19 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1427080401}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1376677103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376677102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e235936794e5d4cbdb9017bc96fe36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  music: event:/MantisBackground
 --- !u!1001 &1427080401
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3258,11 +3271,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 856098561649505939, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7501577992922472351, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3368,6 +3376,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 856098561649505939, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7501577992996979785, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_havePropertiesChanged
@@ -3408,16 +3421,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7501577993372943396, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: element
-      value: 
-      objectReference: {fileID: 1986178467}
-    - target: {fileID: 7501577993372943396, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: background
-      value: 
-      objectReference: {fileID: 1493696613}
     - target: {fileID: 7501577994660034941, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: playerObj
@@ -3433,16 +3436,6 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1167593688}
-    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
-        type: 3}
-      propertyPath: gameManager
-      value: 
-      objectReference: {fileID: 1167593688}
     - target: {fileID: 7501577993943784005, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: m_RootOrder
@@ -3462,6 +3455,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577993151639958, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7501577993151639958, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7501577993351678022, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
@@ -3488,16 +3491,16 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 80
       objectReference: {fileID: 0}
-    - target: {fileID: 7501577993151639958, guid: 82a554b2e5161b840a48200acaa52035,
+    - target: {fileID: 7501577993372943396, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7501577993151639958, guid: 82a554b2e5161b840a48200acaa52035,
+      propertyPath: element
+      value: 
+      objectReference: {fileID: 1986178467}
+    - target: {fileID: 7501577993372943396, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: background
+      value: 
+      objectReference: {fileID: 1493696613}
     - target: {fileID: 7501577993905546887, guid: 82a554b2e5161b840a48200acaa52035,
         type: 3}
       propertyPath: gameManager
@@ -3513,6 +3516,16 @@ PrefabInstance:
       propertyPath: m_isInputParsingRequired
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7501577994397844498, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1167593688}
+    - target: {fileID: 7501577994874372781, guid: 82a554b2e5161b840a48200acaa52035,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1167593688}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82a554b2e5161b840a48200acaa52035, type: 3}
 --- !u!1 &1882368937

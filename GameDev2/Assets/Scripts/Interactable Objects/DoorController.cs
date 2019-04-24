@@ -24,6 +24,8 @@ public class DoorController : MonoBehaviour
     public Vector2 otherDoor;
     Animator anim;
     GainedUpgrade notif;
+    public MusicController musicCont; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -131,6 +133,7 @@ public class DoorController : MonoBehaviour
         Debug.Log(otherDoor);
         player.SavePlayer();
         player.SaveSceneData();
+        
         levelSwitch.FadeToLevel(levelGoingTo);
         //}
     }
