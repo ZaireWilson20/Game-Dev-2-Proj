@@ -402,7 +402,7 @@ public class NpcDialogue : MonoBehaviour
         }
         if(hasBeenRead && needToReadyBoss)
         {
-            salBoss.startBoss = true; 
+            GlobalControl.Instance.savedScene.playBoss = true; 
         }
         if (hasBeenRead && destroyOnDone && GetComponent<SceneTrigger>().scenesActivated)
         {
