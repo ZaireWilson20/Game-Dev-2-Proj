@@ -55,6 +55,11 @@ public class MenuButtons : MonoBehaviour
         SceneManager.LoadScene("ControlsScreen", LoadSceneMode.Single);
     }
 
+    public void rollCredits()
+    {
+        SceneManager.LoadScene("Credits", LoadSceneMode.Single);
+    }
+
     public void LoadNextScene()
     {
         Debug.Log("start game");
