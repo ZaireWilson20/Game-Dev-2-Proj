@@ -346,7 +346,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -502,7 +502,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 560668984}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c89fb7e923ab0fb40840ad5e35803be0, type: 3}
   m_Name: 
@@ -527,14 +527,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f73885aa4062b4a4abd906034a456372, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
-  airdashSpeed: 18
-  runSpeed: 12
-  terminalVel: 20
-  jumpHeight: 15
+  speed: 20
+  airdashSpeed: 24
+  runSpeed: 20
+  terminalVel: 35
+  jumpHeight: 20
   grounded: 1
-  fastFallSpeed: 6
-  fallSpeed: 3
+  fastFallSpeed: 10
+  fallSpeed: 5
   swingGrav: 1
   groundedDist: 0.5
   flashRate: 3

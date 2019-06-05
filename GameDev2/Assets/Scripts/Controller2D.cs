@@ -83,32 +83,33 @@ public class Controller2D : MonoBehaviour
     public void Move(Vector3 velocity)
     {
 
-        cont_collision_info.Reset(); //  Info for collisions should be reset everytime player moves
-        UpdateRayO(); //  Updates the positional vectors of the raycasts relative to object
-        cont_collision_info.velocity_old = velocity;
+        //cont_collision_info.Reset(); //  Info for collisions should be reset everytime player moves
+        //UpdateRayO(); //  Updates the positional vectors of the raycasts relative to object
+        //cont_collision_info.velocity_old = velocity;
 
-        if (velocity.y < 0)
-        {
-            DescendSlope(ref velocity);
-        }
+        //if (velocity.y < 0)
+        //{
+        //    DescendSlope(ref velocity);
+        //}
 
-        if (velocity.x != 0)
-        {
-            horizontalCollsions(ref velocity); //Checks horizontal collisions if moving right or left
-            //if moving right, don't flip sprite
-            //if (velocity.x > 0)
-                //sprite.flipY = false;
-            //if moving left, flip sprite
-            //else
-                //sprite.flipY = true;
-        }
+        //if (velocity.x != 0)
+        //{
+        //    horizontalCollsions(ref velocity); //Checks horizontal collisions if moving right or left
+        //    //if moving right, don't flip sprite
+        //    //if (velocity.x > 0)
+        //        //sprite.flipY = false;
+        //    //if moving left, flip sprite
+        //    //else
+        //        //sprite.flipY = true;
+        //}
 
-        if (velocity.y != 0)
-        {
-            verticalCollisions(ref velocity); //Checks vertical collsions if moving up or down
-        }
+        //if (velocity.y != 0)
+        //{
+        //    verticalCollisions(ref velocity); //Checks vertical collsions if moving up or down
+        //}
 
-        transform.Translate(velocity); //Moves object
+        //transform.Translate(velocity); //Moves object
+        
     }
 
 

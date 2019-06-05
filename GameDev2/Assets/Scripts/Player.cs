@@ -188,11 +188,11 @@ public class Player : MonoBehaviour
         Vector2 vec;
         if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") <= .75f)
         {
-            vec = new Vector2(airdashSpeed * .65f, airdashSpeed * .85f);
+            vec = new Vector2(airdashSpeed * .65f, airdashSpeed/1.25f * .85f);
         }
         else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") > .25f && Input.GetAxis("Vertical") <= .75f)
         {
-            vec = new Vector2(-airdashSpeed * .65f, airdashSpeed * .85f);
+            vec = new Vector2(-airdashSpeed * .65f, airdashSpeed/1.25f * .85f);
         }
         else if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") > -.25f && Input.GetAxis("Vertical") <= .25f)
         {
@@ -204,26 +204,26 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetAxis("Horizontal") < -.25f && Input.GetAxis("Vertical") <= -.25f && Input.GetAxis("Vertical") > -.75f)
         {
-            vec = new Vector2(-airdashSpeed * .65f, -airdashSpeed * .85f);
+            vec = new Vector2(-airdashSpeed * .65f, -airdashSpeed/1.25f * .85f);
         }
         else if (Input.GetAxis("Horizontal") > .25f && Input.GetAxis("Vertical") <= -.25f && Input.GetAxis("Vertical") > -.75f)
         {
-            vec = new Vector2(airdashSpeed * .65f, -airdashSpeed * .85f);
+            vec = new Vector2(airdashSpeed * .65f, -airdashSpeed/1.25f * .85f);
         }
         else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") < -.25f)
         {
-            vec = new Vector2(0, -airdashSpeed);
+            vec = new Vector2(0, -airdashSpeed/1.25f);
         }
         else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") > .25f)
         {
-            vec = new Vector2(0, airdashSpeed);
+            vec = new Vector2(0, airdashSpeed/1.25f);
         }
         else
         {
             if (fallSpeed > 0)
-                vec = new Vector2(0, airdashSpeed * 1f);
+                vec = new Vector2(0, airdashSpeed / 1.25f);
             else
-                vec = new Vector2(0, airdashSpeed * -1f);
+                vec = new Vector2(0, airdashSpeed / -1.25f);
         }
         //Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
@@ -268,19 +268,19 @@ public class Player : MonoBehaviour
         //{
         //    tp = -135f;
         //}
-        if (Input.GetAxisRaw("Horizontal") < 0f) //Left
+        if (Input.GetAxisRaw("Horizontal") < -.3f) //Left
         {
             tp = 180f;
         }
-        else if (Input.GetAxisRaw("Horizontal") > 0f) //Right
+        else if (Input.GetAxisRaw("Horizontal") > .3f) //Right
         {
             tp = 0f;
         }
-        else if (Input.GetAxisRaw("Vertical") > 0f) //Up
+        else if (Input.GetAxisRaw("Vertical") > .3f) //Up
         {
             tp = 90f;
         }
-        else if (Input.GetAxisRaw("Vertical") < 0f) //Down
+        else if (Input.GetAxisRaw("Vertical") < -.3f) //Down
         {
             tp = -90f;
         }
@@ -294,6 +294,12 @@ public class Player : MonoBehaviour
         return tp;
     }
     Controller2D controller;
+
+    public void Move(Vector3 vel)
+    {
+        rig2D.AddForce(new Vector2((directionalInput.x / 2 * speed - rig2D.velocity.x) * 2*speed, 0));
+        rig2D.velocity = new Vector2(rig2D.velocity.x, rig2D.velocity.y);
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -712,20 +718,20 @@ public class Player : MonoBehaviour
                     }
                     else if (airdashTime - Time.deltaTime < 0 && airdashTime != 0)
                     {
-                        rig2D.velocity = new Vector2(0, 0);
-                        velocity.y = 0;
-                        velocity.x = 0;
+                        //rig2D.velocity = new Vector2(0, 0);
+                        //velocity.y = 0;
+                        //velocity.x = 0;
                         airdashTime = 0;
                     }
                     else
                     {
-                        float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
+                        //float targetX_velocity = directionalInput.x * speed;    //  Speed force added to horizontal velocity, no acceleration
                                                                                 //  Damping/acceleration applied throught damping.
-                        velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
+                        //velocity.x = Mathf.SmoothDamp(velocity.x, targetX_velocity, ref velocX_smooth, grounded ? accelTime_ground : accelTime_air);
                         //  Call to move function in controller2D class
                         if (velocity.x > terminalVel) velocity.x = terminalVel;
                         if (velocity.y > terminalVel) velocity.y = terminalVel;
-                        controller.Move(velocity * Time.deltaTime);
+                        Move(velocity * Time.deltaTime);
                     }
 
                     //TELEPORT LOGIC
@@ -864,18 +870,18 @@ public class Player : MonoBehaviour
                 //Increase speed
                 if (powerBoost/15 >= 7)
                 {
-                    speed = 9;
-                    runSpeed = 18;
+                    speed = 30;
+                    runSpeed = 30;
                 }
                 else if (powerBoost/15 >= 4)
                 {
-                    speed = 8;
-                    runSpeed = 16;
+                    speed = 26;
+                    runSpeed = 26;
                 }
                 else if (powerBoost/15 >= 1)
                 {
-                    speed = 7;
-                    runSpeed = 14;
+                    speed = 23;
+                    runSpeed = 23;
                 }
                 //Change health maximum
                 if (powerBoost/15 >= 8)
@@ -895,15 +901,15 @@ public class Player : MonoBehaviour
                 //Increase airdash speed
                 if (powerBoost/15 >= 9)
                 {
-                    airdashSpeed = 36;
+                    airdashSpeed = 42;
                 }
                 else if (powerBoost/15 >= 6)
                 {
-                    airdashSpeed = 30;
+                    airdashSpeed = 36;
                 }
                 else if (powerBoost/15 >= 3)
                 {
-                    airdashSpeed = 24;
+                    airdashSpeed = 30;
                 }
                 //Debug.Log("Power Level = " + powerBoost/15);
             }
@@ -965,7 +971,7 @@ public class Player : MonoBehaviour
             directionalInput = new Vector3(-1, 0, 0);
             
         }
-        controller.Move(directionalInput * speed * Time.deltaTime);
+        Move(directionalInput * speed * Time.deltaTime);
         if(Math.Abs(transform.position.x - pos.x) <= 1)
         {
             directionalInput.x = 0;
@@ -1031,7 +1037,7 @@ public class Player : MonoBehaviour
             }
             velocity.x += knockback * knockDir.x;
             velocity.y += knockback * knockDir.y;
-            controller.Move(velocity * Time.deltaTime);
+            Move(velocity * Time.deltaTime);
             Debug.Log("Player health: " + health);
             timeLeft = invincibility;
             //turn off collision with enemies for 0.5 seconds
