@@ -1129,8 +1129,8 @@ public class Player : MonoBehaviour
     IEnumerator ShootAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-
-        newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
+        Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
+        newProjectile = Instantiate(projectile, transform.position, Quaternion.Euler((aimDirection())*Vector3.forward)) as GameObject;
         newProjectile.SetActive(true);
         //if (sprite.flipX == false)
         //{
@@ -1142,8 +1142,9 @@ public class Player : MonoBehaviour
         //    //sprite facing right (forwards)
         //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
         //}
-        Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
-        newProjectile.GetComponent<Rigidbody2D>().velocity = shootDir;
+
+        //newProjectile.GetComponent<Rigidbody2D>().velocity = shootDir;
+        newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
         doneShooting = true;
         anim.SetBool("BoomShot", false);
         // Code to execute after the delay
