@@ -437,6 +437,7 @@ public class Player : MonoBehaviour
     {
         //save important scene details before leaving
         localScene.lastScene = SceneManager.GetActiveScene().name;
+        localScene.playBoss = true;
         //SavePickupData();
         Debug.Log("Saved scene");
         GlobalControl.Instance.savedScene = localScene;
@@ -832,14 +833,14 @@ public class Player : MonoBehaviour
                     sprite.enabled = true;
                 }
 
-                if (velocity.x > 0)
-                {
-                    facingRight = true;
-                }
-                else if (velocity.x < 0)
-                {
-                    facingRight = false;
-                }
+                //if (velocity.x > 0)
+                //{
+                //    facingRight = true;
+                //}
+                //else if (velocity.x < 0)
+                //{
+                //    facingRight = false;
+                //}
             }
             //Ray blah = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight - .2f), Vector2.down, 0.025f, floorMask);
 
@@ -1129,7 +1130,7 @@ public class Player : MonoBehaviour
     IEnumerator ShootAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
+        //Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
         newProjectile = Instantiate(projectile, transform.position, Quaternion.Euler((aimDirection())*Vector3.forward)) as GameObject;
         newProjectile.SetActive(true);
         //if (sprite.flipX == false)
