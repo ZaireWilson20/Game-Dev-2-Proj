@@ -13,6 +13,7 @@ using System;
 //Run to run
 //Jump to jump/airdash
 //H+Q swaps powers
+//H+Y gains all powers
 
 //name = name of the power
 //active = if you have access to the power
@@ -213,10 +214,14 @@ public class Player : MonoBehaviour
         else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") < -.25f)
         {
             vec = new Vector2(0, -airdashSpeed/1.25f);
+            rig2D.gravityScale = fastFallSpeed;
+            fastFall = true;
         }
         else if (Input.GetAxis("Horizontal") >= -.25f && Input.GetAxis("Horizontal") <= .25f && Input.GetAxis("Vertical") > .25f)
         {
             vec = new Vector2(0, airdashSpeed/1.25f);
+            rig2D.gravityScale = fastFallSpeed;
+            fastFall = true;
         }
         else
         {
@@ -224,6 +229,8 @@ public class Player : MonoBehaviour
                 vec = new Vector2(0, airdashSpeed / 1.25f);
             else
                 vec = new Vector2(0, airdashSpeed / -1.25f);
+            rig2D.gravityScale = fastFallSpeed;
+            fastFall = true;
         }
         //Debug.Log(new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")));
         return vec;
@@ -1130,7 +1137,7 @@ public class Player : MonoBehaviour
     IEnumerator ShootAfterTime(float time)
     {
         yield return new WaitForSeconds(time);
-        //Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
+        Vector2 shootDir = new Vector2(Mathf.Cos(Mathf.Deg2Rad * aimDirection()), Mathf.Sin(Mathf.Deg2Rad * aimDirection()));
         newProjectile = Instantiate(projectile, transform.position, Quaternion.Euler((aimDirection())*Vector3.forward)) as GameObject;
         newProjectile.SetActive(true);
         //if (sprite.flipX == false)
@@ -1144,8 +1151,8 @@ public class Player : MonoBehaviour
         //    newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
         //}
 
-        //newProjectile.GetComponent<Rigidbody2D>().velocity = shootDir;
-        newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
+        newProjectile.GetComponent<Rigidbody2D>().velocity = shootDir;
+        //newProjectile.GetComponent<Rigidbody2D>().velocity = new Vector2(1, 0);
         doneShooting = true;
         anim.SetBool("BoomShot", false);
         // Code to execute after the delay

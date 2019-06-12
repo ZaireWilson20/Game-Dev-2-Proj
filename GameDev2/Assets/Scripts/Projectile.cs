@@ -103,6 +103,9 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        transform.Translate(velocity * Time.deltaTime);
+        //transform.Translate(velocity * Time.deltaTime);
+        rb.velocity = velocity;
+        //rb.AddForce(velocity);
+        //velocity += ;
     }
 }
