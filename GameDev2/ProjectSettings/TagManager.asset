@@ -11,6 +11,16 @@ TagManager:
   - NPC
   - Kill Zone
   - Instruction
+  - FactoryBoss
+  - Laser
+  - Pick Up
+  - MantisLegs
+  - MantisClaws
+  - MantisHead
+  - Sal
+  - PowerUpNotif
+  - Button
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
@@ -30,11 +40,11 @@ TagManager:
   - Bullet
   - EnemyFire
   - Kill Zone
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Reflect
+  - Breakable
+  - Frozen
+  - Laser
+  - Map
   - 
   - 
   - 
@@ -45,6 +55,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: The Actual Background
+    uniqueID: 1561254753
+    locked: 0
+  - name: The Background Assets
+    uniqueID: 1700165899
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
