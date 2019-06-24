@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[System.Serializable]
 public class PlayerData
 {
     public float playerHealth = 5;
@@ -25,6 +26,7 @@ public class PlayerData
     public List<InventoryItem> inventory = new List<InventoryItem>();
 }
 
+[System.Serializable]
 public class DialogueData
 {
 
@@ -147,6 +149,7 @@ public class DialogueData
 
 }
 
+[System.Serializable]
 public class SceneData
 {
     public String lastScene = "Hub";
@@ -183,6 +186,8 @@ public class SceneData
         return false;
     }
 }
+
+[System.Serializable]
 public class DoorData
 {
     public class DoorsState
@@ -283,6 +288,7 @@ public class DoorData
     }
 }
 
+[System.Serializable]
 public class PickupData
 {
     public Hashtable pickupTable = new Hashtable();

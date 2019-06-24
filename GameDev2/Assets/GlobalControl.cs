@@ -19,6 +19,13 @@ public class GlobalControl : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
             Instance = this;
+            //GameData.activeGame = new GameData();
+            //GameData.activeGame.savedPlayer = savedPlayer;
+            //GameData.activeGame.savedScene = savedScene;
+            //GameData.activeGame.savedDoors = savedDoors;
+            //GameData.activeGame.savedDialogue = savedDialogue;
+            //GameData.activeGame.savedPickups = savedPickups;
+            GameData.activeGame = new GameData();
         }
         else if (Instance != this)
         {

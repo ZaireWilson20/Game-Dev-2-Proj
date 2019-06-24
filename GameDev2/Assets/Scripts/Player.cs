@@ -417,6 +417,7 @@ public class Player : MonoBehaviour
         powerNotif = FindObjectOfType<GainedUpgrade>();
     }
 
+    //Saves player data when called
     public void SavePlayer()
     {
         localPlayerData.playerHealth = health;
@@ -440,6 +441,7 @@ public class Player : MonoBehaviour
 
     }
 
+    //Saves the scene data when called
     public void SaveSceneData()
     {
         //save important scene details before leaving
@@ -450,6 +452,7 @@ public class Player : MonoBehaviour
         GlobalControl.Instance.savedScene = localScene;
     }
 
+    //Saves the pickup data when called
     public void SavePickupData()
     {
         for (int i = 0; i < pointpickups.Count; ++i)
@@ -932,6 +935,26 @@ public class Player : MonoBehaviour
                 tWeaponDict[drill.name].active = true;
                 Debug.Log("All powers added");
             }
+
+            //Save and load game data test cheats
+            if (Input.GetKeyDown(KeyCode.K) && Input.GetKey(KeyCode.J))// && Input.GetKey(KeyCode.H))
+            {
+                SavePlayer();
+                SaveSceneData();
+                //GameData.activeGame.savedPlayer = GlobalControl.Instance.savedPlayer;
+                Debug.Log(GameData.activeGame.ToString());
+                SaveLoad.Save();
+                Debug.Log("Scene should be saved");
+            }
+
+            if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.J))// && Input.GetKey(KeyCode.H))
+            {
+                SaveLoad.Load();
+                Debug.Log(SaveLoad.savedGames.Count);
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                Debug.Log("Scene should be reloaded");
+            }
+
             //tUtility.toString();
             //tWeapon.toString();
             //mUtility.toString();
