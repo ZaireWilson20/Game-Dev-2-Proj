@@ -61,7 +61,7 @@ public class LaserBeam : MonoBehaviour
             Physics2D.IgnoreLayerCollision(21, 13, false);
         }
         if (elapsedTime > duration)
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         timer += Time.deltaTime;
         elapsedTime += Time.deltaTime;
     }

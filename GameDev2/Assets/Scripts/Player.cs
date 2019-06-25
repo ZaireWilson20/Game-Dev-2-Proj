@@ -53,7 +53,6 @@ public class Player : MonoBehaviour
     public PlayerData localPlayerData = new PlayerData();
     private SceneData localScene = new SceneData();
 
-
     //Forces On Player ----------------
     public float speed = 5f;
     public float airdashSpeed = 20f;
@@ -163,18 +162,14 @@ public class Player : MonoBehaviour
     private float halfHeight;
 
     //  Game Manager
-    public GameObject gameManagerObj;
     private GameState gameManager;
     public string levelName;
     public Vector3 spawnPosition;
     private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
     public string pointToSpawn;
-    public List<GameObject> pointpickups = new List<GameObject>();
 
     //  UI
-    public GameObject healthObj;
     private HealthUI hiScript;
-    public GameObject pSetObj;
     private PowerSetController pSetCont;
     private GainedUpgrade powerNotif;
     
@@ -332,32 +327,22 @@ public class Player : MonoBehaviour
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
         spawnPosition = localPlayerData.spawnPosition;
-        //pointpickups = localPlayerData.pointpickups;
-        //pointToSpawn = localPlayerData.posToSpawn; 
-        //foreach(SpawnPoint p in spawnPoints)
-        //{
-        //    if(p._name == pointToSpawn)
-        //    {
-        //        spawnPosition = p.getPos();
-        //    }
-        //}
-        //Debug.Log(health);
 
         controller = GetComponent<Controller2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
         rig2D = GetComponent<Rigidbody2D>();
-        gameManager = gameManagerObj.GetComponent<GameState>();
+        gameManager = FindObjectOfType<GameState>();
 
         timeSinceLastTp = tpCooldown;
         refMax = 0f;
         halfHeight = transform.GetComponent<SpriteRenderer>().bounds.extents.y;
         //health = health_max;
 
-        //UI Inits
-        hiScript = healthObj.GetComponent<HealthUI>();
-        //health = health_max;
-        pSetCont = pSetObj.GetComponent<PowerSetController>();
+        //UI References
+        GameObject obj = FindObjectOfType<Canvas>().gameObject;
+        hiScript = obj.GetComponentInChildren<HealthUI>();
+        pSetCont = obj.GetComponentInChildren<PowerSetController>();
 
         boomerang = new Power("boomerang", true, true);
         grapple = new Power("grapple", true, true);
@@ -398,12 +383,6 @@ public class Player : MonoBehaviour
             mWeaponDict = GlobalControl.Instance.savedPlayer.mWeaps;
             mPowerDict = GlobalControl.Instance.savedPlayer.mUtils;
         }
-
-        //for (int i = 0; i < pointpickups.Count; ++i)
-        //{
-        //    if (pointpickups[i] != null)
-        //        pointpickups[i].SetActive(false);
-        //}
 
         pSetCont.SetMPowerImg(mUtility.name);
         pSetCont.SetMWeaponImg(mWeapon.name);
@@ -447,19 +426,8 @@ public class Player : MonoBehaviour
         //save important scene details before leaving
         localScene.lastScene = SceneManager.GetActiveScene().name;
         localScene.playBoss = true;
-        //SavePickupData();
         Debug.Log("Saved scene");
         GlobalControl.Instance.savedScene = localScene;
-    }
-
-    //Saves the pickup data when called
-    public void SavePickupData()
-    {
-        for (int i = 0; i < pointpickups.Count; ++i)
-        {
-            Debug.Log(pointpickups[i].activeSelf);
-        }
-        GlobalControl.Instance.savedPlayer.pointpickups = pointpickups;
     }
 
     // Update is called once per frame
@@ -504,10 +472,6 @@ public class Player : MonoBehaviour
 
         }
 
-        if (controller.cont_collision_info.above || grounded) //  Stops vertical movement if vertical collision detected
-        {
-            velocity.y = 0;
-        }
         if (gameManager.paused)
         {
             //this.GetComponent<Rigidbody2D>().isKinematic = true;

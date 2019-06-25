@@ -29,8 +29,8 @@ public class DoorController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        pa_inv = playerObj.GetComponent<PlayerInventory>();
-        player = playerObj.GetComponent<Player>();
+        pa_inv = FindObjectOfType<PlayerInventory>();
+        player = FindObjectOfType<Player>();
         anim = GetComponent<Animator>();
         notif = FindObjectOfType<GainedUpgrade>();
     }

@@ -97,6 +97,7 @@ public class NpcDialogue : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pa_playerObj = FindObjectOfType<Player>().gameObject;
         dialogueController = GetComponent<DialogueController>();
         if(convoType == diaType.prevConvoTrig)
         {
@@ -134,7 +135,8 @@ public class NpcDialogue : MonoBehaviour
         }
         //pa_playerObj = GameObject.FindGameObjectWithTag("Player");
         pa_script = pa_playerObj.GetComponent<Player>();
-        levelSwitch = levelFader.GetComponent<LevelSwitch>();
+        //levelSwitch = levelFader.GetComponent<LevelSwitch>();
+        levelSwitch = FindObjectOfType<LevelSwitch>();
         if (init)
         {
             Debug.Log("shit aint workin");

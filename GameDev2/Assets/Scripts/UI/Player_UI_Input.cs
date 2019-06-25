@@ -5,9 +5,9 @@ using UnityEngine;
 public class Player_UI_Input : MonoBehaviour
 {
 
-    public GameObject menu;
-    public GameObject map;
-    public GameObject invObj;
+    private GameObject menu;
+    private GameObject map;
+    private GameObject invObj;
 
     //  Game Manager
     //private GameObject gameManagerObj;
@@ -26,6 +26,9 @@ public class Player_UI_Input : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        invObj = FindObjectOfType<BackPack>().gameObject;
+        map = FindObjectOfType<MapControl>().gameObject;
+        menu = FindObjectOfType<PauseMenu>().GetComponentInParent<CanvasRenderer>().gameObject;
         menu.SetActive(false);
         map.SetActive(false);
         invObj.SetActive(false);

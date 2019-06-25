@@ -7,7 +7,6 @@ using TMPro;
 public class PowerSetController : MonoBehaviour
 {
     public TMP_Text powerSetDisplay;
-    public GameObject playerObj;
     public GameObject weapon;
     public GameObject util;
     private Player playerScript;
@@ -22,7 +21,7 @@ public class PowerSetController : MonoBehaviour
 
     private void Start()
     {
-        playerScript = playerObj.GetComponent<Player>();
+        playerScript = FindObjectOfType<Player>();
     }
 
     public void SetMWeaponImg(string _name)

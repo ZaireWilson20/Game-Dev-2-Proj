@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class BackPack : MonoBehaviour
 {
     public Image[] allItems;
-    public GameObject p_inventory;
+    //public GameObject p_inventory;
     private PlayerInventory invScript;
     private int count;
     public GameObject menu;
@@ -20,7 +20,7 @@ public class BackPack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        invScript = p_inventory.GetComponent<PlayerInventory>();
+        invScript = FindObjectOfType<PlayerInventory>();
     }
 
     // Update is called once per frame
@@ -37,6 +37,5 @@ public class BackPack : MonoBehaviour
         {
             Close();
         }
-
     }
 }

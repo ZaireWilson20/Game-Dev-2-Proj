@@ -6,7 +6,7 @@ public class PickUp : MonoBehaviour
 {
     public string _name;
     public GameObject notifObj;
-    public GameObject playerRef;
+    //public GameObject playerRef;
     private PlayerInventory playerInv;
     private Player playerScript;
     private bool playerIn;
@@ -31,8 +31,9 @@ public class PickUp : MonoBehaviour
             anim = GetComponent<Animator>();
             //anim.SetBool("MagicKey", isMagicKey);
         }
-        playerInv = playerRef.GetComponent<PlayerInventory>();
-        playerScript = playerRef.GetComponent<Player>();
+
+        playerInv = FindObjectOfType<Player>().GetComponent<PlayerInventory>();
+        playerScript = FindObjectOfType<Player>().GetComponent<Player>();
         notif = FindObjectOfType<GainedUpgrade>();
 
         if (pickedup)
