@@ -49,7 +49,7 @@ public class Freeze : Projectile
         //}
 
         if (contact.layer == 8)
-            gameObject.SetActive(false);
+            Destroy(gameObject);
     }
 
     protected override void Update()
@@ -59,7 +59,7 @@ public class Freeze : Projectile
         //when damage has no power, toxic shot disappears
         if (health <= 0)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }

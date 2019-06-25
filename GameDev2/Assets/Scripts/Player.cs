@@ -496,20 +496,20 @@ public class Player : MonoBehaviour
                 if (fallSpeed > 0)
                 {
                     grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
-                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .3f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
-                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .4f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .28f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .3f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
 
 
                 }
                 else
                 {
                     grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
-                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .3f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
-                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .28f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .3f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
                 }
-                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.green);
-                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x - .4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.green);
-                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x + .4f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.down, Color.green);
+                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.green);
+                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x - .28f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.green);
+                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x + .3f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.green);
                 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
                 WalkAnim(directionalInput);
 

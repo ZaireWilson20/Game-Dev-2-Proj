@@ -64,7 +64,7 @@ public class EnemyProjectile : MonoBehaviour
         }
 
         if (contact.layer == 8)
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         //        }
 
 

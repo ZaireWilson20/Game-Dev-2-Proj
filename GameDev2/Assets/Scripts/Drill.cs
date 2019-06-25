@@ -61,7 +61,7 @@ public class Drill : Projectile
         //Debug.Log(velocity);
         if (health <= 0)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }

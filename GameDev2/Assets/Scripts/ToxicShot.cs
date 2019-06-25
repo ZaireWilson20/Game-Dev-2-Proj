@@ -65,7 +65,7 @@ public class ToxicShot : Projectile
             }
 
             if (contact.layer == 8)
-                gameObject.SetActive(false);
+                Destroy(gameObject);
         }
     }
 
@@ -81,7 +81,7 @@ public class ToxicShot : Projectile
         //when damage has no power, toxic shot disappears
         if (damage <= 0)
         {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         }
     }
 }

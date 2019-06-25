@@ -85,12 +85,12 @@ public class Boomerang : Projectile
 
             //pscript.takeDamage(damage, dir);
             if (hits <= 0)
-                gameObject.SetActive(false);
+                Destroy(gameObject);
 
         }
 
         if (contact.layer == 8)
-            gameObject.SetActive(false);
+            Destroy(gameObject);
         //        }
 
 

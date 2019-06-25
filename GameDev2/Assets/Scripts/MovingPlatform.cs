@@ -82,7 +82,7 @@ public class MovingPlatform : MonoBehaviour
                 dir = 1;    //move right
             vel = Vector2.right * dir;
         }
-        //GetComponent<Rigidbody2D>().velocity = speed * vel;
+        GetComponent<Rigidbody2D>().velocity = speed * vel;
     }
 
     private void OnCollisionEnter2D(Collision2D other) {
