@@ -164,7 +164,7 @@ public class Player : MonoBehaviour
 
     //  Game Manager
     private GameState gameManager;
-    public string levelName;
+    public string gameOverLevelName;
     public Vector3 spawnPosition;
     private List<SpawnPoint> spawnPoints = new List<SpawnPoint>();
     public string pointToSpawn;
@@ -329,6 +329,7 @@ public class Player : MonoBehaviour
         canSwitch = localPlayerData.canSwitch;
         spawnPosition.x = localPlayerData.spawnX;
         spawnPosition.y = localPlayerData.spawnY;
+        Debug.Log(spawnPosition);
 
         controller = GetComponent<Controller2D>();
         anim = GetComponent<Animator>();
@@ -405,8 +406,8 @@ public class Player : MonoBehaviour
         localPlayerData.playerHealthCap = health_max;
         localPlayerData.points = points;
         localPlayerData.canSwitch = canSwitch;
-        localPlayerData.spawnX = spawnPosition.x;
-        localPlayerData.spawnY = spawnPosition.y;
+        localPlayerData.spawnX = transform.position.x;
+        localPlayerData.spawnY = transform.position.y;
         //localPlayerData.spawnPosition = spawnPosition;
         localPlayerData.posToSpawn = pointToSpawn;
 
@@ -417,6 +418,7 @@ public class Player : MonoBehaviour
         localPlayerData.tWeaps = tWeaponDict;   localPlayerData.mWeaps = mWeaponDict;
 
         localPlayerData.reload = true;
+        localPlayerData.levelName = SceneManager.GetActiveScene().name;
 
         GlobalControl.Instance.savedPlayer = localPlayerData;
         FindObjectOfType<MusicController>().musicEv.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
@@ -501,7 +503,7 @@ public class Player : MonoBehaviour
                 {
                     grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
                                Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .28f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask) ||
-                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .3f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .28f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, groundedDist, floorMask);
 
 
                 }
@@ -509,11 +511,11 @@ public class Player : MonoBehaviour
                 {
                     grounded = Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
                                Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x - .28f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask) ||
-                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .3f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
+                               Physics2D.Raycast(new Vector2(sprite.transform.localPosition.x + .28f, sprite.transform.localPosition.y + halfHeight / 2), Vector2.up, groundedDist, floorMask);
                 }
                 Debug.DrawRay(new Vector2(sprite.transform.localPosition.x, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.green);
                 Debug.DrawRay(new Vector2(sprite.transform.localPosition.x - .28f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.green);
-                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x + .3f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.green);
+                Debug.DrawRay(new Vector2(sprite.transform.localPosition.x + .28f, sprite.transform.localPosition.y - halfHeight / 2), Vector2.down, Color.green);
                 directionalInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
                 WalkAnim(directionalInput);
 
@@ -909,7 +911,6 @@ public class Player : MonoBehaviour
             {
                 SavePlayer();
                 SaveSceneData();
-                //GameData.activeGame.savedPlayer = GlobalControl.Instance.savedPlayer;
                 SaveLoad.Save();
                 Debug.Log(SaveLoad.activeGame.ToString());
                 Debug.Log("Scene should be saved");
@@ -924,8 +925,9 @@ public class Player : MonoBehaviour
                 GlobalControl.Instance.savedDoors = SaveLoad.activeGame.savedDoors;
                 GlobalControl.Instance.savedPickups = SaveLoad.activeGame.savedPickups;
                 GlobalControl.Instance.savedPlayer = SaveLoad.activeGame.savedPlayer;
+                GlobalControl.Instance.savedScene = SaveLoad.activeGame.savedScene;
                 Debug.Log(SaveLoad.savedGames.Count);
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                SceneManager.LoadScene(GlobalControl.Instance.savedPlayer.levelName);
                 Debug.Log("Scene should be reloaded");
             }
 
@@ -1037,7 +1039,7 @@ public class Player : MonoBehaviour
                 SaveSceneData();
                 GlobalControl.Instance.savedPlayer.playerHealth = health_max;
                 
-                SceneManager.LoadScene(levelName, LoadSceneMode.Single);
+                SceneManager.LoadScene(gameOverLevelName, LoadSceneMode.Single);
                 //gameObject.SetActive(false);
             }
             velocity.x += knockback * knockDir.x;

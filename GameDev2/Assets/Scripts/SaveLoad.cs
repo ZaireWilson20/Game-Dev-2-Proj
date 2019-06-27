@@ -50,6 +50,6 @@ public class SaveLoad
         activeGame.savedDoors = GlobalControl.Instance.savedDoors;
         activeGame.savedPickups = GlobalControl.Instance.savedPickups;
         activeGame.savedPlayer = GlobalControl.Instance.savedPlayer;
-        //activeGame.savedScene = GlobalControl.Instance.savedScene;
+        activeGame.savedScene = GlobalControl.Instance.savedScene;
     }
 }

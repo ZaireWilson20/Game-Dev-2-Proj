@@ -10,7 +10,8 @@ public class PlayerData
     public int playerHealthCap = 5; //absolute max health is 8
     public int points = 0;
     public bool canSwitch = false;
-    public string posToSpawn = "CenterHub"; 
+    public string posToSpawn = "CenterHub";
+    public string levelName = "Hub";
     public Power mUtil;
     public Power tUtil;
     public Power mWeap;
@@ -158,6 +159,7 @@ public class SceneData
     public bool inCutScene = false;
     public int currentConversationNum = 0;
     public bool playBoss = false; 
+    [System.NonSerialized]
     public List<SceneTrigger> sceneTriggers = new List<SceneTrigger>();
 
     public void AddTrigger(SceneTrigger tempTrig)
