@@ -8,10 +8,8 @@ public class PlayerData
 {
     public float playerHealth = 5;
     public int playerHealthCap = 5; //absolute max health is 8
-    public List<GameObject> pointpickups = new List<GameObject>();
     public int points = 0;
     public bool canSwitch = false;
-    public Vector3 spawnPosition = new Vector3(8, 0, 0);
     public string posToSpawn = "CenterHub"; 
     public Power mUtil;
     public Power tUtil;
@@ -24,6 +22,10 @@ public class PlayerData
     public bool reload = false;
     public bool factoryBossDefeated = false;
     public List<InventoryItem> inventory = new List<InventoryItem>();
+    public float spawnX;
+    public float spawnY;
+    [System.NonSerialized]
+    public Vector3 spawnPosition = new Vector3(8, 0, 0);
 }
 
 [System.Serializable]
@@ -34,7 +36,7 @@ public class DialogueData
     //public int currentLine = 0;
     public List<data> conversationData = new List<data>();
 
-
+    [System.Serializable]
     public class data
     {
         public data(int curLine, string sceneName, bool hasBeenRead) {
@@ -190,6 +192,7 @@ public class SceneData
 [System.Serializable]
 public class DoorData
 {
+    [System.Serializable]
     public class DoorsState
     {
         public bool unlocked;

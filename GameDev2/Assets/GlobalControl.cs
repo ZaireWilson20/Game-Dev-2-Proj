@@ -1,5 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System;
 using UnityEngine;
 
 public class GlobalControl : MonoBehaviour
@@ -25,7 +28,6 @@ public class GlobalControl : MonoBehaviour
             //GameData.activeGame.savedDoors = savedDoors;
             //GameData.activeGame.savedDialogue = savedDialogue;
             //GameData.activeGame.savedPickups = savedPickups;
-            GameData.activeGame = new GameData();
         }
         else if (Instance != this)
         {

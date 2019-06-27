@@ -18,6 +18,7 @@ using System;
 //name = name of the power
 //active = if you have access to the power
 //side = which powerset it belongs to
+[System.Serializable]
 public class Power : IComparable<Power>
 {
     public string name;
@@ -326,7 +327,8 @@ public class Player : MonoBehaviour
         health_max = localPlayerData.playerHealthCap;
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
-        spawnPosition = localPlayerData.spawnPosition;
+        spawnPosition.x = localPlayerData.spawnX;
+        spawnPosition.y = localPlayerData.spawnY;
 
         controller = GetComponent<Controller2D>();
         anim = GetComponent<Animator>();
@@ -403,7 +405,9 @@ public class Player : MonoBehaviour
         localPlayerData.playerHealthCap = health_max;
         localPlayerData.points = points;
         localPlayerData.canSwitch = canSwitch;
-        localPlayerData.spawnPosition = spawnPosition;
+        localPlayerData.spawnX = spawnPosition.x;
+        localPlayerData.spawnY = spawnPosition.y;
+        //localPlayerData.spawnPosition = spawnPosition;
         localPlayerData.posToSpawn = pointToSpawn;
 
         localPlayerData.mUtil = mUtility;       localPlayerData.tUtil = tUtility;
@@ -906,14 +910,20 @@ public class Player : MonoBehaviour
                 SavePlayer();
                 SaveSceneData();
                 //GameData.activeGame.savedPlayer = GlobalControl.Instance.savedPlayer;
-                Debug.Log(GameData.activeGame.ToString());
                 SaveLoad.Save();
+                Debug.Log(SaveLoad.activeGame.ToString());
                 Debug.Log("Scene should be saved");
             }
 
+            //Load game cheat
             if (Input.GetKeyDown(KeyCode.L) && Input.GetKey(KeyCode.J))// && Input.GetKey(KeyCode.H))
             {
                 SaveLoad.Load();
+                SaveLoad.activeGame = SaveLoad.savedGames[SaveLoad.savedGames.Count-1];
+                GlobalControl.Instance.savedDialogue = SaveLoad.activeGame.savedDialogue;
+                GlobalControl.Instance.savedDoors = SaveLoad.activeGame.savedDoors;
+                GlobalControl.Instance.savedPickups = SaveLoad.activeGame.savedPickups;
+                GlobalControl.Instance.savedPlayer = SaveLoad.activeGame.savedPlayer;
                 Debug.Log(SaveLoad.savedGames.Count);
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 Debug.Log("Scene should be reloaded");
