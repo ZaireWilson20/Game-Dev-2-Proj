@@ -128,7 +128,11 @@ public class DoorController : MonoBehaviour
     {
         //if (Input.GetButtonDown("Pickup"))
         //{
-        playerObj.GetComponent<Player>().spawnPosition = otherDoor;
+        //playerObj.GetComponent<Player>().spawnPosition = otherDoor;
+        GlobalControl.Instance.savedPlayer.spawnX = otherDoor.x;
+        GlobalControl.Instance.savedPlayer.spawnY = otherDoor.y;
+        Debug.Log(GlobalControl.Instance.savedPlayer.spawnX);
+        Debug.Log(GlobalControl.Instance.savedPlayer.spawnY);
         //player.pointToSpawn = nextLevelSpawnPoint;
         Debug.Log(otherDoor);
         player.SavePlayer();

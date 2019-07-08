@@ -97,7 +97,6 @@ public class Player : MonoBehaviour
     private Vector3 airdashDirection = new Vector3(0, 0, 0);
 
     private bool facingRight = true;
-
     public bool isSwinging = false;
     private bool wasSwinging = false;
     public Vector2 ropeHook;
@@ -307,9 +306,9 @@ public class Player : MonoBehaviour
     void Start()
     {
         
-        foreach(GameObject g in GameObject.FindGameObjectsWithTag("SpawnPoint")){
-            spawnPoints.Add(g.GetComponent<SpawnPoint>());
-        }
+        //foreach(GameObject g in GameObject.FindGameObjectsWithTag("SpawnPoint")){
+        //    spawnPoints.Add(g.GetComponent<SpawnPoint>());
+        //}
 
         FindObjectOfType<MusicController>().musicEv = FMODUnity.RuntimeManager.CreateInstance(FindObjectOfType<MusicController>().music);
         Debug.Log(FindObjectOfType<MusicController>().music);
@@ -327,6 +326,8 @@ public class Player : MonoBehaviour
         health_max = localPlayerData.playerHealthCap;
         points = localPlayerData.points;
         canSwitch = localPlayerData.canSwitch;
+        Debug.Log(localPlayerData.spawnX);
+        Debug.Log(localPlayerData.spawnY);
         spawnPosition.x = localPlayerData.spawnX;
         spawnPosition.y = localPlayerData.spawnY;
         Debug.Log(spawnPosition);
@@ -406,8 +407,8 @@ public class Player : MonoBehaviour
         localPlayerData.playerHealthCap = health_max;
         localPlayerData.points = points;
         localPlayerData.canSwitch = canSwitch;
-        localPlayerData.spawnX = transform.position.x;
-        localPlayerData.spawnY = transform.position.y;
+        //localPlayerData.spawnX = transform.position.x;
+        //localPlayerData.spawnY = transform.position.y;
         //localPlayerData.spawnPosition = spawnPosition;
         localPlayerData.posToSpawn = pointToSpawn;
 
@@ -911,6 +912,8 @@ public class Player : MonoBehaviour
             {
                 SavePlayer();
                 SaveSceneData();
+                localPlayerData.spawnX = transform.position.x;
+                localPlayerData.spawnY = transform.position.y;
                 SaveLoad.Save();
                 Debug.Log(SaveLoad.activeGame.ToString());
                 Debug.Log("Scene should be saved");
