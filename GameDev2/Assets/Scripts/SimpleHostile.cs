@@ -325,6 +325,7 @@ public class SimpleHostile : MonoBehaviour
                         nextFire = fireTime + fireRate;
                         newProjectile = Instantiate(projectile, transform.position, transform.rotation) as GameObject;
                         Debug.Log("Flower Fired");
+                        //anim.SetTrigger("Attack");
                         //newProjectile.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(new Vector3(Mathf.Sign(velocity.x),0,0));
                         //newProjectile.velocity = transform.TransformDirection(Vector3.forward * 10);
                         newProjectile.SetActive(true);
